@@ -1,50 +1,50 @@
-# React + TypeScript + Vite
+# Sonique
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sonique is a personal practice project inspired by Spotify, built as a collaborative effort with friends. The goal is to create a modern and feature-rich music streaming platform, allowing users to discover, play, and manage their favorite tracks seamlessly.
 
-Currently, two official plugins are available:
+  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies
 
-## Expanding the ESLint configuration
+  
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React + Typescript
 
-- Configure the top-level `parserOptions` property like this:
+- Zustand
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- React Query
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+  
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Installation
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+  
+
+### 1. Clone the project from the repo
+
+  
+
+### 2. Install all the dependencies
+
+  
+
+    npm install
+
+  
+
+### 3. Run with the following command
+
+  
+
+    npm run dev
+
+  
+
+## Contributers
+
+  
+
+- [Sebastian Kein (AungKyaw Phyo)](https://github.com/AungKyawPhyo1142)
+- [Nyi Nyi Soe](https://github.com/Nyi-NyiSoe)
+- [Kyi Thant Sin](https://github.com/KyiThantSin)
+- [Linn Latt Cho](https://github.com/linnlatt132)
