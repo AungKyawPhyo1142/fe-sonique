@@ -1,0 +1,5 @@
+{
+  "env": "development",
+  "lang": "en",
+  "endpoint": "http://api.myapp.local"
+}
