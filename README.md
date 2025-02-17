@@ -40,7 +40,7 @@ Sonique is a personal practice project inspired by Spotify, built as a collabora
 
   
 
-## Contributers
+## Contributors
 
   
 
