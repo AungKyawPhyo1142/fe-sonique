@@ -11,7 +11,7 @@ const Login = () => {
     <>
       <div className='h-screen fade-in flex items-center justify-center flex-col gap-y-5'>
         <h1 className='text-3xl text-red-400 font-light'>
-        [DEV BRANCH]  LOGIN & COUNTER: {counter}{' '}
+        [DEV] LOGIN & COUNTER: {counter}{' '}
         </h1>
         <div className='flex items-center gap-x-5'>
           <button
