@@ -10,5 +10,10 @@ export const AppConstantRoutes = {
         },
       }
     },
+
+    // TODO: DELETE THIS LATER
+    get example() {
+      return '/example'
+    },
   },
 }
