@@ -8,6 +8,9 @@ export const AppConstantRoutes = {
         get login() {
           return `${this.default}/login`
         },
+        get register() {
+          return `${this.default}/register`
+        },
       }
     },
 

@@ -37,6 +37,12 @@ const Login = () => {
         >
           Go to example components usage page
         </Link>
+        <Link
+          to={AppConstantRoutes.paths.auth.register}
+          className=' underline text-lg font-light text-blue-400'
+        >
+          Register
+        </Link>
       </div>
     </>
   )

@@ -1,4 +1,4 @@
-import { config } from 'config/register'
+import { config } from '../../../config/register'
 import axios from 'axios'
 
 const apiClient = axios.create({
