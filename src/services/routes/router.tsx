@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppConstantRoutes } from './path'
 import Login from '@/pages/auth/Login'
+import Example from '@/pages/Example'
 
 /*
   This file is where you define the routes
@@ -27,5 +28,9 @@ export const router = createBrowserRouter([
   {
     path: AppConstantRoutes.paths.auth.login,
     element: <Login />,
+  },
+  {
+    path: AppConstantRoutes.paths.example,
+    element: <Example />,
   },
 ])
