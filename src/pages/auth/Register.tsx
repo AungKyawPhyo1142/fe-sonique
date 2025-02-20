@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
 import { useCustomEvents } from '@/services/formik/hooks'
-import { adminRequest } from '@/services/network/lib/auth'
+import { authRequest } from '@/services/network/lib/auth'
 import { AppConstantRoutes } from '@/services/routes/path'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router'
@@ -54,7 +54,7 @@ const Register = () => {
   })
 
   const onSubmit = async (values: RegisterFormValues) => {
-    const res = await adminRequest.register(values).catch(() => {
+    const res = await authRequest.register(values).catch(() => {
       // TODO: create a toast service to show error messages
       console.log('Error')
     })
