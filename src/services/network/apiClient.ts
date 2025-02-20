@@ -1,4 +1,4 @@
-import { config } from 'config/register'
+import { config } from '../../../config/register'
 import axios from 'axios'
 
 const apiClient = axios.create({
@@ -7,6 +7,7 @@ const apiClient = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 })
 
 apiClient.interceptors.response.use(
