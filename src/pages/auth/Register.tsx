@@ -158,6 +158,7 @@ const Register = () => {
           <Button className='w-full mt-2' secondary type='submit'>
             SIGN IN
           </Button>
+          <p>Sign IN</p>
         </form>
       </div>
     </>
