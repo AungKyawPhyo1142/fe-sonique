@@ -154,6 +154,10 @@ const Register = () => {
           >
             Register account
           </Button>
+          <p className='text-sm'>You've already have an account?</p>
+          <Button className='w-full mt-2' secondary type='submit'>
+            SIGN IN
+          </Button>
         </form>
       </div>
     </>
