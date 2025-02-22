@@ -157,7 +157,7 @@ const Register = () => {
           <div className='text-center mt-4'>
             <p className='text-sm'>You've already have an account?</p>
             <Button
-              className='w-full mt-2'
+              className='w-full mt-2 bg-amber-100'
               secondary
               type='submit'
               onClick={() => navigate(AppConstantRoutes.paths.auth.login)}
