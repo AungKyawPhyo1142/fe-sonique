@@ -72,7 +72,7 @@ const Modal: React.FC<Props> = ({
             <Button
               onClick={onClose}
               outline
-              className='px-5 text-[16px] rounded-lg hover:bg-white hover:text-black'
+              className='px-5 text-[16px] rounded-lg'
             >
               close
             </Button>

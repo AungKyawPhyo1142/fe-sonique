@@ -6,6 +6,9 @@ import { AppConstantRoutes } from '@/services/routes/path'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router'
 import { object, ObjectSchema, string } from 'yup'
+import musicPic from '../../../public/images/music.png'
+import Checkbox from '@/components/common/Checkbox'
+import { useState } from 'react'
 
 // note that the names are identical to the id of the input fields
 export interface RegisterFormValues {
@@ -26,6 +29,12 @@ const Register = () => {
     username: '',
     password: '',
     confirmPassword: '',
+  }
+
+  // checkbox
+  const [checkBoxValue, setCheckBoxValue] = useState(false)
+  const onCheckboxChange = () => {
+    setCheckBoxValue(!checkBoxValue)
   }
 
   const validationSchema: ObjectSchema<RegisterFormValues> = object().shape({
@@ -75,97 +84,131 @@ const Register = () => {
 
   return (
     <>
-      <div className='flex bg-black items-center justify-center h-screen'>
-        <form
-          onSubmit={formik.handleSubmit}
-          className='min-w-[500px]  flex flex-col gap-y-5'
-        >
-          <h1 className='text-2xl mb-5 font-bold text-white'>Register here.</h1>
-          <div className='flex items-center  gap-x-5 '>
-            <div className='flex flex-col w-full gap-y-1'>
-              <label htmlFor='firstName'>First Name</label>
-              <Input
-                type='text'
-                id='firstName'
-                onChange={onInputChange}
-                value={formik.values.firstName}
-                error={formik.errors.firstName}
-                placeholder='John'
-              />
-            </div>
-            <div className='flex flex-col gap-y-1 w-full'>
-              <label htmlFor='lastname'>Last Name</label>
-              <Input
-                type='text'
-                id='lastName'
-                placeholder='Doe'
-                onChange={onInputChange}
-                value={formik.values.lastName}
-                error={formik.errors.lastName}
-              />
-            </div>
-          </div>
-          <div className='flex flex-col  w-full  gap-x-5 '>
-            <label htmlFor='email'>Email</label>
-            <Input
-              type='email'
-              id='email'
-              onChange={onInputChange}
-              value={formik.values.email}
-              error={formik.errors.email}
-            />
-          </div>
-          <div className='flex flex-col  w-full  gap-x-5 '>
-            <label htmlFor='username'>Username</label>
-            <Input
-              type='text'
-              id='username'
-              onChange={onInputChange}
-              value={formik.values.username}
-              error={formik.errors.username}
-            />
-          </div>
-          <div className='flex flex-col  w-full  gap-x-5 '>
-            <label htmlFor='password'>Password</label>
-            <Input
-              type='password'
-              id='password'
-              onChange={onInputChange}
-              value={formik.values.password}
-              error={formik.errors.password}
-            />
-          </div>
-          <div className='flex flex-col  w-full  gap-x-5 '>
-            <label htmlFor='confirmPassword'>Confirm Password</label>
-            <Input
-              type='password'
-              id='confirmPassword'
-              onChange={onInputChange}
-              value={formik.values.confirmPassword}
-              error={formik.errors.confirmPassword}
-            />
-          </div>
-          <Button
-            loading={formik.isSubmitting}
-            disabled={formik.isSubmitting}
-            className='w-full'
-            primary
-            type='submit'
+      <div className='flex min-h-screen'>
+        {/**Photo Section */}
+        <div
+          className='w-1/2 bg-cover bg-center'
+          style={{ backgroundImage: `url(${musicPic})` }}
+        ></div>
+
+        {/**Form Section */}
+        <div className='w-1/2 text-white flex flex-col justify-center items-center'>
+          <form
+            onSubmit={formik.handleSubmit}
+            className='w-full max-w-[400px] space-y-3  py-2'
           >
-            Register account
-          </Button>
-          <div className='text-center mt-4'>
-            <p className='text-sm'>You've already have an account?</p>
-            <Button
-              className='w-full'
-              secondary
-              type='submit'
-              onClick={() => navigate(AppConstantRoutes.paths.auth.login)}
-            >
-              LOGIN
-            </Button>
-          </div>
-        </form>
+            {/**First Name and Last Name */}
+            <div className='flex items-center  gap-x-3 '>
+              <div className='flex flex-col w-full gap-y-1'>
+                <label htmlFor='firstName'>First Name</label>
+                <Input
+                  type='text'
+                  id='firstName'
+                  onChange={onInputChange}
+                  value={formik.values.firstName}
+                  error={formik.errors.firstName}
+                  placeholder='John'
+                />
+              </div>
+              <div className='flex flex-col gap-y-1 w-full'>
+                <label htmlFor='lastname'>Last Name</label>
+                <Input
+                  type='text'
+                  id='lastName'
+                  placeholder='Doe'
+                  onChange={onInputChange}
+                  value={formik.values.lastName}
+                  error={formik.errors.lastName}
+                />
+              </div>
+            </div>
+
+            {/**Email */}
+            <div className='flex flex-col  w-full  gap-x-5 '>
+              <label htmlFor='email'>Email</label>
+              <Input
+                type='email'
+                id='email'
+                placeholder='johndoe@gmail.com'
+                onChange={onInputChange}
+                value={formik.values.email}
+                error={formik.errors.email}
+              />
+            </div>
+
+            {/**Username */}
+            <div className='flex flex-col  w-full  gap-x-5 '>
+              <label htmlFor='username'>Username</label>
+              <Input
+                type='text'
+                id='username'
+                placeholder='johndoe_user1234'
+                onChange={onInputChange}
+                value={formik.values.username}
+                error={formik.errors.username}
+              />
+            </div>
+
+            {/**Password */}
+            <div className='flex flex-col  w-full  gap-x-5 '>
+              <label htmlFor='password'>Password</label>
+              <Input
+                type='password'
+                id='password'
+                placeholder='**************'
+                onChange={onInputChange}
+                value={formik.values.password}
+                error={formik.errors.password}
+              />
+            </div>
+            <div className='flex flex-col  w-full  gap-x-5 '>
+              <label htmlFor='confirmPassword'>Confirm Password</label>
+              <Input
+                type='password'
+                id='confirmPassword'
+                placeholder='**************'
+                onChange={onInputChange}
+                value={formik.values.confirmPassword}
+                error={formik.errors.confirmPassword}
+              />
+            </div>
+
+            {/* Terms Checkbox and Register Button */}
+            <div className='flex justify-between mt-6 border-b-2 pb-5'>
+              {/* Terms Checkbox */}
+              <Checkbox
+                id='terms'
+                className='text-sm mr-3'
+                checked={checkBoxValue}
+                onChange={onCheckboxChange}
+                label='terms & policies...'
+              />
+              {/**Register Button */}
+              <Button
+                loading={formik.isSubmitting}
+                disabled={formik.isSubmitting}
+                className='w-30 font-semibold'
+                primary
+                type='submit'
+              >
+                REGISTER
+              </Button>
+            </div>
+
+            {/**Already have an account */}
+            <div className='text-center'>
+              <p className='text-[18px] py-2 mb-2'>Already have an account?</p>
+              <Button
+                className='w-full h-[50px]'
+                outline
+                type='submit'
+                onClick={() => navigate(AppConstantRoutes.paths.auth.login)}
+              >
+                SIGN IN FOR SPOTIFY
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </>
   )

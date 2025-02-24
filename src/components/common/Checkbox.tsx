@@ -24,7 +24,7 @@ const Checkbox: React.FC<Props> = (props) => {
       />
       <label
         htmlFor={id}
-        className='ml-3 cursor-pointer font-anuphan text-base font-medium leading-relaxed text-zinc-300'
+        className='ml-3 cursor-pointer font-anuphan text-sm font-medium leading-relaxed text-zinc-300'
       >
         {label}
       </label>

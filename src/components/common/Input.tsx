@@ -66,7 +66,7 @@ const Input: React.FC<Props> = (props) => {
           {...rest}
           type={inputState.inputType}
           className={clsx(
-            'border-1 border-gray-500 w-full rounded-lg px-3 py-3 text-base text-white outline-none transition-colors duration-200 placeholder:text-gray-500 focus:ring-1 focus:ring-white',
+            'border-1 border-gray-500 w-full rounded-lg px-3 py-2 text-base text-white outline-none transition-colors duration-200 placeholder:text-gray-500 focus:ring-[1.5px] focus:ring-white',
             type === 'password' && 'pr-8',
             type === 'file' && 'opacity-0',
             error ? 'border-red-500' : 'border-gray-500',

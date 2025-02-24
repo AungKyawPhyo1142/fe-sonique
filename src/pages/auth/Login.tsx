@@ -100,15 +100,14 @@ export const Login = () => {
           </Button>
           <p className='text-sm'>You don't have any account?</p>
           <Button
-            className='w-full'
-            secondary
+            className='w-full h-[50px]'
+            outline
             type='submit'
             onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
           >
             REGISTER HERE
           </Button>
         </form>
-
       </div>
     </>
   )
