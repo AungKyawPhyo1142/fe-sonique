@@ -37,7 +37,7 @@ const Modal: React.FC<Props> = ({
       <div
         className={clsx(
           'bg-black rounded-lg shadow-lg text-white transition-all scale-100 opacity-100 relative',
-          'w-[90%] max-w-120 flex flex-col', // Added flex column
+          'w-[90%] max-w-100 flex flex-col', // Added flex column
           className,
         )}
       >
@@ -63,7 +63,7 @@ const Modal: React.FC<Props> = ({
 
         {/* Content */}
         <div className='flex-1 flex px-6 pt-0'>
-          <p className='text-gray-500 text-justify mb-6'>{content}</p>
+          <p className='text-gray-500 text-start mb-7'>{content}</p>
         </div>
 
         {/* Optional Button */}

@@ -7,6 +7,8 @@ import { useFormik } from 'formik'
 import { useNavigate } from 'react-router'
 import { object, ObjectSchema, string } from 'yup'
 import musicPic from '../../../public/images/music.png'
+import Modal from '@/components/common/Modal'
+import { useState } from 'react'
 
 // note that the names are identical to the id of the input fields
 export interface RegisterFormValues {
@@ -20,6 +22,8 @@ export interface RegisterFormValues {
 
 const Register = () => {
   const navigate = useNavigate()
+  const [errorModal, setErrorModal] = useState(false)
+  const [successModal, setSuccessModal] = useState(false)
   const initialValues: RegisterFormValues = {
     firstName: '',
     lastName: '',
@@ -56,11 +60,12 @@ const Register = () => {
 
   const onSubmit = async (values: RegisterFormValues) => {
     const res = await authRequest.register(values).catch(() => {
-      // TODO: create a toast service to show error messages
-      console.log('Error')
+      //Open Error Modal
+      setErrorModal(true)
     })
     if (res && res.status === 'SUCCESS') {
-      navigate(AppConstantRoutes.paths.auth.login, { replace: true })
+      //Open Success Modal
+      setSuccessModal(true)
     }
   }
 
@@ -76,6 +81,24 @@ const Register = () => {
 
   return (
     <>
+      {/**Error Modal */}
+      <Modal
+        isOpen={errorModal}
+        onClose={() => setErrorModal(false)}
+        title='Registration Fail!'
+        content='Something went wrong. Please check your informations and try again.'
+        button
+      />
+      {/**Success Modal */}
+      <Modal
+        isOpen={successModal}
+        onClose={() =>
+          navigate(AppConstantRoutes.paths.auth.login, { replace: true })
+        }
+        title='Registeration Success!'
+        content='Your account have been created successfully.'
+        button
+      />
       <div className='flex min-h-screen'>
         {/**Photo Section */}
         <div
@@ -134,7 +157,7 @@ const Register = () => {
               <Input
                 type='text'
                 id='username'
-                placeholder='Enter your username'
+                placeholder='Enter username'
                 onChange={onInputChange}
                 value={formik.values.username}
                 error={formik.errors.username}
