@@ -18,13 +18,13 @@ const Checkbox: React.FC<Props> = (props) => {
         id={id}
         type='checkbox'
         className={clsx(
-          'shrink-0 cursor-pointer appearance-none rounded-md border-2 border-solid border-neutral-400 checked:border-transparent checked:bg-green-600 checked:ring-2 checked:ring-emerald-600 checked:ring-offset-3 focus:outline-none focus:ring-2 focus:ring-emerald-600',
-          square ? 'h-6 w-6' : 'h-6 w-6',
+          'shrink-0 cursor-pointer appearance-auto border-2 border-solid border-white checked:border-transparent checked:bg-blue-600 checked:ring-2 checked:ring-blue-600 checked:ring-offset-2 focus:outline-none focus:ring-2 focus:ring-blue-600',
+          square ? 'h-5 w-5' : 'h-5 w-5',
         )}
       />
       <label
         htmlFor={id}
-        className='ml-3 cursor-pointer font-anuphan text-base font-medium leading-relaxed text-zinc-500 underline'
+        className='ml-3 cursor-pointer font-anuphan text-base font-medium leading-relaxed text-zinc-300'
       >
         {label}
       </label>

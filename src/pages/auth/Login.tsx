@@ -7,6 +7,7 @@ import { initAfterLogin } from '@/services/zustand/authStore'
 import { getDefaultRoute } from '@/services/routes/router'
 import { useCustomEvents } from '@/services/formik/hooks'
 import Button from '@/components/common/Button'
+import { AppConstantRoutes } from '@/services/routes/path'
 
 export interface LoginFormValues {
   email: string
@@ -97,7 +98,17 @@ export const Login = () => {
           >
             Login
           </Button>
+          <p className='text-sm'>You don't have any account?</p>
+          <Button
+            className='w-full'
+            secondary
+            type='submit'
+            onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
+          >
+            REGISTER HERE
+          </Button>
         </form>
+
       </div>
     </>
   )

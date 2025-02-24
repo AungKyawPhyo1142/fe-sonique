@@ -22,7 +22,11 @@ Sonique is a personal practice project inspired by Spotify, built as a collabora
 
     npm run dev
 
-## Contributers
+  
+
+## Contributors
+
+  
 
 - [Sebastian Kein (AungKyaw Phyo)](https://github.com/AungKyawPhyo1142)
 - [Nyi Nyi Soe](https://github.com/Nyi-NyiSoe)

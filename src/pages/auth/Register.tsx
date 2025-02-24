@@ -75,12 +75,12 @@ const Register = () => {
 
   return (
     <>
-      <div className='flex items-center justify-center h-screen'>
+      <div className='flex bg-black items-center justify-center h-screen'>
         <form
           onSubmit={formik.handleSubmit}
           className='min-w-[500px]  flex flex-col gap-y-5'
         >
-          <h1 className='text-2xl mb-5 font-bold'>Register here.</h1>
+          <h1 className='text-2xl mb-5 font-bold text-white'>Register here.</h1>
           <div className='flex items-center  gap-x-5 '>
             <div className='flex flex-col w-full gap-y-1'>
               <label htmlFor='firstName'>First Name</label>
@@ -157,7 +157,7 @@ const Register = () => {
           <div className='text-center mt-4'>
             <p className='text-sm'>You've already have an account?</p>
             <Button
-              className='w-full mt-2 bg-amber-100'
+              className='w-full'
               secondary
               type='submit'
               onClick={() => navigate(AppConstantRoutes.paths.auth.login)}

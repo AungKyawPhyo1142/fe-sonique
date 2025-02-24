@@ -11,13 +11,15 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean
   primary?: boolean
   secondary?: boolean
+  destructive?: boolean
+  outline?: boolean
   children: ReactNode
   type?: 'button' | 'submit' | 'reset'
 }
 const Spinner = () => {
   return (
     <svg
-      className='h-7 w-7 animate-spin text-white'
+      className='h-7 w-7 animate-spin text-black'
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 24 24'
@@ -42,8 +44,10 @@ const Button: React.FC<Props> = (props) => {
   const {
     className,
     loading,
-    primary = true,
+    primary,
     secondary,
+    destructive,
+    outline,
     children,
     ...rest // rest of the props, this comes from ButtonHTMLAttributes<HTMLButtonElement>
   } = props
@@ -52,10 +56,15 @@ const Button: React.FC<Props> = (props) => {
     <button
       {...rest}
       className={clsx(
-        'h-14 rounded-lg cursor-pointer p-3 text-lg transition-opacity duration-200 hover:opacity-80 active:opacity-100',
+        'h-auto rounded-lg cursor-pointer p-3 text-lg transition-opacity duration-200 hover:opacity-80 active:opacity-100',
         primary &&
-          !secondary &&
-          'bg-[#014343] text-white disabled:bg-[#B3B3B3]',
+          'bg-white font-semibold font-sans text-black disabled:bg-[#B3B3B3]',
+        secondary &&
+          'bg-[#8f8c8c] font-semibold font-sans text-white disabled:bg-[#B3B3B3]',
+        destructive &&
+          'bg-[#ee3232] font-sans font-semibold text-white disabled:bg-[#B3B3B3]',
+        outline &&
+          'bg-transparent text-white font-sans font-semibold border disabled:bg-[#B3B3B3]',
         className,
       )}
     >
