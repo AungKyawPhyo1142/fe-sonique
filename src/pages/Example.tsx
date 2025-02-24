@@ -4,6 +4,7 @@ import ErrorContent from '@/components/common/ErrorContent'
 import Input from '@/components/common/Input'
 import Select, { ListBox } from '@/components/common/Select'
 import { useState } from 'react'
+import Modal from '@/components/common/Modal'
 
 const Example = () => {
   // checkbox
@@ -29,7 +30,7 @@ const Example = () => {
   ]
 
   return (
-    <div className='m-5'>
+    <div className='m-5 bg-black'>
       <Button loading={false} primary={true} className='text-red-400'>
         Example Button
       </Button>
@@ -47,12 +48,12 @@ const Example = () => {
           id='terms'
           checked={checkBoxValue}
           onChange={onCheckboxChange}
-          label='Terms & conditions'
+          label='Terms & policies...'
         />
       </div>
       <div className='mt-5 w-[300px]'>
         <fieldset className='flex-col'>
-          <label htmlFor='company' className='text-lg font-[600] text-dark-800'>
+          <label htmlFor='company' className='text-lg font-[600] text-white'>
             Company
           </label>
           <Select
@@ -72,6 +73,27 @@ const Example = () => {
             console.log('reload')
           }}
         />
+      </div>
+      <div>
+        <Button primary onClick={() => console.log('Clicked!')}>
+          Primary Button
+        </Button>
+        <Button primary loading>
+          Loading Button
+        </Button>
+        <Button secondary> Secondary </Button>
+        <Button destructive> Destructive</Button>
+        <Button outline>Outline</Button>
+        {/***/}
+        <Modal
+          isOpen={true}
+          onClose={() => {
+            console.log('close')
+          }}
+          title='Registered successfully!'
+          content="You've been registered successfully."
+          button
+        ></Modal>
       </div>
     </div>
   )

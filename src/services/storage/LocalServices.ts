@@ -10,7 +10,6 @@ const CONFIG_NAME = config.name + '-auth'
     It is used to store the user's authentication token and other data.
 */
 
-
 export const LocalServices = {
   setLocalStorage(value: AuthState): void {
     if (!browser) return

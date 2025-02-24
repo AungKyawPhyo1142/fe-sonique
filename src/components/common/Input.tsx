@@ -47,14 +47,14 @@ const Input: React.FC<Props> = (props) => {
         onClick={onEyeIconClick}
         className=' absolute  right-4 cursor-pointer'
         size={20}
-        color={'black'}
+        color={'white'}
       />
     ) : (
       <EyeOff
         onClick={onEyeIconClick}
         className=' absolute  right-4 cursor-pointer'
         size={20}
-        color={'black'}
+        color={'white'}
       />
     )
   }
@@ -66,10 +66,10 @@ const Input: React.FC<Props> = (props) => {
           {...rest}
           type={inputState.inputType}
           className={clsx(
-            'border w-full rounded-lg px-3 py-3 text-base text-dark-800 outline-none transition-colors duration-200 placeholder:text-dark-600 focus:ring-0',
+            'border-1 border-gray-500 w-full rounded-lg px-3 py-2 text-base text-white outline-none transition-colors duration-200 placeholder:text-gray-500 focus:ring-[1.5px] focus:ring-white',
             type === 'password' && 'pr-8',
             type === 'file' && 'opacity-0',
-            error ? 'border-red-500' : 'border-gray-300',
+            error ? 'border-red-500' : 'border-gray-500',
             className,
           )}
           defaultValue={defaultValue}

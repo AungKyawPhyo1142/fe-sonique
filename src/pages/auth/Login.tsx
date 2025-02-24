@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
+import Seperator from '@/components/common/Seperator'
 import { useCustomEvents } from '@/services/formik/hooks'
 import { authRequest } from '@/services/network/lib/auth'
 import { AppConstantRoutes } from '@/services/routes/path'
@@ -56,6 +57,8 @@ export const Login = () => {
     initialValues,
     validationSchema,
     onSubmit,
+    validateOnChange: false,
+    validateOnBlur: false,
   })
 
   const { onInputChange } = useCustomEvents<LoginFormValues>(formik)
@@ -83,7 +86,6 @@ export const Login = () => {
                 onChange={onInputChange}
                 value={formik.values.email}
                 error={formik.errors.email}
-                className='bg-white placeholder:text-gray-500 text-black'
                 placeholder='Email address or username'
               />
             </div>
@@ -97,7 +99,6 @@ export const Login = () => {
                 onChange={onInputChange}
                 value={formik.values.password}
                 error={formik.errors.password}
-                className='bg-white placeholder:text-gray-500 text-black'
                 placeholder='Password'
               />
             </div>
@@ -121,7 +122,7 @@ export const Login = () => {
               <Button
                 loading={formik.isSubmitting}
                 disabled={formik.isSubmitting}
-                className='w-fit px-10'
+                className='w-fit px-10 h-[50px]'
                 primary
                 type='submit'
               >
@@ -129,14 +130,15 @@ export const Login = () => {
               </Button>
             </div>
 
+            <Seperator className='my-4' />
             {/*point to register*/}
 
-            <span className='font-bold text-center'>
+            <p className='text-[18px] text-center mb-4'>
               Don't have an account?
-            </span>
+            </p>
             <Button
-              className='w-full border-1 text-sm text-gray-500'
-              secondary
+              className='w-full h-[50px] text-[16px]'
+              outline
               onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
             >
               SIGN UP FOR SONIQUE

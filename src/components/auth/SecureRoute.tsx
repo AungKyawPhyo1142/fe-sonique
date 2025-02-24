@@ -22,7 +22,7 @@ const SecureRoute = ({ children }: Props) => {
 
   useEffect(() => {
     if (isSuccess) {
-        console.log('success', response)
+      console.log('success', response)
       initAfterLogin({ ...response }, true)
     }
   }, [isSuccess, response])

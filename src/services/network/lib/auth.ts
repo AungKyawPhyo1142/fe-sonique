@@ -42,12 +42,10 @@ export const authRequest = {
 
 export const useIsUserAuthenticated = () => {
   return useQuery<LoginResponse>({
-    queryKey:['isUserAuthenticated'],
+    queryKey: ['isUserAuthenticated'],
     retry: 1,
     queryFn: async () => {
       return apiClient.get(ApiConstantRoutes.paths.auth.default)
     },
-    
-
   })
 }
