@@ -6,7 +6,7 @@ import { AppConstantRoutes } from '@/services/routes/path'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router'
 import { object, ObjectSchema, string } from 'yup'
-import musicPic from '../../../public/images/music.png'
+import musicPic from '/images/music.png'
 import Modal from '@/components/common/Modal'
 import { useState } from 'react'
 
@@ -207,7 +207,7 @@ const Register = () => {
               <Button
                 className='w-full h-[50px] text-[16px]'
                 outline
-                type='submit'
+                type='button'
                 onClick={() => navigate(AppConstantRoutes.paths.auth.login)}
               >
                 SIGN IN FOR SPOTIFY
