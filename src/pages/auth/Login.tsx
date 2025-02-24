@@ -1,12 +1,13 @@
-import { useNavigate } from 'react-router'
-import Input from '@/components/common/Input'
-import { boolean, object, ObjectSchema, string } from 'yup'
-import { useFormik } from 'formik'
-import { authRequest } from '@/services/network/lib/auth'
-import { initAfterLogin } from '@/services/zustand/authStore'
-import { getDefaultRoute } from '@/services/routes/router'
-import { useCustomEvents } from '@/services/formik/hooks'
 import Button from '@/components/common/Button'
+import Input from '@/components/common/Input'
+import { useCustomEvents } from '@/services/formik/hooks'
+import { authRequest } from '@/services/network/lib/auth'
+import { AppConstantRoutes } from '@/services/routes/path'
+import { getDefaultRoute } from '@/services/routes/router'
+import { initAfterLogin } from '@/services/zustand/authStore'
+import { useFormik } from 'formik'
+import { useNavigate } from 'react-router'
+import { boolean, object, ObjectSchema, string } from 'yup'
 
 export interface LoginFormValues {
   email: string
@@ -61,43 +62,87 @@ export const Login = () => {
 
   return (
     <>
-      <div className='flex items-center justify-center h-screen'>
-        <form
-          onSubmit={formik.handleSubmit}
-          className='min-w-[500px]  flex flex-col gap-y-5'
-        >
-          <h1 className='text-2xl mb-5 font-bold'>Register here.</h1>
-
-          <div className='flex flex-col  w-full  gap-x-5 '>
-            <label htmlFor='email'>Email</label>
-            <Input
-              type='email'
-              id='email'
-              onChange={onInputChange}
-              value={formik.values.email}
-              error={formik.errors.email}
-            />
-          </div>
-          <div className='flex flex-col  w-full  gap-x-5 '>
-            <label htmlFor='password'>Password</label>
-            <Input
-              type='password'
-              id='password'
-              onChange={onInputChange}
-              value={formik.values.password}
-              error={formik.errors.password}
-            />
-          </div>
-          <Button
-            loading={formik.isSubmitting}
-            disabled={formik.isSubmitting}
-            className='w-full'
-            primary
-            type='submit'
+      <div className='bg-black w-screen h-screen flex flex-col text-white'>
+        {/*header*/}
+        <div className='border-b-1 border-[#e5e7eb] items-center flex justify-center p-5'>
+          <h1 className='font-bold text-3xl text-center'> Sonique</h1>
+        </div>
+        {/*form*/}
+        <div className='rounded-xl border border-[#e5e7eb] bg-card text-card-foreground shadow h-fit-content m-auto p-5 w-full max-w-md min-w-[500px] md:min-w-none'>
+          <form
+            onSubmit={formik.handleSubmit}
+            className='flex flex-col gap-y-5'
           >
-            Login
-          </Button>
-        </form>
+            <div className='flex flex-col w-full gap-x-5'>
+              <label htmlFor='email' className='mb-3'>
+                Email
+              </label>
+              <Input
+                type='email'
+                id='email'
+                onChange={onInputChange}
+                value={formik.values.email}
+                error={formik.errors.email}
+                className='bg-white placeholder:text-gray-500 text-black'
+                placeholder='Email address or username'
+              />
+            </div>
+            <div className='flex flex-col  w-full  gap-x-5 '>
+              <label htmlFor='password' className='mb-3'>
+                Password
+              </label>
+              <Input
+                type='password'
+                id='password'
+                onChange={onInputChange}
+                value={formik.values.password}
+                error={formik.errors.password}
+                className='bg-white placeholder:text-gray-500 text-black'
+                placeholder='Password'
+              />
+            </div>
+            <div>
+              <a href='' className='underline'>
+                Forgot your password?
+              </a>
+            </div>
+            {/*remember me* and button*/}
+            <div className='flex flex-row justify-between items-center'>
+              <label className='flex items-center gap-x-2'>
+                <input
+                  type='checkbox'
+                  id='remember'
+                  onChange={onInputChange}
+                  checked={formik.values.remember}
+                  className='accent-white'
+                />
+                <span>Remember me</span>
+              </label>
+              <Button
+                loading={formik.isSubmitting}
+                disabled={formik.isSubmitting}
+                className='w-fit px-10'
+                primary
+                type='submit'
+              >
+                Login
+              </Button>
+            </div>
+
+            {/*point to register*/}
+
+            <span className='font-bold text-center'>
+              Don't have an account?
+            </span>
+            <Button
+              className='w-full border-1 text-sm text-gray-500'
+              secondary
+              onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
+            >
+              SIGN UP FOR SONIQUE
+            </Button>
+          </form>
+        </div>
       </div>
     </>
   )
