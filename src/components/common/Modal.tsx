@@ -26,7 +26,7 @@ const Modal: React.FC<Props> = ({
     // Backdrop (Full Screen)
     <div
       className={clsx(
-        'fixed inset-0 flex items-center justify-center bg-white/50 z-50',
+        'fixed inset-0 flex items-center justify-center bg-white/30 z-50',
         {
           visible: isOpen,
           invisible: !isOpen,
@@ -63,7 +63,7 @@ const Modal: React.FC<Props> = ({
 
         {/* Content */}
         <div className='flex-1 flex px-6 pt-0'>
-          <p className='text-gray-500 text-justify'>{content}</p>
+          <p className='text-gray-500 text-justify mb-6'>{content}</p>
         </div>
 
         {/* Optional Button */}

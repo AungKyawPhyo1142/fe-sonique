@@ -4,6 +4,7 @@ import ErrorContent from '@/components/common/ErrorContent'
 import Input from '@/components/common/Input'
 import Select, { ListBox } from '@/components/common/Select'
 import { useState } from 'react'
+import Modal from '@/components/common/Modal'
 
 const Example = () => {
   // checkbox
@@ -83,7 +84,7 @@ const Example = () => {
         <Button secondary> Secondary </Button>
         <Button destructive> Destructive</Button>
         <Button outline>Outline</Button>
-        {/**
+        {/***/}
         <Modal
           isOpen={true}
           onClose={() => {
@@ -93,7 +94,6 @@ const Example = () => {
           content="You've been registered successfully."
           button
         ></Modal>
-         */}
       </div>
     </div>
   )

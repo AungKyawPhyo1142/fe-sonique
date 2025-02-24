@@ -7,8 +7,6 @@ import { useFormik } from 'formik'
 import { useNavigate } from 'react-router'
 import { object, ObjectSchema, string } from 'yup'
 import musicPic from '../../../public/images/music.png'
-import Checkbox from '@/components/common/Checkbox'
-import { useState } from 'react'
 
 // note that the names are identical to the id of the input fields
 export interface RegisterFormValues {
@@ -29,12 +27,6 @@ const Register = () => {
     username: '',
     password: '',
     confirmPassword: '',
-  }
-
-  // checkbox
-  const [checkBoxValue, setCheckBoxValue] = useState(false)
-  const onCheckboxChange = () => {
-    setCheckBoxValue(!checkBoxValue)
   }
 
   const validationSchema: ObjectSchema<RegisterFormValues> = object().shape({
@@ -107,7 +99,7 @@ const Register = () => {
                   onChange={onInputChange}
                   value={formik.values.firstName}
                   error={formik.errors.firstName}
-                  placeholder='John'
+                  placeholder='First Name'
                 />
               </div>
               <div className='flex flex-col gap-y-1 w-full'>
@@ -115,7 +107,7 @@ const Register = () => {
                 <Input
                   type='text'
                   id='lastName'
-                  placeholder='Doe'
+                  placeholder='Last Name'
                   onChange={onInputChange}
                   value={formik.values.lastName}
                   error={formik.errors.lastName}
@@ -129,7 +121,7 @@ const Register = () => {
               <Input
                 type='email'
                 id='email'
-                placeholder='johndoe@gmail.com'
+                placeholder='Enter your email'
                 onChange={onInputChange}
                 value={formik.values.email}
                 error={formik.errors.email}
@@ -142,7 +134,7 @@ const Register = () => {
               <Input
                 type='text'
                 id='username'
-                placeholder='johndoe_user1234'
+                placeholder='Enter your username'
                 onChange={onInputChange}
                 value={formik.values.username}
                 error={formik.errors.username}
@@ -155,7 +147,7 @@ const Register = () => {
               <Input
                 type='password'
                 id='password'
-                placeholder='**************'
+                placeholder='Enter password'
                 onChange={onInputChange}
                 value={formik.values.password}
                 error={formik.errors.password}
@@ -166,28 +158,19 @@ const Register = () => {
               <Input
                 type='password'
                 id='confirmPassword'
-                placeholder='**************'
+                placeholder='Confirm Password'
                 onChange={onInputChange}
                 value={formik.values.confirmPassword}
                 error={formik.errors.confirmPassword}
               />
             </div>
 
-            {/* Terms Checkbox and Register Button */}
-            <div className='flex justify-between mt-6 border-b-2 pb-5'>
-              {/* Terms Checkbox */}
-              <Checkbox
-                id='terms'
-                className='text-sm mr-3'
-                checked={checkBoxValue}
-                onChange={onCheckboxChange}
-                label='terms & policies...'
-              />
-              {/**Register Button */}
+            {/**Register Button */}
+            <div className='flex justify-between mt-6 border-b-2 border-[#e5e7eb] pb-5'>
               <Button
                 loading={formik.isSubmitting}
                 disabled={formik.isSubmitting}
-                className='w-30 font-semibold'
+                className='w-full font-semibold  h-[50px]'
                 primary
                 type='submit'
               >
@@ -197,9 +180,9 @@ const Register = () => {
 
             {/**Already have an account */}
             <div className='text-center'>
-              <p className='text-[18px] py-2 mb-2'>Already have an account?</p>
+              <p className='text-[16px] py-2 mb-2'>Already have an account?</p>
               <Button
-                className='w-full h-[50px]'
+                className='w-full h-[50px] text-[16px]'
                 outline
                 type='submit'
                 onClick={() => navigate(AppConstantRoutes.paths.auth.login)}
