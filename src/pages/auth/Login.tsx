@@ -6,7 +6,6 @@ import { AppConstantRoutes } from '@/services/routes/path'
 import { getDefaultRoute } from '@/services/routes/router'
 import { initAfterLogin } from '@/services/zustand/authStore'
 import { useFormik } from 'formik'
-import { Activity } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { boolean, object, ObjectSchema, string } from 'yup'
 
@@ -64,23 +63,20 @@ export const Login = () => {
   return (
     <>
       <div className='bg-black w-screen h-screen flex flex-col text-white'>
-        <div className='border-b-1 items-center flex justify-center p-5'>
-          <Activity
-            size={48}
-            className='rounded-full mr-2.5 bg-white text-red-500'
-          />
-          <h1 className='font-bold text-3xl'> Sonique</h1>
+        {/*header*/}
+        <div className='border-b-1 border-[#e5e7eb] items-center flex justify-center p-5'>
+          <h1 className='font-bold text-3xl text-center'> Sonique</h1>
         </div>
         {/*form*/}
-        <div className='rounded-xl border bg-card text-card-foreground shadow h-fit-content m-auto p-5 w-full max-w-md'>
+        <div className='rounded-xl border border-[#e5e7eb] bg-card text-card-foreground shadow h-fit-content m-auto p-5 w-full max-w-md min-w-[500px] md:min-w-none'>
           <form
             onSubmit={formik.handleSubmit}
             className='flex flex-col gap-y-5'
           >
-            <h1 className='text-2xl mb-5 font-bold'>Login here.</h1>
-
             <div className='flex flex-col w-full gap-x-5'>
-              <label htmlFor='email'>Email</label>
+              <label htmlFor='email' className='mb-3'>
+                Email
+              </label>
               <Input
                 type='email'
                 id='email'
@@ -92,7 +88,9 @@ export const Login = () => {
               />
             </div>
             <div className='flex flex-col  w-full  gap-x-5 '>
-              <label htmlFor='password'>Password</label>
+              <label htmlFor='password' className='mb-3'>
+                Password
+              </label>
               <Input
                 type='password'
                 id='password'
@@ -116,6 +114,7 @@ export const Login = () => {
                   id='remember'
                   onChange={onInputChange}
                   checked={formik.values.remember}
+                  className='accent-white'
                 />
                 <span>Remember me</span>
               </label>
@@ -129,10 +128,7 @@ export const Login = () => {
                 Login
               </Button>
             </div>
-            {/*divider*/}
-            <div className='flex flex-row justify-center items-center gap-x-2'>
-              <div className='border-b-1 w-full'></div>
-            </div>
+
             {/*point to register*/}
 
             <span className='font-bold text-center'>
