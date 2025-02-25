@@ -1,12 +1,19 @@
 import React from 'react'
+import clsx from 'clsx'
 
 interface Props {
   image: string
   title: string
+  className?: string
 }
-const MusictypeCard: React.FC<Props> = ({ image, title }) => {
+const MusictypeCard: React.FC<Props> = ({ image, title, className }) => {
   return (
-    <div className='py-3 px-2 w-48 bg-gray-800 rounded-[4%] hover:opacity-90 transition-transform cursor-pointer relative overflow-hidden'>
+    <div
+      className={clsx(
+        'py-3 px-2 w-48 bg-[# #1e2939] rounded-[4%] hover:opacity-90 transition-transform cursor-pointer relative overflow-hidden',
+        className,
+      )}
+    >
       <p className='text-[#FFFFFF] text-lg font-semibold truncate px-[16px] py-[15px] pb-1'>
         {title}
       </p>

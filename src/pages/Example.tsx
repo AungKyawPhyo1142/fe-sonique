@@ -138,20 +138,35 @@ const Example = () => {
         </div>
         <h1 className='text-2xl font-bold my-6 text-white'>Music Type Card</h1>
         <div className='grid grid-cols-5 gap-6'>
-          <MusictypeCard image='public/images/music.png' title='Podcasts' />
+          <MusictypeCard
+            image='public/images/music.png'
+            title='Podcasts'
+            className='bg-[#27856A]'
+          />
           <MusictypeCard
             image='public/images/playlist.png'
             title='Audiobooks'
+            className='bg-[#8D67AB]'
           />
           <MusictypeCard
             image='public/images/playlist2.png'
             title='Made For You'
+            className='bg-[#7358FF]'
           />
-          <MusictypeCard image='public/images/music.png' title='Live Events' />
-          <MusictypeCard image='public/images/playlist.png' title='Hip-Hop' />
+          <MusictypeCard
+            image='public/images/music.png'
+            title='Live Events'
+            className='bg-[#D7F27D]'
+          />
+          <MusictypeCard
+            image='public/images/playlist.png'
+            title='Hip-Hop'
+            className='bg-[#283EA3]'
+          />
           <MusictypeCard
             image='public/images/playlist2.png'
             title='New Releases'
+            className='bg-[#B49BC8]'
           />
         </div>
         <h1 className='text-2xl font-bold my-6 text-white'>Podcasts Card</h1>
@@ -162,13 +177,15 @@ const Example = () => {
             year='Sep 2002'
             time='36 Min'
           />
-          <PodcastsCard
-            image='public/images/playlist.png'
-            title='After 10 years'
-            year='Jul 2002'
-            time='62 Min'
-            icon
-          />
+          <div className='bg-red'>
+            <PodcastsCard
+              image='public/images/playlist.png'
+              title='After 10 years'
+              year='Jul 2002'
+              time='62 Min'
+              icon
+            />
+          </div>
           <PodcastsCard
             image='public/images/playlist2.png'
             title='Book Exploder: Min Jin Lee'
