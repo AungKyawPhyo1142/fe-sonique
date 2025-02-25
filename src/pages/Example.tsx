@@ -5,8 +5,13 @@ import Input from '@/components/common/Input'
 import Select, { ListBox } from '@/components/common/Select'
 import { useState } from 'react'
 import Modal from '@/components/common/Modal'
+import PlaylistCard from '@/components/common/PlaylistCard'
+import MusictypeCard from '@/components/common/MusictypeCard'
+import PodcastsCard from '@/components/common/PodcastsCard'
 
 const Example = () => {
+  //Modal
+  const [isModalOpen, setModalOpen] = useState(false)
   // checkbox
   const [checkBoxValue, setCheckBoxValue] = useState(false)
   const onCheckboxChange = () => {
@@ -85,15 +90,103 @@ const Example = () => {
         <Button destructive> Destructive</Button>
         <Button outline>Outline</Button>
         {/***/}
+        <Button destructive onClick={() => setModalOpen(true)}>
+          Open Modal
+        </Button>
         <Modal
-          isOpen={true}
-          onClose={() => {
-            console.log('close')
-          }}
-          title='Registered successfully!'
-          content="You've been registered successfully."
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          title='Modal'
+          content='It is Modal contents.'
           button
-        ></Modal>
+        />
+      </div>
+      {/**Playlist */}
+      <div className='ml-[50px] p-5 bg-[#4e4d4d]'>
+        <h1 className='text-2xl font-bold mb-6 text-white'>Playlist Card</h1>
+        <div className='grid grid-cols-5 gap-6'>
+          <PlaylistCard
+            image='public/images/playlist.png'
+            title='Piano playlist'
+            description='It is a card description. Piano playlist is a example of playslist card.'
+          />
+          <PlaylistCard
+            image='public/images/playlist2.png'
+            title='Deep Focus'
+            description='Keep calm and focus with ambient and post-rock music. Perfect for deep work and study sessions.'
+          />
+          <PlaylistCard
+            image='public/images/music.png'
+            title='Instrumental Study'
+            description='Focus with soft study music in the background. Enhance your concentration and productivity.'
+          />
+          <PlaylistCard
+            image='public/images/playlist2.png'
+            title='Piano playlist'
+            description='It is a card description. Piano playlist is a example of playslist card.'
+          />
+          <PlaylistCard
+            image='public/images/playlist.png'
+            title='Piano playlist'
+            description='It is a card description. Piano playlist is a example of playslist card.'
+          />
+          <PlaylistCard
+            image='public/images/playlist2.png'
+            title='Jazz Vibes'
+            description='The original chill instrumental beats playlist. Enjoy smooth jazz for a relaxing mood.'
+          />
+        </div>
+        <h1 className='text-2xl font-bold mb-6 text-white'>Music Type Card</h1>
+        <div className='grid grid-cols-5 gap-6'>
+          <MusictypeCard image='public/images/music.png' title='Podcasts' />
+          <MusictypeCard
+            image='public/images/playlist.png'
+            title='Audiobooks'
+          />
+          <MusictypeCard
+            image='public/images/playlist2.png'
+            title='Made For You'
+          />
+          <MusictypeCard image='public/images/music.png' title='Live Events' />
+          <MusictypeCard image='public/images/playlist.png' title='Hip-Hop' />
+          <MusictypeCard
+            image='public/images/playlist2.png'
+            title='New Releases'
+          />
+        </div>
+        <h1 className='text-2xl font-bold mb-6 text-white'>Podcasts Card</h1>
+        <div className='grid grid-cols-5 gap-6'>
+          <PodcastsCard
+            image='public/images/music.png'
+            title="Every Parent's Nightmare"
+            description='Sep 2002 . 36 Min'
+          />
+          <PodcastsCard
+            image='public/images/playlist.png'
+            title='After 10 years'
+            description='Jul 2002 . 62 Min'
+          />
+          <PodcastsCard
+            image='public/images/playlist2.png'
+            title='Book Exploder: Min Jin Lee'
+            description='Aug 2022 . 20 Min'
+          />
+          <PodcastsCard
+            image='public/images/music.png'
+            title='Healing Through Music v'
+            description='Aug 2022 . 26 Min'
+          />
+          <PodcastsCard
+            image='public/images/playlist.png'
+            title='Piano playlist'
+            description='It is a card description. Piano playlist is a example of playslist card.'
+          />
+          <PodcastsCard
+            image='public/images/playlist2.png'
+            title='Piano playlist'
+            description='It is a card description. Piano playlist is a example of playslist card.'
+          />
+        </div>
       </div>
     </div>
   )
