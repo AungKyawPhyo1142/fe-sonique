@@ -103,7 +103,7 @@ const Example = () => {
       </div>
       {/**Playlist */}
       <div className='ml-[50px] p-5 bg-[#4e4d4d]'>
-        <h1 className='text-2xl font-bold mb-6 text-white'>Playlist Card</h1>
+        <h1 className='text-2xl font-bold my-6 text-white'>Playlist Card</h1>
         <div className='grid grid-cols-5 gap-6'>
           <PlaylistCard
             image='public/images/playlist.png'
@@ -136,7 +136,7 @@ const Example = () => {
             description='The original chill instrumental beats playlist. Enjoy smooth jazz for a relaxing mood.'
           />
         </div>
-        <h1 className='text-2xl font-bold mb-6 text-white'>Music Type Card</h1>
+        <h1 className='text-2xl font-bold my-6 text-white'>Music Type Card</h1>
         <div className='grid grid-cols-5 gap-6'>
           <MusictypeCard image='public/images/music.png' title='Podcasts' />
           <MusictypeCard
@@ -154,37 +154,46 @@ const Example = () => {
             title='New Releases'
           />
         </div>
-        <h1 className='text-2xl font-bold mb-6 text-white'>Podcasts Card</h1>
+        <h1 className='text-2xl font-bold my-6 text-white'>Podcasts Card</h1>
         <div className='grid grid-cols-5 gap-6'>
           <PodcastsCard
             image='public/images/music.png'
             title="Every Parent's Nightmare"
-            description='Sep 2002 . 36 Min'
+            year='Sep 2002'
+            time='36 Min'
           />
           <PodcastsCard
             image='public/images/playlist.png'
             title='After 10 years'
-            description='Jul 2002 . 62 Min'
+            year='Jul 2002'
+            time='62 Min'
+            icon
           />
           <PodcastsCard
             image='public/images/playlist2.png'
             title='Book Exploder: Min Jin Lee'
-            description='Aug 2022 . 20 Min'
+            year='Aug 2022'
+            time='20 Min'
           />
           <PodcastsCard
             image='public/images/music.png'
             title='Healing Through Music v'
-            description='Aug 2022 . 26 Min'
+            year='Aug 2022'
+            time='26 Min'
+            icon
           />
           <PodcastsCard
             image='public/images/playlist.png'
             title='Piano playlist'
-            description='It is a card description. Piano playlist is a example of playslist card.'
+            year='Sep 2002'
+            time='36 Min'
           />
           <PodcastsCard
             image='public/images/playlist2.png'
             title='Piano playlist'
-            description='It is a card description. Piano playlist is a example of playslist card.'
+            year='Sep 2002'
+            time='36 Min'
+            icon
           />
         </div>
       </div>

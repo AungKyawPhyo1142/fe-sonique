@@ -3,20 +3,31 @@ import React from 'react'
 interface Props {
   image: string
   title: string
-  description: string
+  year: string
+  time: string
+  icon?: boolean
 }
-const PodcastsCard: React.FC<Props> = ({ image, title, description }) => {
+
+const PodcastsCard: React.FC<Props> = ({ image, title, year, time, icon }) => {
   return (
-    <div className='m-5 w-48 bg-gray-800 p-3 py-4 rounded-[3%] hover:opacity-90 cursor-pointer'>
+    <div className='w-48 bg-[#181818] p-[16px] rounded-[3%] hover:opacity-90 cursor-pointer'>
       <img
         src={image}
         alt={title}
-        className='w-full h-40 object-cover rounded-[4%] mb-4'
+        className='w-full h-40 object-cover rounded-[4%] mb-4 shadow-md shadow-black'
       />
-      <p className='text-white text-lg font-semibold truncate px-1'>{title}</p>
-      <p className='text-gray-300 truncate text-sm mt-1 mb-1 px-1'>
-        {description}
-      </p>
+      <p className='text-[#FFFFFF] text-lg font-semibold truncate'>{title}</p>
+
+      <div className='text-[#A7A7A7] truncate text-[13px] mt-2 mb-1 flex items-center gap-x-2'>
+        {icon && (
+          <div className='bg-[#A7A7A7] text-[#181818] px-[6px] rounded-[3px] flex items-center'>
+            <p>E</p>
+          </div>
+        )}
+        <div>{year}</div>
+        <div className='w-[2px] h-[2px] bg-[#A7A7A7] rounded-full'></div>
+        <div>{time}</div>
+      </div>
     </div>
   )
 }
