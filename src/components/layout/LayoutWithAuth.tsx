@@ -1,14 +1,15 @@
 import { Outlet } from 'react-router'
-import Navbar from '../navbar/Navbar'
+
+import Sidebar from '../navbar/Sidebar'
 
 const LayoutWithAuth = () => {
   return (
-    <>
-      <Navbar />
-      <main>
+    <div >
+      <Sidebar />
+      <main className='ml-[240px]'>
         <Outlet />
       </main>
-    </>
+    </div>
   )
 }
 
