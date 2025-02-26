@@ -54,17 +54,16 @@ const Modal: React.FC<Props> = ({
           */}
         </div>
 
+        {/* Content */}
+        <div className='flex-1 flex px-6 pt-0'>
+          <p className='text-gray-500 text-start mb-7'>{content}</p>
+        </div>
         {/* Icon */}
         {icon && (
           <div className='flex items-center justify-center p-6'>
             <Info size={48} />
           </div>
         )}
-
-        {/* Content */}
-        <div className='flex-1 flex px-6 pt-0'>
-          <p className='text-gray-500 text-start mb-7'>{content}</p>
-        </div>
 
         {/* Optional Button */}
         {button && (
