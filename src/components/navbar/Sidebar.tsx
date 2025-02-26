@@ -1,0 +1,129 @@
+import { AppConstantRoutes } from '@/services/routes/path'
+import { cleanupAfterLogout, selectAuth, useAuthStore } from '@/services/zustand/authStore'
+import { useQueryClient } from '@tanstack/react-query'
+import clsx from 'clsx'
+import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
+import React from 'react'
+import { useNavigate } from 'react-router'
+import Seperator from '../common/Seperator'
+
+
+interface SidebarItemProps {
+  icon?: React.ReactNode
+  title?: string
+  onClick?: () => void 
+  className?: string
+}
+
+interface UserTileProps {
+  name?: string
+  userName?: string
+  avatar?: string
+  className?: string
+}
+
+export const UserTile: React.FC<UserTileProps> = ({
+  name,
+  userName,
+  avatar,
+  className,
+}) => {
+  return (
+    <div className={clsx('flex items-center space-x-2', className)}>
+      <img src={avatar} alt={name} className='rounded-full size-15' />
+      <div>
+        <h1>{name}</h1>
+        <p className='text-xs text-gray-500'>{userName}</p>
+      </div>
+    </div>
+  )
+}
+
+export const SideBarItem: React.FC<SidebarItemProps> = ({
+  icon,
+  title,
+  onClick,
+  className,
+}) => {
+  
+  return (
+    <li>
+      <div
+        onClick={onClick}
+        className={clsx(
+          'flex items-center space-x-2 cursor-pointer',
+          className,
+        )}
+      >
+        {icon}
+        <span>{title}</span>
+      </div>
+    </li>
+  )
+}
+
+
+
+const Sidebar: React.FC = () => {
+  const user = selectAuth(useAuthStore.getState());
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const handleLogout = () => {
+    cleanupAfterLogout()
+    queryClient.clear()
+    navigate(AppConstantRoutes.paths.auth.login)
+  }
+  
+  return (
+    <div className='h-screen bg-black text-white w-[240px] z-10 fixed'>
+      <div className='flex items-center justify-start text-3xl font-bold p-5'>
+        <h1>Sonique</h1>
+      </div>
+      <nav className=''>
+        <ul className='space-y-5 mt-5 mb-10 p-5'>
+          <SideBarItem
+            icon={<House />}
+            title='Home'
+            onClick={() => navigate(AppConstantRoutes.paths.home)}
+          />
+          <SideBarItem icon={<Search />} title='Search' onClick={undefined} />
+          <SideBarItem icon={<Library />} title='Your Library' onClick={undefined} />
+        </ul>
+
+        <ul className='space-y-5 mt-5 p-5'>
+          <SideBarItem
+            icon={<Plus className='border-0 bg-white text-black p-1' />}
+            title='Create Playlist'
+            onClick={undefined}
+          />
+          <SideBarItem
+            icon={<Heart className='border-0 bg-white text-black p-1' />}
+            title='Liked Songs'
+            onClick={undefined}
+          />
+        </ul>
+
+        <ul className='absolute bottom-0 w-full'>
+          <UserTile
+            name={`${user.firstName} ${user.lastName}`}
+            userName={`@${user.username}`}
+            avatar='https://randomuser.me/api/portraits/men/1.jpg'
+            className='ml-5 mb-5'
+          />
+          <Seperator className='my-4 w-full px-3 b' />
+
+          <SideBarItem
+            icon={<PowerOff />}
+            title='Logout'
+            onClick={handleLogout}
+            className='m-5'
+          />
+
+        </ul>
+      </nav>
+    </div>
+  )
+}
+
+export default Sidebar

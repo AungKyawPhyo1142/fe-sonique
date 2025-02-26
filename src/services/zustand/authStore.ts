@@ -5,6 +5,8 @@ import { LocalServices } from '../storage/LocalServices'
 export interface AuthState {
   username: string
   userId: string
+  firstName: string
+  lastName: string
   created_at: string
   status: 'idle' | 'failed' | 'success'
 }
@@ -19,6 +21,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
   auth: {
     username: '',
     userId: '',
+    firstName: '',
+    lastName: '',
     created_at: '',
     expires_at: '',
     status: 'idle',
@@ -31,6 +35,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
         ...data,
         username: data.username,
         userId: data.userId ? data.userId.toString() : '',
+        firstName: data.firstName,
+        lastName: data.lastName,
         created_at: data.createdAt.toString(),
         status: 'success',
       }
@@ -50,6 +56,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
       auth: {
         username: '',
         userId: '',
+        firstName: '',
+        lastName: '',
         created_at: '',
         status: 'idle',
       },
