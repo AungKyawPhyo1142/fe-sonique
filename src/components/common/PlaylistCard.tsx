@@ -7,7 +7,7 @@ interface Props {
 }
 const PlaylistCard: React.FC<Props> = ({ image, title, description }) => {
   return (
-    <div className='w-48 bg-[#181818] p-[16px] rounded-[3%] hover:opacity-90 cursor-pointer'>
+    <div className='w-[250px] bg-[#181818] p-[16px] rounded-[3%] hover:opacity-90 cursor-pointer h-[300px]'>
       <img
         src={image}
         alt={title}
