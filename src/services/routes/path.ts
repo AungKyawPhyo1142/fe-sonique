@@ -25,5 +25,8 @@ export const AppConstantRoutes = {
     get home() {
       return '/home'
     },
+    get searchPage(){
+      return '/searchPage'
+    }
   },
 }

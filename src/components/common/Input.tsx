@@ -1,12 +1,14 @@
 import clsx from 'clsx'
 import React, { useState } from 'react'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Search } from 'lucide-react'
 
 export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   classsName?: string
   error?: string
   hint?: string
-
+  primary?: boolean
+  secondary?: boolean
+  showSearchIcon?: boolean // Add the new search icon
   inputRef?: React.Ref<HTMLInputElement>
 }
 
@@ -20,7 +22,9 @@ const Input: React.FC<Props> = (props) => {
     className,
     error,
     hint,
-
+    primary,
+    secondary,
+    showSearchIcon, // Destructure the new icon
     defaultValue,
     type,
     readOnly,
@@ -58,15 +62,27 @@ const Input: React.FC<Props> = (props) => {
       />
     )
   }
+  const handleSearchIcon = () => {
+    return showSearchIcon ? (
+      <Search
+        className='absolute left-4 cursor-pointer'
+        size={20}
+        color={'black'}
+      />
+    ) : null
+  }
 
   return (
     <div className='w-full'>
       <div className='relative flex items-center'>
+        {handleSearchIcon()}
         <input
           {...rest}
           type={inputState.inputType}
           className={clsx(
-            'border-1 border-gray-500 w-full rounded-lg px-3 py-2 text-base text-white outline-none transition-colors duration-200 placeholder:text-gray-500 focus:ring-[1.5px] focus:ring-white',
+            'border-1 border-gray-500 w-full rounded-lg px-3 py-2 text-base transition-colors duration-200 placeholder:text-gray-500 focus:ring-[1.5px] focus:ring-white',
+            primary && 'text-white outline-none',
+            secondary && 'bg-[#FFFFFF] text-[#121212]',
             type === 'password' && 'pr-8',
             type === 'file' && 'opacity-0',
             error ? 'border-red-500' : 'border-gray-500',

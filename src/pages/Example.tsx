@@ -8,7 +8,6 @@ import Modal from '@/components/common/Modal'
 import PlaylistCard from '@/components/common/PlaylistCard'
 import MusictypeCard from '@/components/common/MusictypeCard'
 import PodcastsCard from '@/components/common/PodcastsCard'
-
 const Example = () => {
   //Modal
   const [isModalOpen, setModalOpen] = useState(false)
@@ -35,18 +34,34 @@ const Example = () => {
   ]
 
   return (
-    <div className='m-5 bg-black'>
+    <div>
+      {/**
+       * <div className='flex h-screen'>
+       * <div className='w-60 fixed top-0 z-50 left-0 h-full'>
+          <Sidebar />
+        </div>
+        <div className='flex-1 ml-60'>
+          <div className='sticky top-0 z-50'>
+            <SearchBar />
+          </div>
+        </div>
+      </div>
+       * 
+       */}
+
       <Button loading={false} primary={true} className='text-red-400'>
         Example Button
       </Button>
       <div className='w-[300px] mt-5 flex flex-col gap-y-5'>
         <Input
           type='text'
-          placeholder='Example Text'
+          primary
+          placeholder='Example primary'
           // hint='This is an example hint'
           // error='This is an example error'
         />
-        <Input type='password' placeholder='Example Password' />
+        <Input type='text' secondary placeholder='Example secondary' />
+        <Input type='password' secondary placeholder='Example password' />
       </div>
       <div className='flex  mt-5'>
         <Checkbox
@@ -87,7 +102,13 @@ const Example = () => {
           Loading Button
         </Button>
         <Button secondary> Secondary </Button>
-        <Button destructive> Destructive</Button>
+        <Button
+          destructive
+          className='mx-5 px-4 py-3 rounded-s-full rounded-e-full'
+        >
+          {' '}
+          Destructive
+        </Button>
         <Button outline>Outline</Button>
         {/***/}
         <Button destructive onClick={() => setModalOpen(true)}>
@@ -141,32 +162,32 @@ const Example = () => {
           <MusictypeCard
             image='/images/music.png'
             title='Podcasts'
-            className='bg-[#27856A]'
+            color={'#27856A'}
           />
           <MusictypeCard
             image='/images/playlist.png'
             title='Audiobooks'
-            className='bg-[#8D67AB]'
+            color={'#8D67AB'}
           />
           <MusictypeCard
             image='/images/playlist2.png'
             title='Made For You'
-            className='bg-[#7358FF]'
+            color={'#7358FF'}
           />
           <MusictypeCard
             image='/images/music.png'
             title='Live Events'
-            className='bg-[#D7F27D]'
+            color={'#D7F27D'}
           />
           <MusictypeCard
             image='/images/playlist.png'
             title='Hip-Hop'
-            className='bg-[#283EA3]'
+            color={'#283EA3'}
           />
           <MusictypeCard
             image='/images/playlist2.png'
             title='New Releases'
-            className='bg-[#B49BC8]'
+            color={'green'}
           />
         </div>
         <h1 className='text-2xl font-bold my-6 text-white'>Podcasts Card</h1>

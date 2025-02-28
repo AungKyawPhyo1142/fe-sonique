@@ -1,5 +1,9 @@
 import { AppConstantRoutes } from '@/services/routes/path'
-import { cleanupAfterLogout, selectAuth, useAuthStore } from '@/services/zustand/authStore'
+import {
+  cleanupAfterLogout,
+  selectAuth,
+  useAuthStore,
+} from '@/services/zustand/authStore'
 import { useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
@@ -7,11 +11,10 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import Seperator from '../common/Seperator'
 
-
 interface SidebarItemProps {
   icon?: React.ReactNode
   title?: string
-  onClick?: () => void 
+  onClick?: () => void
   className?: string
 }
 
@@ -45,7 +48,6 @@ export const SideBarItem: React.FC<SidebarItemProps> = ({
   onClick,
   className,
 }) => {
-  
   return (
     <li>
       <div
@@ -62,10 +64,8 @@ export const SideBarItem: React.FC<SidebarItemProps> = ({
   )
 }
 
-
-
 const Sidebar: React.FC = () => {
-  const user = selectAuth(useAuthStore.getState());
+  const user = selectAuth(useAuthStore.getState())
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -74,7 +74,7 @@ const Sidebar: React.FC = () => {
     queryClient.clear()
     navigate(AppConstantRoutes.paths.auth.login)
   }
-  
+
   return (
     <div className='h-screen bg-black text-white w-[240px] z-10 fixed'>
       <div className='flex items-center justify-start text-3xl font-bold p-5'>
@@ -88,7 +88,11 @@ const Sidebar: React.FC = () => {
             onClick={() => navigate(AppConstantRoutes.paths.home)}
           />
           <SideBarItem icon={<Search />} title='Search' onClick={undefined} />
-          <SideBarItem icon={<Library />} title='Your Library' onClick={undefined} />
+          <SideBarItem
+            icon={<Library />}
+            title='Your Library'
+            onClick={undefined}
+          />
         </ul>
 
         <ul className='space-y-5 mt-5 p-5'>
@@ -119,7 +123,6 @@ const Sidebar: React.FC = () => {
             onClick={handleLogout}
             className='m-5'
           />
-
         </ul>
       </nav>
     </div>
