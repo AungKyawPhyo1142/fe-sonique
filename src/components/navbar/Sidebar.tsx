@@ -1,18 +1,22 @@
 import { AppConstantRoutes } from '@/services/routes/path'
-import { cleanupAfterLogout, selectAuth, useAuthStore } from '@/services/zustand/authStore'
+import {
+  cleanupAfterLogout,
+  selectAuth,
+  useAuthStore,
+} from '@/services/zustand/authStore'
 import { useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import Seperator from '../common/Seperator'
-
 
 interface SidebarItemProps {
   icon?: React.ReactNode
   title?: string
-  onClick?: () => void 
+  onClick?: () => void
   className?: string
+  active?: boolean
 }
 
 interface UserTileProps {
@@ -44,14 +48,16 @@ export const SideBarItem: React.FC<SidebarItemProps> = ({
   title,
   onClick,
   className,
+  active,
 }) => {
-  
   return (
     <li>
       <div
         onClick={onClick}
         className={clsx(
-          'flex items-center space-x-2 cursor-pointer',
+          'flex items-center space-x-2 cursor-pointer transition-all duration-150 ease-linear',
+          'hover:bg-gray-800 rounded-lg p-2',
+          active && 'bg-gray-800',
           className,
         )}
       >
@@ -62,19 +68,39 @@ export const SideBarItem: React.FC<SidebarItemProps> = ({
   )
 }
 
-
+// TODO: add more sidebar items later if needed
+// TODO: change the item path for Search, Library later
+const SidebarItems = [
+  {
+    icon: <House />,
+    title: 'Home',
+    path: AppConstantRoutes.paths.home,
+  },
+  {
+    icon: <Search />,
+    title: 'Search',
+    path: '/',
+  },
+  {
+    icon: <Library />,
+    title: 'Your Library',
+    path: '/',
+  },
+]
 
 const Sidebar: React.FC = () => {
-  const user = selectAuth(useAuthStore.getState());
+  const user = selectAuth(useAuthStore.getState())
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+
+  const { pathname } = useLocation()
 
   const handleLogout = () => {
     cleanupAfterLogout()
     queryClient.clear()
     navigate(AppConstantRoutes.paths.auth.login)
   }
-  
+
   return (
     <div className='h-screen bg-black text-white w-[240px] z-10 fixed'>
       <div className='flex items-center justify-start text-3xl font-bold p-5'>
@@ -82,13 +108,26 @@ const Sidebar: React.FC = () => {
       </div>
       <nav className=''>
         <ul className='space-y-5 mt-5 mb-10 p-5'>
-          <SideBarItem
+          {SidebarItems.map((sidebar_item) => (
+            <SideBarItem
+              key={sidebar_item.title}
+              icon={sidebar_item.icon}
+              title={sidebar_item.title}
+              active={pathname === sidebar_item.path}
+              onClick={() => navigate(sidebar_item.path)}
+            />
+          ))}
+          {/* <SideBarItem
             icon={<House />}
             title='Home'
             onClick={() => navigate(AppConstantRoutes.paths.home)}
           />
           <SideBarItem icon={<Search />} title='Search' onClick={undefined} />
-          <SideBarItem icon={<Library />} title='Your Library' onClick={undefined} />
+          <SideBarItem
+            icon={<Library />}
+            title='Your Library'
+            onClick={undefined}
+          /> */}
         </ul>
 
         <ul className='space-y-5 mt-5 p-5'>
@@ -119,7 +158,6 @@ const Sidebar: React.FC = () => {
             onClick={handleLogout}
             className='m-5'
           />
-
         </ul>
       </nav>
     </div>

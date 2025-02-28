@@ -11,21 +11,21 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ playlists, title }) => {
   return (
-    <div className='p-5'>
+    <div className='p-5  my-3'>
       <div className='flex flex-row justify-between items-center p-4 text-white'>
         <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
         <span className='text-md text-gray-300 hover:underline'>Show all</span>
       </div>
-      <div>
-        <ul className='flex flex-row gap-10 p-4 overflow-clip'>
+      <div className=''>
+        <ul className='flex flex-row gap-10 p-4  '>
           {playlists.map((playlist, index) => (
-            <li key={index}>
-              <PlaylistCard
-                image={playlist.image}
-                title={playlist.title}
-                description={playlist.description}
-              />
-            </li>
+            <PlaylistCard
+              key={index}
+              className='w-full'
+              image={playlist.image}
+              title={playlist.title}
+              description={playlist.description}
+            />
           ))}
         </ul>
       </div>
@@ -55,18 +55,13 @@ const Home = () => {
       title: 'Party',
       description: 'Incididunt ut labore et dolore',
     },
-    {
-      image: 'https://picsum.photos/200/200',
-      title: 'Relax',
-      description: 'Magna aliqua ut enim ad minim',
-    },
   ]
 
   return (
-    <div className='flex flex-col h-screen relative'>
+    <div className='flex flex-col h-screen relative fade-in'>
       <div className='bg-gradient-to-b from-[#121212] to-[#00000099] h-[35%] w-full'></div>
       <div className='bg-[#3333] w-full h-[65%]'></div>
-      <div className='absolute top-15 left-0 right-0 m-5'>
+      <div className='absolute  left-0 right-0 m-5'>
         <CardList playlists={playlists} title='Focus' />
         <CardList playlists={playlists} title='Chill' />
       </div>
