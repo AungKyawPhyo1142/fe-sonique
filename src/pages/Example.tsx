@@ -8,6 +8,7 @@ import Modal from '@/components/common/Modal'
 import PlaylistCard from '@/components/common/PlaylistCard'
 import MusictypeCard from '@/components/common/MusictypeCard'
 import PodcastsCard from '@/components/common/PodcastsCard'
+import SearchBar from '@/components/common/SearchBar'
 const Example = () => {
   //Modal
   const [isModalOpen, setModalOpen] = useState(false)
@@ -35,6 +36,7 @@ const Example = () => {
 
   return (
     <div>
+      <SearchBar />
       {/**
        * <div className='flex h-screen'>
        * <div className='w-60 fixed top-0 z-50 left-0 h-full'>

@@ -79,7 +79,7 @@ const SidebarItems = [
   {
     icon: <Search />,
     title: 'Search',
-    path: '/',
+    path: AppConstantRoutes.paths.searchPage,
   },
   {
     icon: <Library />,

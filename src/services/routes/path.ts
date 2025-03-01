@@ -25,8 +25,11 @@ export const AppConstantRoutes = {
     get home() {
       return '/home'
     },
-    get searchPage(){
-      return '/searchPage'
-    }
+    get searchPage() {
+      return '/search'
+    },
+    get musictypePage() {
+      return (title = ':title') => `/musictype/${title}`
+    },
   },
 }
