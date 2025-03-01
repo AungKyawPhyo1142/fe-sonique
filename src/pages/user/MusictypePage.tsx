@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 
 const MusictypePage: React.FC = () => {
   const { title = '' } = useParams<{ title?: string }>()
-  
+
   const podcasts = [
     {
       id: 1,
@@ -106,7 +106,9 @@ const MusictypePage: React.FC = () => {
 
       {/* Music Cards Section */}
       <div className='p-4 bg-[#121212]'>
-        <h2 className='text-3xl font-bold text-white mb-4'>Best Episodes</h2>
+        <p className='text-3xl font-bold text-white mb-4 text-[20px]'>
+          Best Playlist
+        </p>
         <div className='grid grid-cols-5 gap-4'>
           {podcasts.map((podcast) => (
             <PodcastsCard
