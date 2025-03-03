@@ -12,6 +12,9 @@ export const ApiConstantRoutes = {
         get register() {
           return `${this.default}/register`
         },
+        getUser(id: string) {
+          return `/user/${id}`
+        }
       }
     },
   },

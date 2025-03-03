@@ -1,10 +1,8 @@
+import { apiClient } from '@/services/network/apiClient'
+import { ApiConstantRoutes } from '@/services/network/path'
 import { AppConstantRoutes } from '@/services/routes/path'
-import {
-  cleanupAfterLogout,
-  selectAuth,
-  useAuthStore,
-} from '@/services/zustand/authStore'
-import { useQueryClient } from '@tanstack/react-query'
+import { cleanupAfterLogout, useAuthStore } from '@/services/zustand/authStore'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
 import React from 'react'
@@ -32,11 +30,25 @@ export const UserTile: React.FC<UserTileProps> = ({
   avatar,
   className,
 }) => {
+  const navigate = useNavigate()
+  const handleProfileClick = () => {
+    navigate(AppConstantRoutes.paths.profile)
+  }
   return (
     <div className={clsx('flex items-center space-x-2', className)}>
-      <img src={avatar} alt={name} className='rounded-full size-15' />
+      <img
+        src={avatar}
+        alt={name}
+        className='rounded-full size-15 hover:underline cursor-pointer'
+        onClick={handleProfileClick}
+      />
       <div>
-        <h1>{name}</h1>
+        <h1
+          className='hover:underline cursor-pointer'
+          onClick={handleProfileClick}
+        >
+          {name}
+        </h1>
         <p className='text-xs text-gray-500'>{userName}</p>
       </div>
     </div>
@@ -89,11 +101,20 @@ const SidebarItems = [
 ]
 
 const Sidebar: React.FC = () => {
-  const user = selectAuth(useAuthStore.getState())
+  const userId = useAuthStore((state) => state.auth.userId)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
   const { pathname } = useLocation()
+  const { data: user } = useQuery({
+    queryKey: ['getUser'],
+    retry: 1,
+    queryFn: async () => {
+      return apiClient.get(ApiConstantRoutes.paths.auth.getUser(userId))
+    },
+  })
+
+  console.log('User:', user)
 
   const handleLogout = () => {
     cleanupAfterLogout()
@@ -145,9 +166,11 @@ const Sidebar: React.FC = () => {
 
         <ul className='absolute bottom-0 w-full'>
           <UserTile
-            name={`${user.firstName} ${user.lastName}`}
-            userName={`@${user.username}`}
-            avatar='https://randomuser.me/api/portraits/men/1.jpg'
+            name={`${user?.data.firstName} ${user?.data.lastName}`}
+            userName={`@${user?.data.username}`}
+            avatar={
+              user?.data.avatar || 'https://robohash.org/default-avatar.png'
+            }
             className='ml-5 mb-5'
           />
           <Seperator className='my-4 w-full px-3 b' />

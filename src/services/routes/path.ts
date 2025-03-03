@@ -1,3 +1,4 @@
+
 export const AppConstantRoutes = {
   paths: {
     get auth() {
@@ -25,5 +26,8 @@ export const AppConstantRoutes = {
     get home() {
       return '/home'
     },
+    get profile(){
+      return '/profile'
+    }
   },
 }
