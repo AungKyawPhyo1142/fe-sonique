@@ -4,7 +4,9 @@ import Login from '@/pages/auth/Login'
 import Register from '@/pages/auth/Register'
 import Example from '@/pages/Example'
 import Home from '@/pages/user/Home'
+import MusictypePage from '@/pages/user/MusictypePage'
 import Profile from '@/pages/user/Profile'
+import SearchPage from '@/pages/user/SearchPage'
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppConstantRoutes } from './path'
 
@@ -41,7 +43,6 @@ export const router = createBrowserRouter([
     path: AppConstantRoutes.paths.example,
     element: <Example />,
   },
-
   // ** The following paths are all protected by SecureRoute component
   {
     path: AppConstantRoutes.paths.default,
@@ -54,6 +55,14 @@ export const router = createBrowserRouter([
       {
         path: AppConstantRoutes.paths.home,
         element: <Home />,
+      },
+      {
+        path: AppConstantRoutes.paths.searchPage,
+        element: <SearchPage />,
+      },
+      {
+        path: AppConstantRoutes.paths.musictypePage(':title'), // <-- Dynamic Path
+        element: <MusictypePage />,
       },
       {
         path: '',

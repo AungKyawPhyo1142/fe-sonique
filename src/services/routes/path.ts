@@ -28,6 +28,12 @@ export const AppConstantRoutes = {
     },
     get profile(){
       return '/profile'
-    }
+    },
+    get searchPage() {
+      return '/search'
+    },
+    get musictypePage() {
+      return (title = ':title') => `/musictype/${title}`
+    },
   },
 }

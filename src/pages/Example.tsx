@@ -8,7 +8,7 @@ import Modal from '@/components/common/Modal'
 import PlaylistCard from '@/components/common/PlaylistCard'
 import MusictypeCard from '@/components/common/MusictypeCard'
 import PodcastsCard from '@/components/common/PodcastsCard'
-
+import SearchBar from '@/components/common/SearchBar'
 const Example = () => {
   //Modal
   const [isModalOpen, setModalOpen] = useState(false)
@@ -35,18 +35,35 @@ const Example = () => {
   ]
 
   return (
-    <div className='m-5 bg-black'>
+    <div>
+      <SearchBar />
+      {/**
+       * <div className='flex h-screen'>
+       * <div className='w-60 fixed top-0 z-50 left-0 h-full'>
+          <Sidebar />
+        </div>
+        <div className='flex-1 ml-60'>
+          <div className='sticky top-0 z-50'>
+            <SearchBar />
+          </div>
+        </div>
+      </div>
+       * 
+       */}
+
       <Button loading={false} primary={true} className='text-red-400'>
         Example Button
       </Button>
       <div className='w-[300px] mt-5 flex flex-col gap-y-5'>
         <Input
           type='text'
-          placeholder='Example Text'
+          primary
+          placeholder='Example primary'
           // hint='This is an example hint'
           // error='This is an example error'
         />
-        <Input type='password' placeholder='Example Password' />
+        <Input type='text' secondary placeholder='Example secondary' />
+        <Input type='password' secondary placeholder='Example password' />
       </div>
       <div className='flex  mt-5'>
         <Checkbox
@@ -87,7 +104,13 @@ const Example = () => {
           Loading Button
         </Button>
         <Button secondary> Secondary </Button>
-        <Button destructive> Destructive</Button>
+        <Button
+          destructive
+          className='mx-5 px-4 py-3 rounded-s-full rounded-e-full'
+        >
+          {' '}
+          Destructive
+        </Button>
         <Button outline>Outline</Button>
         {/***/}
         <Button destructive onClick={() => setModalOpen(true)}>
@@ -106,32 +129,32 @@ const Example = () => {
         <h1 className='text-2xl font-bold my-6 text-white'>Playlist Card</h1>
         <div className='grid grid-cols-5 gap-6'>
           <PlaylistCard
-            image='public/images/playlist.png'
+            image='/images/playlist.png'
             title='Piano playlist'
             description='It is a card description. Piano playlist is a example of playslist card.'
           />
           <PlaylistCard
-            image='public/images/playlist2.png'
+            image='/images/playlist2.png'
             title='Deep Focus'
             description='Keep calm and focus with ambient and post-rock music. Perfect for deep work and study sessions.'
           />
           <PlaylistCard
-            image='public/images/music.png'
+            image='/images/music.png'
             title='Instrumental Study'
             description='Focus with soft study music in the background. Enhance your concentration and productivity.'
           />
           <PlaylistCard
-            image='public/images/playlist2.png'
+            image='/images/playlist2.png'
             title='Piano playlist'
             description='It is a card description. Piano playlist is a example of playslist card.'
           />
           <PlaylistCard
-            image='public/images/playlist.png'
+            image='/images/playlist.png'
             title='Piano playlist'
             description='It is a card description. Piano playlist is a example of playslist card.'
           />
           <PlaylistCard
-            image='public/images/playlist2.png'
+            image='/images/playlist2.png'
             title='Jazz Vibes'
             description='The original chill instrumental beats playlist. Enjoy smooth jazz for a relaxing mood.'
           />
@@ -139,47 +162,47 @@ const Example = () => {
         <h1 className='text-2xl font-bold my-6 text-white'>Music Type Card</h1>
         <div className='grid grid-cols-5 gap-6'>
           <MusictypeCard
-            image='public/images/music.png'
+            image='/images/music.png'
             title='Podcasts'
-            className='bg-[#27856A]'
+            color={'#27856A'}
           />
           <MusictypeCard
-            image='public/images/playlist.png'
+            image='/images/playlist.png'
             title='Audiobooks'
-            className='bg-[#8D67AB]'
+            color={'#8D67AB'}
           />
           <MusictypeCard
-            image='public/images/playlist2.png'
+            image='/images/playlist2.png'
             title='Made For You'
-            className='bg-[#7358FF]'
+            color={'#7358FF'}
           />
           <MusictypeCard
-            image='public/images/music.png'
+            image='/images/music.png'
             title='Live Events'
-            className='bg-[#D7F27D]'
+            color={'#D7F27D'}
           />
           <MusictypeCard
-            image='public/images/playlist.png'
+            image='/images/playlist.png'
             title='Hip-Hop'
-            className='bg-[#283EA3]'
+            color={'#283EA3'}
           />
           <MusictypeCard
-            image='public/images/playlist2.png'
+            image='/images/playlist2.png'
             title='New Releases'
-            className='bg-[#B49BC8]'
+            color={'green'}
           />
         </div>
         <h1 className='text-2xl font-bold my-6 text-white'>Podcasts Card</h1>
         <div className='grid grid-cols-5 gap-6'>
           <PodcastsCard
-            image='public/images/music.png'
+            image='/images/music.png'
             title="Every Parent's Nightmare"
             year='Sep 2002'
             time='36 Min'
           />
           <div className='bg-red'>
             <PodcastsCard
-              image='public/images/playlist.png'
+              image='/images/playlist.png'
               title='After 10 years'
               year='Jul 2002'
               time='62 Min'
@@ -187,26 +210,26 @@ const Example = () => {
             />
           </div>
           <PodcastsCard
-            image='public/images/playlist2.png'
+            image='/images/playlist2.png'
             title='Book Exploder: Min Jin Lee'
             year='Aug 2022'
             time='20 Min'
           />
           <PodcastsCard
-            image='public/images/music.png'
+            image='/images/music.png'
             title='Healing Through Music v'
             year='Aug 2022'
             time='26 Min'
             icon
           />
           <PodcastsCard
-            image='public/images/playlist.png'
+            image='/images/playlist.png'
             title='Piano playlist'
             year='Sep 2002'
             time='36 Min'
           />
           <PodcastsCard
-            image='public/images/playlist2.png'
+            image='/images/playlist2.png'
             title='Piano playlist'
             year='Sep 2002'
             time='36 Min'
