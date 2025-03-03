@@ -6,6 +6,8 @@ import Register from '@/pages/auth/Register'
 import SecureRoute from '@/components/auth/SecureRoute'
 import LayoutWithAuth from '@/components/layout/LayoutWithAuth'
 import Home from '@/pages/user/Home'
+import SearchPage from '@/pages/user/SearchPage'
+import MusictypePage from '@/pages/user/MusictypePage'
 
 /*
   This file is where you define the routes
@@ -40,7 +42,6 @@ export const router = createBrowserRouter([
     path: AppConstantRoutes.paths.example,
     element: <Example />,
   },
-
   // ** The following paths are all protected by SecureRoute component
   {
     path: AppConstantRoutes.paths.default,
@@ -53,6 +54,14 @@ export const router = createBrowserRouter([
       {
         path: AppConstantRoutes.paths.home,
         element: <Home />,
+      },
+      {
+        path: AppConstantRoutes.paths.searchPage,
+        element: <SearchPage />,
+      },
+      {
+        path: AppConstantRoutes.paths.musictypePage(':title'), // <-- Dynamic Path
+        element: <MusictypePage />,
       },
       {
         path: '',

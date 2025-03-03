@@ -4,7 +4,7 @@ import Sidebar from '../navbar/Sidebar'
 
 const LayoutWithAuth = () => {
   return (
-    <div >
+    <div>
       <Sidebar />
       <main className='ml-[240px]'>
         <Outlet />

@@ -140,6 +140,7 @@ export const Login = () => {
               className='w-full h-[50px] text-[16px]'
               outline
               onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
+              type='button'
             >
               SIGN UP FOR SONIQUE
             </Button>
