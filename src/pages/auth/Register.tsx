@@ -6,9 +6,10 @@ import { AppConstantRoutes } from '@/services/routes/path'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router'
 import { object, ObjectSchema, string } from 'yup'
-import musicPic from '/images/music.png'
+//import musicPic from '/images/music.png'
 import Modal from '@/components/common/Modal'
 import { useState } from 'react'
+import DisplaySong from '@/components/common/DisplaySong'
 
 // note that the names are identical to the id of the input fields
 export interface RegisterFormValues {
@@ -99,22 +100,29 @@ const Register = () => {
         content='Your account have been created successfully.'
         button
       />
-      <div className='flex min-h-screen'>
+      <div className='flex min-h-screen grid-bg'>
         {/**Photo Section */}
+        {/**
         <div
           className='w-1/2 bg-cover bg-center'
           style={{ backgroundImage: `url(${musicPic})` }}
         ></div>
+         */}
+
+        {/**Display song */}
+        <div className='w-1/2 bg-cover bg-center align-middle flex'>
+          <DisplaySong />
+        </div>
 
         {/**Form Section */}
         <div className='w-1/2 text-white flex flex-col justify-center items-center'>
           <form
             onSubmit={formik.handleSubmit}
-            className='w-full max-w-[400px] space-y-3  py-2'
+            className='w-full max-w-[400px] space-y-1 py-7 px-9 rounded-[10px] text-[#838383] bg-[#1E1E1E]'
           >
             {/**First Name and Last Name */}
-            <div className='flex items-center  gap-x-3 '>
-              <div className='flex flex-col w-full gap-y-1'>
+            <div className='flex items-center gap-x-3 '>
+              <div className='flex flex-col w-full gap-y-1 '>
                 <label htmlFor='firstName'>First Name</label>
                 <Input
                   type='text'

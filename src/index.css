@@ -60,3 +60,13 @@
     opacity: 1;
   }
 }
+/* Grid background */
+@layer utilities {
+  .grid-bg {
+    background-color: black;
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 80px 60px;
+  }
+}
