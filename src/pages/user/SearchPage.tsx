@@ -32,7 +32,7 @@ const SearchPage: React.FC = () => {
       {/* Main Content */}
       <div className='flex-1'>
         {/* Search Bar */}
-        <div className='sticky top-0 z-50'>
+        <div className='sticky top-0 z-50 '>
           <SearchBar />
         </div>
 

@@ -14,7 +14,7 @@ const SearchBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
-    <div className='flex items-center justify-center bg-[#121212] py-2 sticky top-0 z-50 h-[64px] px-8'>
+    <div className='flex items-center justify-end bg-[#121212] py-2 sticky top-0 z-50 h-[64px] px-8'>
       <div className='flex items-center gap-3 '>
         {/*
         <Button className='bg-[#000000] p-2 rounded-s-full rounded-e-full'>
@@ -32,7 +32,7 @@ const SearchBar: React.FC = () => {
               secondary
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className=' rounded-s-full rounded-e-full px-13 py-2 placeholder:text-[14px]'
+              className='px-13 py-2 placeholder:text-[14px]'
               showSearchIcon={true}
             />
           )}
