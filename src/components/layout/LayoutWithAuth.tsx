@@ -1,12 +1,15 @@
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router';
 
-import Sidebar from '../navbar/Sidebar'
+import { AppConstantRoutes } from '@/services/routes/path';
+import Sidebar from '../navbar/Sidebar';
 
 const LayoutWithAuth = () => {
+  const location = useLocation();
+  
   return (
     <div>
-      <Sidebar />
-      <main className='ml-[240px]'>
+      {location.pathname !== AppConstantRoutes.paths.profile && <Sidebar />}
+      <main className={location.pathname !== AppConstantRoutes.paths.profile ? 'ml-[240px]' : ''}>
         <Outlet />
       </main>
     </div>

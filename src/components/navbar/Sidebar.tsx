@@ -107,12 +107,15 @@ const Sidebar: React.FC = () => {
 
   const { pathname } = useLocation()
   const { data: user } = useQuery({
-    queryKey: ['getUser'],
+    queryKey: ['getUser', userId], // Include userId to refetch when it changes
     retry: 1,
     queryFn: async () => {
-      return apiClient.get(ApiConstantRoutes.paths.auth.getUser(userId))
+      const response = await apiClient.get(ApiConstantRoutes.paths.auth.getUser(userId))
+      return response// Ensure only `data` is returned
     },
+    enabled: !!userId, // Only run query if userId is defined
   })
+  
 
   console.log('User:', user)
 
