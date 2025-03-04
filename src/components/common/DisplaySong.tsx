@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CirclePlay, CirclePause } from 'lucide-react'
+import Equalizer from './Equalizer'
 
 const DisplaySong = () => {
   const [isPlaying, setIsPlaying] = useState(true)
@@ -92,7 +93,7 @@ const DisplaySong = () => {
         />
 
         {/* Current Time / Duration */}
-        <div className='text-[#F5678D] text-[16px] font-bold flex w-60 justify-between mt-1'>
+        <div className='text-[#F5678D] text-[16px] font-bold flex w-60 justify-between mt-2'>
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
@@ -100,10 +101,12 @@ const DisplaySong = () => {
         {/* Play/Pause Button */}
         <button
           onClick={togglePlayPause}
-          className='text-[#F5678D] hover:cursor-pointer'
+          className='text-[#F5678D] hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
         >
           {isPlaying ? <CirclePause size={40} /> : <CirclePlay size={40} />}
         </button>
+
+        <Equalizer isPlaying={isPlaying} />
       </div>
     </div>
   )

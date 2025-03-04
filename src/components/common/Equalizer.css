@@ -1,0 +1,29 @@
+.equalizer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 50px;
+  margin-top: 10px;
+}
+
+.bar {
+  width: 4px;
+  height: 5px;
+  background: #f5678d;
+  border-radius: 2px;
+  transition: height 0.3s;
+}
+
+.playing .bar {
+  animation: beat 1s infinite ease-in-out alternate;
+}
+
+@keyframes beat {
+  from {
+    height: 5px;
+  }
+  to {
+    height: 50px;
+  }
+}
