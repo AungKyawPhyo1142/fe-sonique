@@ -118,7 +118,13 @@ const Register = () => {
         <div className='w-1/2 text-white flex flex-col justify-center items-center'>
           <form
             onSubmit={formik.handleSubmit}
-            className='w-full max-w-[400px] space-y-1 py-7 px-9 rounded-[10px] text-[#838383] bg-[#1E1E1E]'
+            className='w-full max-w-[480px] space-y-1 py-7 px-9 rounded-[10px] text-[#FFFFFF]'
+            style={{
+              background: 'rgba(131, 131, 131, 0.31)',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+            }}
           >
             {/**First Name and Last Name */}
             <div className='flex items-center gap-x-3 '>
