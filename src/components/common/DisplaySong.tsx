@@ -73,7 +73,7 @@ const DisplaySong = () => {
         onLoadedMetadata={handleTimeDuration}
       />
 
-      <div className='flex flex-col items-center gap-y-4'>
+      <div className='flex flex-col items-center gap-y-[2px]'>
         {/* Duration Slider */}
 
         <input
@@ -82,8 +82,9 @@ const DisplaySong = () => {
           max={duration}
           value={currentTime}
           onChange={handleSeek}
-          className='w-60 mt-7 hover:cursor-pointer appearance-none bg-transparent 
+          className='w-60 mt-7 hover:cursor-pointer appearance-none bg-transparent
                     [&::-webkit-slider-runnable-track]:bg-[#F5678D] 
+                    [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full
                     [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-thumb]:appearance-none 
                     [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 
                     [&::-webkit-slider-thumb]:bg-[#F5678D] [&::-webkit-slider-thumb]:rounded-full 
@@ -91,7 +92,7 @@ const DisplaySong = () => {
         />
 
         {/* Current Time / Duration */}
-        <div className='text-[#F5678D] text-[16px] font-bold flex w-60 justify-between '>
+        <div className='text-[#F5678D] text-[16px] font-bold flex w-60 justify-between mt-1'>
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>

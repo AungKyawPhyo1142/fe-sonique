@@ -118,7 +118,7 @@ const Register = () => {
         <div className='w-1/2 text-white flex flex-col justify-center items-center'>
           <form
             onSubmit={formik.handleSubmit}
-            className='w-full max-w-[480px] space-y-1 py-7 px-9 rounded-[10px] text-[#FFFFFF]'
+            className='w-full max-w-[480px] space-y-[1rem] py-7 px-9 rounded-[10px] text-[#FFFFFF]'
             style={{
               background: 'rgba(131, 131, 131, 0.31)',
               boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
