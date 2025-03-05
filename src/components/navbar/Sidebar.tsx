@@ -110,12 +110,13 @@ const Sidebar: React.FC = () => {
     queryKey: ['getUser', userId], // Include userId to refetch when it changes
     retry: 1,
     queryFn: async () => {
-      const response = await apiClient.get(ApiConstantRoutes.paths.auth.getUser(userId))
-      return response// Ensure only `data` is returned
+      const response = await apiClient.get(
+        ApiConstantRoutes.paths.auth.getUser(userId),
+      )
+      return response // Ensure only `data` is returned
     },
     enabled: !!userId, // Only run query if userId is defined
   })
-  
 
   console.log('User:', user)
 
@@ -172,7 +173,8 @@ const Sidebar: React.FC = () => {
             name={`${user?.data.firstName} ${user?.data.lastName}`}
             userName={`@${user?.data.username}`}
             avatar={
-              user?.data.avatar || 'https://robohash.org/default-avatar.png'
+              user?.data.profile_image ||
+              'https://robohash.org/default-avatar.png'
             }
             className='ml-5 mb-5'
           />
