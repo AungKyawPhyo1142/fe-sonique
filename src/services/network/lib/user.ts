@@ -7,7 +7,7 @@ export interface ToggleArtistValue{
 }
 export interface UploadImageValue{
     id: string,
-    image: File
+    formData: FormData  
 }
 export interface UploadImageResponse {
     data: {
@@ -48,7 +48,12 @@ export const userUpdateRequest = {
         return apiClient.patch(ApiConstantRoutes.paths.auth.updateUser(v.id!), v)
     },
     async upLoadImage(v:UploadImageValue): Promise<UploadImageResponse>{
-        return apiClient.patch(ApiConstantRoutes.paths.auth.updateUser(v.id!), v)
+
+        return apiClient.patch(ApiConstantRoutes.paths.auth.updateUser(v.id!), v.formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     }
 
 }

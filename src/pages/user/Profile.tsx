@@ -1,7 +1,6 @@
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
 import Modal from '@/components/common/Modal'
-import ProfileImage from '@/components/common/ProfileImage'
 import Seperator from '@/components/common/Seperator'
 import { SideBarItem } from '@/components/navbar/Sidebar'
 import { useCustomEvents } from '@/services/formik/hooks'
@@ -15,7 +14,8 @@ import { useAuthStore } from '@/services/zustand/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { clsx } from 'clsx'
 import { useFormik } from 'formik'
-import { useRef, useState } from 'react'
+import { Camera } from 'lucide-react'
+import { ChangeEvent, useRef, useState } from 'react'
 import { object, ObjectSchema, string } from 'yup'
 
 export interface ProfileFormValues {
@@ -36,6 +36,7 @@ const Profile = () => {
   const [uploadImage, setUploadImage] = useState(false)
   const [active, setActive] = useState(true)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [loadingButton,setLoadingButton] = useState(false)  
 
   //get user details
   const userId = useAuthStore((state) => state.auth.userId)
@@ -79,6 +80,14 @@ const Profile = () => {
     username: string().required('Username is required'),
   })
 
+  //handle Edit click
+  const handleEditButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.preventDefault()
+    setDisable(!disable)
+  }
+
   //on submit
   const onSubmit = async (values: ProfileFormValues) => {
     const res = await userUpdateRequest.updateUser(values).catch((error) => {
@@ -96,7 +105,6 @@ const Profile = () => {
       console.log('Failed to update user')
     }
   }
-
   //formik
   const formik = useFormik({
     onSubmit,
@@ -105,50 +113,40 @@ const Profile = () => {
     validateOnChange: false,
     validateOnBlur: false,
   })
-
   //custom event
   const { onInputChange } = useCustomEvents<ProfileFormValues>(formik)
 
-  //edit button
-  const handleEditClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setDisable(false)
-  }
-
-  //handle image click
-  const handleImageClick = (e: React.PointerEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    if (!uploadImage) {
-      setUploadImage(true)
+  //handle image change
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedFile(e.target.files[0])
     }
   }
-
-  //handle image change
-  const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB
-  const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileInput = e.target
-    if (fileInput.files?.length) {
-      const selected = fileInput.files[0]
-
-      // File size check (max 2MB)
-      if (selected.size > MAX_FILE_SIZE) {
+  //image upload
+  const handleImageUpload = async() => {
+    const formData = new FormData()
+    formData.append('profile_image', selectedFile!)
+    setLoadingButton(true)
+    try {
+      const res = await userUpdateRequest.upLoadImage({
+        id: userId!,
+        formData,
+      })
+      if (res.status === 'SUCCESS') {
+        setUploadImage(false)
         setModalStatus(true)
-        setModalTitle('Error')
-        setModalContent('File size is too large (max 2MB)')
-        return
+        setModalTitle('Upload Successful')
+        setModalContent('Profile image uploaded successfully')
+        setLoadingButton(false)
+        refetch()
+      } else {
+        throw new Error('Failed to upload image')
       }
-
-      // File type check
-      if (!ALLOWED_FILE_TYPES.includes(selected.type)) {
-        setModalStatus(true)
-        setModalTitle('Error')
-        setModalContent('Please upload a valid image file (JPEG, PNG, or WebP)')
-        return
-      }
-
-      setSelectedFile(selected)
+    } catch (error) {
+      console.log('Failed to upload image: ', error)
+      setModalStatus(true)
+      setModalTitle('Upload Failed')
+      setModalContent('Failed to upload profile image')
     }
   }
 
@@ -164,44 +162,63 @@ const Profile = () => {
           },
         )}
       >
+        {/* Modal Box */}
         <div
           className={clsx(
             'bg-black rounded-lg shadow-lg text-white transition-all scale-100 opacity-100 relative',
-            'w-[90%] max-w-100 flex flex-col',
+            'w-[90%] max-w-100 flex flex-col', // Added flex column
           )}
         >
+          {/* Header - Fixed at top */}
           <div className='flex justify-between p-6'>
             <h1 className='text-lg font-semibold'>Preview</h1>
           </div>
 
-          <div className='flex justify-center items-center p-5'>
-            <ProfileImage
-              image={selectedFile ? URL.createObjectURL(selectedFile) : ''}
-              onClick={handleImageClick}
-              component={
-                <div className='absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity'>
-                  <span className='text-white text-sm mb-10'>Choose Photo</span>
-                  <input
-                    type='file'
-                    ref={imageRef}
-                    className='hidden'
-                    accept={ALLOWED_FILE_TYPES.join(',')}
-                    onChange={handleImageChange}
-                  />
-                </div>
+          {/* Image Preview */}
+          <div className='flex justify-center items-center p-5 relative'>
+            <img
+              src={
+                selectedFile
+                  ? URL.createObjectURL(selectedFile)
+                  : user?.data.profile_image
               }
+              alt='preview'
+              className='w-40 h-40 rounded-full'
+            />
+            <div
+              onClick={() => imageRef.current?.click()}
+              className='absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity'
+            >
+              <Camera size={40} />
+            </div>
+
+            <input
+              ref={imageRef}
+              type='file'
+              accept='image/*'
+              className='hidden'
+              onChange={handleImageChange}
             />
           </div>
 
-          <div className='flex justify-center items-center p-5'>
+          <div className='flex flex-row justify-between p-5'>
             <Button
               loading={formik.isSubmitting}
-              disabled={formik.isSubmitting || !selectedFile}
+              disabled={formik.isSubmitting}
               onClick={() => {
-                // Handle image upload here
-                console.log('Upload image', selectedFile)
+                console.log('Cancel image upload')
+                setSelectedFile(null)
                 setUploadImage(false)
               }}
+              className='w-fit px-10 h-[50px]'
+              primary
+            >
+              Cancel
+            </Button>
+            <Button
+              loading={loadingButton}
+              disabled={loadingButton}
+              onClick={handleImageUpload}
               className='w-fit px-10 h-[50px]'
               primary
             >
@@ -228,6 +245,7 @@ const Profile = () => {
         setModalContent(
           enabled ? 'Artist status deactivated' : 'Artist status activated',
         )
+
         refetch()
       }
     } catch (error) {
@@ -237,7 +255,6 @@ const Profile = () => {
       setModalContent('Failed to activate artist status')
     }
   }
-
   //toggle artist status button
   const ToggleSwitch = () => (
     <div className='flex items-center space-x-3 p-3 rounded-lg'>
@@ -276,11 +293,20 @@ const Profile = () => {
       {/* Image Upload Modal */}
       {uploadImage && <ImageUploadModal />}
       {/* Profile */}
-      <div className='flex flex-row items-center justify-start bg-gradient-to-b from-[#9e9d9d] to-transparent'>
-        <ProfileImage
-          onClick={handleImageClick}
-          image={user?.data.profile_image}
-        />
+      <div className='flex flex-row items-center p-10 bg-gradient-to-b from-[#9e9d9d] to-transparent'>
+        <div className='relative px-10'>
+          <img
+            src={user?.data.profile_image}
+            alt='profile'
+            className='w-40 h-40 rounded-full'
+          />
+          <div
+            onClick={() => setUploadImage(true)}
+            className='absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity'
+          >
+            <Camera size={40} />
+          </div>
+        </div>
 
         <h1 className='text-7xl font-bold'>
           {user?.data.firstName} {user?.data.lastName}
@@ -394,7 +420,7 @@ const Profile = () => {
                         className='w-fit px-10 h-[50px]'
                         primary
                         type='button'
-                        onClick={handleEditClick}
+                        onClick={handleEditButtonClick}
                       >
                         Edit
                       </Button>
@@ -426,5 +452,4 @@ const Profile = () => {
     </div>
   )
 }
-
 export default Profile
