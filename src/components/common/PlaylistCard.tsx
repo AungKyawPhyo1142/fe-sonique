@@ -18,7 +18,7 @@ const PlaylistCard: React.FC<Props> = ({
   return (
     <div
       className={clsx(
-        'w-[200px] bg-[#181818] p-[16px] group rounded-[3%] hover:opacity-90 cursor-pointer h-[300px] transition-all duration-150 ease-linear',
+        'w-full bg-[#181818] p-4 group rounded-[3%] hover:opacity-90 cursor-pointer h-[300px] transition-all duration-150 ease-linear',
         className,
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -34,7 +34,7 @@ const PlaylistCard: React.FC<Props> = ({
           <img
             src={image}
             alt={title}
-            className='w-full h-40 object-cover rounded-[4%]  shadow-black shadow-[0_2px_10px_rgba(0,0,0,0.1)]'
+            className='w-full h-40 object-cover rounded-[3%]  shadow-black shadow-[0_2px_10px_rgba(0,0,0,0.1)]'
           />
         </div>
         {isHovered && (

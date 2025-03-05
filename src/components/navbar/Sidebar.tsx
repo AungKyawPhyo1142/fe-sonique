@@ -67,9 +67,9 @@ export const SideBarItem: React.FC<SidebarItemProps> = ({
       <div
         onClick={onClick}
         className={clsx(
-          'flex items-center space-x-2 cursor-pointer transition-all duration-150 ease-linear',
-          'hover:bg-gray-800 rounded-lg p-2',
-          active && 'bg-gray-800',
+          'flex items-center space-x-2 cursor-pointer transition-all duration-150 ease-linear hover:bg-zinc-400/20 rounded-lg p-2 bg-clip-padding backdrop-filter  backdrop-blur-lg bg-opacity-30 backdrop-saturate-100 backdrop-contrast-100',
+          active &&
+            'bg-zinc-400/20 bg-clip-padding backdrop-filter  backdrop-blur-lg bg-opacity-30 backdrop-saturate-100 backdrop-contrast-100',
           className,
         )}
       >
@@ -178,10 +178,10 @@ const Sidebar: React.FC = () => {
             }
             className='ml-5 mb-5'
           />
-          <Seperator className='my-4 w-full px-3 b' />
+          <Seperator className='my-4 w-full px-3' />
 
           <SideBarItem
-            icon={<PowerOff />}
+            icon={<PowerOff size={20} />}
             title='Logout'
             onClick={handleLogout}
             className='m-5'

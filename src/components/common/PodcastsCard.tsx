@@ -11,7 +11,7 @@ interface Props {
 
 const PodcastsCard: React.FC<Props> = ({ image, title, year, time, icon }) => {
   return (
-    <div className='w-48 bg-[#181818] p-[16px] rounded-[3%] hover:opacity-90 cursor-pointer'>
+    <div className='w-full bg-[#181818] p-[16px] rounded-[3%] hover:opacity-90 cursor-pointer'>
       <img
         src={image}
         alt={title}
