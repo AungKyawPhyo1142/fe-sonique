@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 interface Props {
   image: string
-  onClick: () => void
+  onClick?: (event: React.PointerEvent<HTMLDivElement>) => void 
   component?: React.ReactNode
 }
 
@@ -17,13 +17,17 @@ const ProfileImage: React.FC<Props> = ({ image, onClick, component }) => {
   const handleMouseLeave = () => {
     setIsHovered(false)
   }
+  const handlePointerEvent = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    onClick?.(e)
+  }
 
   return (
     <div
       className='relative w-[180px] h-[180px] m-5 rounded-full overflow-hidden cursor-pointer'
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={onClick}
+      onClick={handlePointerEvent}
     >
       <img
         src={image || '/images/default-profile.png'}

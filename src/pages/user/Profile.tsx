@@ -96,6 +96,7 @@ const Profile = () => {
       console.log('Failed to update user')
     }
   }
+
   //formik
   const formik = useFormik({
     onSubmit,
@@ -104,10 +105,23 @@ const Profile = () => {
     validateOnChange: false,
     validateOnBlur: false,
   })
+
   //custom event
   const { onInputChange } = useCustomEvents<ProfileFormValues>(formik)
 
   //edit button
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setDisable(false)
+  }
+
+  //handle image click
+  const handleImageClick = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    if (!uploadImage) {
+      setUploadImage(true)
+    }
+  }
 
   //handle image change
   const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB
@@ -115,27 +129,27 @@ const Profile = () => {
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileInput = e.target
-    if (!fileInput.files?.length) return
+    if (fileInput.files?.length) {
+      const selected = fileInput.files[0]
 
-    const selected = fileInput.files[0]
+      // File size check (max 2MB)
+      if (selected.size > MAX_FILE_SIZE) {
+        setModalStatus(true)
+        setModalTitle('Error')
+        setModalContent('File size is too large (max 2MB)')
+        return
+      }
 
-    // File size check (max 2MB)
-    if (selected.size > MAX_FILE_SIZE) {
-      setModalStatus(true)
-      setModalTitle('Error')
-      setModalContent('File size is too large (max 2MB)')
-      return
+      // File type check
+      if (!ALLOWED_FILE_TYPES.includes(selected.type)) {
+        setModalStatus(true)
+        setModalTitle('Error')
+        setModalContent('Please upload a valid image file (JPEG, PNG, or WebP)')
+        return
+      }
+
+      setSelectedFile(selected)
     }
-
-    // File type check
-    if (!ALLOWED_FILE_TYPES.includes(selected.type)) {
-      setModalStatus(true)
-      setModalTitle('Error')
-      setModalContent('Please upload a valid image file (JPEG, PNG, or WebP)')
-      return
-    }
-
-    setSelectedFile(selected)
   }
 
   //image upload modal
@@ -150,26 +164,19 @@ const Profile = () => {
           },
         )}
       >
-        {/* Modal Box */}
         <div
           className={clsx(
             'bg-black rounded-lg shadow-lg text-white transition-all scale-100 opacity-100 relative',
-            'w-[90%] max-w-100 flex flex-col', // Added flex column
+            'w-[90%] max-w-100 flex flex-col',
           )}
         >
-          {/* Header - Fixed at top */}
           <div className='flex justify-between p-6'>
             <h1 className='text-lg font-semibold'>Preview</h1>
           </div>
 
-          {/* Image Preview */}
           <div className='flex justify-center items-center p-5'>
             <ProfileImage
-              image={
-                selectedFile
-                  ? URL.createObjectURL(selectedFile)
-                  : user?.data.profile_image || ''
-              }
+              image={selectedFile ? URL.createObjectURL(selectedFile) : ''}
               onClick={handleImageClick}
               component={
                 <div className='absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity'>
@@ -189,8 +196,9 @@ const Profile = () => {
           <div className='flex justify-center items-center p-5'>
             <Button
               loading={formik.isSubmitting}
-              disabled={formik.isSubmitting}
+              disabled={formik.isSubmitting || !selectedFile}
               onClick={() => {
+                // Handle image upload here
                 console.log('Upload image', selectedFile)
                 setUploadImage(false)
               }}
@@ -220,7 +228,6 @@ const Profile = () => {
         setModalContent(
           enabled ? 'Artist status deactivated' : 'Artist status activated',
         )
-
         refetch()
       }
     } catch (error) {
@@ -230,6 +237,7 @@ const Profile = () => {
       setModalContent('Failed to activate artist status')
     }
   }
+
   //toggle artist status button
   const ToggleSwitch = () => (
     <div className='flex items-center space-x-3 p-3 rounded-lg'>
@@ -250,13 +258,6 @@ const Profile = () => {
       </span>
     </div>
   )
-  const handleImageClick = () => {
-    if (imageRef.current) {
-      imageRef.current.click()
-    }
-    imageRef.current?.click()
-    setUploadImage(true)
-  }
 
   //error handling
   if (isLoading) return <div>Loading...</div>
@@ -277,7 +278,7 @@ const Profile = () => {
       {/* Profile */}
       <div className='flex flex-row items-center justify-start bg-gradient-to-b from-[#9e9d9d] to-transparent'>
         <ProfileImage
-          onClick={() => setUploadImage(true)}
+          onClick={handleImageClick}
           image={user?.data.profile_image}
         />
 
@@ -393,7 +394,7 @@ const Profile = () => {
                         className='w-fit px-10 h-[50px]'
                         primary
                         type='button'
-                        onClick={handleImageClick}
+                        onClick={handleEditClick}
                       >
                         Edit
                       </Button>
@@ -425,4 +426,5 @@ const Profile = () => {
     </div>
   )
 }
+
 export default Profile
