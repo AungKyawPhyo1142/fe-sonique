@@ -80,7 +80,7 @@ const Input: React.FC<Props> = (props) => {
           {...rest}
           type={inputState.inputType}
           className={clsx(
-            'border-1 border-gray-500 w-full rounded-lg px-3 py-2 text-base transition-colors duration-200 placeholder:text-gray-500 focus:ring-[1.5px] focus:ring-white',
+            'border-1 font-light border-gray-500 w-full rounded-lg px-3 py-2 text-base transition-colors duration-200 placeholder:text-gray-500 focus:ring-[1.5px] focus:ring-white',
             primary && 'text-white outline-none',
             secondary && 'bg-[#FFFFFF] text-[#121212]',
             type === 'password' && 'pr-8',

@@ -203,7 +203,7 @@ const Register = () => {
             </div>
 
             {/**Register Button */}
-            <div className='flex justify-between mt-6 border-b-2 border-[#e5e7eb] pb-5'>
+            <div className='flex justify-between my-6 transition-all duration-150 ease-linear hover:scale-105'>
               <Button
                 loading={formik.isSubmitting}
                 disabled={formik.isSubmitting}
@@ -217,9 +217,11 @@ const Register = () => {
 
             {/**Already have an account */}
             <div className='text-center'>
-              <p className='text-[16px] py-2 mb-2'>Already have an account?</p>
+              <p className='text-[16px] py-2 mb-2  border-t-2 border-[#e5e7eb] pt-5  '>
+                Already have an account?
+              </p>
               <Button
-                className='w-full h-[50px] text-[16px]'
+                className='w-full h-[50px] text-[16px] transition-all duration-150 ease-linear hover:scale-105'
                 outline
                 type='button'
                 onClick={() => navigate(AppConstantRoutes.paths.auth.login)}

@@ -10,6 +10,7 @@ const DisplaySong = () => {
 
   useEffect(() => {
     if (audioRef.current) {
+      audioRef.current.volume = 0.3
       audioRef.current.play()
     }
   }, [])
