@@ -20,7 +20,7 @@ const MusictypeCard: React.FC<Props> = ({ image, title, color, className }) => {
   return (
     <div
       className={clsx(
-        'py-3 px-2 w-48 bg-[#1e2939] rounded-[4%] transition-transform relative overflow-hidden hover:opacity-90 hover:shadow-lg cursor-pointer',
+        'py-3 px-2 w-full bg-[#1e2939] rounded-[4%] transition-transform relative overflow-hidden hover:opacity-90 hover:shadow-lg cursor-pointer',
         className,
       )}
       style={{ backgroundColor: color }}

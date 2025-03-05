@@ -25,32 +25,30 @@ const musicCategories = titles.map((title) => ({
 
 const SearchPage: React.FC = () => {
   return (
-    <div className='flex h-screen  bg-[#302f2f]'>
-      {/* Sidebar
-       *<Sidebar />
-       */}
+    // <div className='flex h-screen  bg-[#302f2f]'>
+    <div className='fade-in py-5'>
       {/* Main Content */}
-      <div className='flex-1'>
-        {/* Search Bar */}
-        <div className='sticky top-0 z-50 '>
+      <div className='flex flex-col'>
+        <div className=' place-self-end px-5'>
           <SearchBar />
         </div>
+        <div className=''>
+          {/* Browse Section */}
+          <h1 className='text-2xl font-bold text-white my-5 ms-5 hover:underline hover:cursor-pointer'>
+            Browse all
+          </h1>
 
-        {/* Browse Section */}
-        <h1 className='text-2xl font-bold text-white my-5 ms-5 hover:underline hover:cursor-pointer'>
-          Browse all
-        </h1>
-
-        {/* Grid of Music Categories */}
-        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 px-5 bg-[#302f2f]'>
-          {musicCategories.map((category, index) => (
-            <MusictypeCard
-              key={index}
-              title={category.title}
-              color={category.color}
-              image={category.image}
-            />
-          ))}
+          {/* Grid of Music Categories */}
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 px-5 '>
+            {musicCategories.map((category, index) => (
+              <MusictypeCard
+                key={index}
+                title={category.title}
+                color={category.color}
+                image={category.image}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

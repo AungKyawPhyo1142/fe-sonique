@@ -90,36 +90,40 @@ const MusictypePage: React.FC = () => {
   ]
 
   return (
-    <div className='w-full'>
+    <div className='fade-in flex flex-col py-5'>
       {/* Search Bar */}
-      <SearchBar />
-
-      {/* Page Content */}
-      <div className='flex flex-col items-start p-4 text-[#adadad] bg-[#181818] '>
-        <h1 className='text-5xl font-bold'>
-          {decodeURIComponent(title || 'Music Type')}
-        </h1>
-        <p className='text-lg mt-4'>
-          Explore the best {decodeURIComponent(title)} tracks!
-        </p>
+      <div className='place-self-end px-5'>
+        <SearchBar />
       </div>
 
-      {/* Music Cards Section */}
-      <div className='p-4 bg-[#121212]'>
-        <p className='text-3xl font-bold text-white mb-4 text-[20px]  hover:underline hover:cursor-pointer'>
-          Best Playlist
-        </p>
-        <div className='grid grid-cols-5 gap-4'>
-          {podcasts.map((podcast) => (
-            <PodcastsCard
-              key={podcast.id}
-              title={podcast.title}
-              image={podcast.image}
-              year={podcast.year}
-              time={podcast.time}
-              icon={podcast.icon}
-            />
-          ))}
+      {/* Page Content */}
+      <div>
+        <div className='flex flex-col items-start p-4 text-[#adadad] '>
+          <h1 className='text-8xl font-bold'>
+            {decodeURIComponent(title || 'Music Type')}
+          </h1>
+          <p className='text-lg mt-4'>
+            Explore the best {decodeURIComponent(title)} tracks!
+          </p>
+        </div>
+
+        {/* Music Cards Section */}
+        <div className='p-4 mt-5'>
+          <p className='text-3xl font-bold text-white mb-4 text-[20px]  hover:underline hover:cursor-pointer'>
+            Best Playlist
+          </p>
+          <div className='grid grid-cols-5 gap-4'>
+            {podcasts.map((podcast) => (
+              <PodcastsCard
+                key={podcast.id}
+                title={podcast.title}
+                image={podcast.image}
+                year={podcast.year}
+                time={podcast.time}
+                icon={podcast.icon}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
