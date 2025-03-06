@@ -56,13 +56,12 @@ const Button: React.FC<Props> = (props) => {
     <button
       {...rest}
       className={clsx(
-        'rounded-lg cursor-pointer py-2 text-lg transition-opacity duration-200 hover:opacity-[95%] active:opacity-100',
-        primary && 'bg-white font-sans text-black disabled:bg-[#B3B3B3]',
-        secondary && 'bg-[#5f5f5f] font-sans text-white disabled:bg-[#B3B3B3]',
-        destructive &&
-          'bg-[#ee3232] font-sans text-white disabled:bg-[#B3B3B3]',
+        'rounded-lg cursor-pointer py-2 text-lg duration-200 hover:opacity-[80%] active:opacity-100 transition-all  ease-linear',
+        primary && 'bg-white text-black disabled:bg-[#B3B3B3]',
+        secondary && 'bg-[#5f5f5f] text-white disabled:bg-[#B3B3B3]',
+        destructive && 'bg-[#ee3232] text-white disabled:bg-[#B3B3B3]',
         outline &&
-          'bg-transparent text-white font-sans border border-[#e5e7eb] hover:bg-[#e5e7eb] hover:text-black disabled:bg-[#B3B3B3]',
+          'bg-transparent text-gray-500 border border-gray-500 hover:bg-[#e5e7eb] hover:text-black disabled:bg-[#B3B3B3]',
         className,
       )}
     >

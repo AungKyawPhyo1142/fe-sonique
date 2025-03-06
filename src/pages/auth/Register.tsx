@@ -10,6 +10,7 @@ import { object, ObjectSchema, string } from 'yup'
 import Modal from '@/components/common/Modal'
 import { useState } from 'react'
 import DisplaySong from '@/components/common/DisplaySong'
+import Seperator from '@/components/common/Seperator'
 
 // note that the names are identical to the id of the input fields
 export interface RegisterFormValues {
@@ -111,7 +112,11 @@ const Register = () => {
 
         {/**Display song */}
         <div className='w-1/2 bg-cover bg-center align-middle flex'>
-          <DisplaySong />
+          <DisplaySong
+            register
+            songSrc='/audio/APT.mp3'
+            imgSrc='/images/APT.jpg'
+          />
         </div>
 
         {/**Form Section */}
@@ -203,11 +208,11 @@ const Register = () => {
             </div>
 
             {/**Register Button */}
-            <div className='flex justify-between my-6 transition-all duration-150 ease-linear hover:scale-105'>
+            <div className='flex justify-between my-6'>
               <Button
                 loading={formik.isSubmitting}
                 disabled={formik.isSubmitting}
-                className='w-full font-semibold  h-[50px]'
+                className='w-full h-[50px]'
                 primary
                 type='submit'
               >
@@ -217,11 +222,12 @@ const Register = () => {
 
             {/**Already have an account */}
             <div className='text-center'>
-              <p className='text-[16px] py-2 mb-2  border-t-2 border-[#e5e7eb] pt-5  '>
+              <Seperator />
+              <p className='text-[16px] py-2 mb-2 pt-5  '>
                 Already have an account?
               </p>
               <Button
-                className='w-full h-[50px] text-[16px] transition-all duration-150 ease-linear hover:scale-105'
+                className='w-full h-[50px]'
                 outline
                 type='button'
                 onClick={() => navigate(AppConstantRoutes.paths.auth.login)}

@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button'
+import DisplaySong from '@/components/common/DisplaySong'
 import Input from '@/components/common/Input'
 import Seperator from '@/components/common/Seperator'
 import { useCustomEvents } from '@/services/formik/hooks'
@@ -64,90 +65,106 @@ export const Login = () => {
   const { onInputChange } = useCustomEvents<LoginFormValues>(formik)
 
   return (
-    <>
-      <div className='bg-black w-screen h-screen flex flex-col text-white'>
-        {/*header*/}
+    <div className='flex min-h-screen grid-bg'>
+      {/**Login Form */}
+      <div className='w-1/2 text-white flex flex-col justify-center items-center'>
+        {/*header
         <div className='border-b-1 border-[#e5e7eb] items-center flex justify-center p-5'>
           <h1 className='font-bold text-3xl text-center'> Sonique</h1>
         </div>
+        */}
         {/*form*/}
-        <div className='rounded-xl border border-[#e5e7eb] bg-card text-card-foreground shadow h-fit-content m-auto p-5 w-full max-w-md min-w-[500px] md:min-w-none'>
-          <form
-            onSubmit={formik.handleSubmit}
-            className='flex flex-col gap-y-5'
-          >
-            <div className='flex flex-col w-full gap-x-5'>
-              <label htmlFor='email' className='mb-3'>
-                Email
-              </label>
-              <Input
-                type='email'
-                id='email'
-                onChange={onInputChange}
-                value={formik.values.email}
-                error={formik.errors.email}
-                placeholder='Email address or username'
-              />
-            </div>
-            <div className='flex flex-col  w-full  gap-x-5 '>
-              <label htmlFor='password' className='mb-3'>
-                Password
-              </label>
-              <Input
-                type='password'
-                id='password'
-                onChange={onInputChange}
-                value={formik.values.password}
-                error={formik.errors.password}
-                placeholder='Password'
-              />
-            </div>
-            <div>
-              <a href='' className='underline'>
-                Forgot your password?
-              </a>
-            </div>
-            {/*remember me* and button*/}
-            <div className='flex flex-row justify-between items-center'>
-              <label className='flex items-center gap-x-2'>
-                <input
-                  type='checkbox'
-                  id='remember'
-                  onChange={onInputChange}
-                  checked={formik.values.remember}
-                  className='accent-white'
-                />
-                <span>Remember me</span>
-              </label>
-              <Button
-                loading={formik.isSubmitting}
-                disabled={formik.isSubmitting}
-                className='w-fit px-10 h-[50px]'
-                primary
-                type='submit'
-              >
-                Login
-              </Button>
-            </div>
-
-            <Seperator className='my-4' />
-            {/*point to register*/}
-
-            <p className='text-[18px] text-center mb-4'>
-              Don't have an account?
-            </p>
-            <Button
-              className='w-full h-[50px] text-[16px]'
-              outline
-              onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
-              type='button'
+        <form
+          onSubmit={formik.handleSubmit}
+          className='w-full max-w-[480px] space-y-[1.7rem] py-7 px-9 rounded-[10px] text-[#FFFFFF]'
+          style={{
+            background: 'rgba(131, 131, 131, 0.31)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(6px)',
+            WebkitBackdropFilter: 'blur(6px)',
+          }}
+        >
+          <div className='flex flex-col w-full gap-x-5'>
+            <label htmlFor='email' className='mb-3'>
+              Email
+            </label>
+            <Input
+              type='email'
+              id='email'
+              onChange={onInputChange}
+              value={formik.values.email}
+              error={formik.errors.email}
+              placeholder='Email address or username'
+            />
+          </div>
+          <div className='flex flex-col  w-full  gap-x-5 '>
+            <label htmlFor='password' className='mb-3'>
+              Password
+            </label>
+            <Input
+              type='password'
+              id='password'
+              onChange={onInputChange}
+              value={formik.values.password}
+              error={formik.errors.password}
+              placeholder='Password'
+            />
+          </div>
+          <div>
+            <a
+              href=''
+              className='underline hover:text-[#e5e7eb] transition-all ease-linear duration-100'
             >
-              SIGN UP FOR SONIQUE
+              Forgot your password?
+            </a>
+          </div>
+          {/*remember me* and button*/}
+          <div className='flex flex-row justify-between items-center'>
+            <label className='flex items-center gap-x-2'>
+              <input
+                type='checkbox'
+                id='remember'
+                onChange={onInputChange}
+                checked={formik.values.remember}
+                className='accent-white'
+              />
+              <span>Remember me</span>
+            </label>
+            <Button
+              loading={formik.isSubmitting}
+              disabled={formik.isSubmitting}
+              className='w-fit px-10 h-[50px]'
+              primary
+              type='submit'
+            >
+              Login
             </Button>
-          </form>
-        </div>
+          </div>
+
+          <Seperator className='my-4' />
+          {/*point to register*/}
+
+          <p className='text-[18px] text-center mb-4'>Don't have an account?</p>
+          <Button
+            className='w-full h-[50px] text-[16px]'
+            outline
+            onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
+            type='button'
+          >
+            SIGN UP FOR SONIQUE
+          </Button>
+        </form>
       </div>
-    </>
+
+      {/**Display Song */}
+      <div className='w-1/2 bg-cover bg-center align-middle flex'>
+        <DisplaySong
+          login
+          songSrc='/audio/MoonlitFloor.mp3'
+          imgSrc='/images/Moonlit_Floor.jpg'
+        />
+      </div>
+    </div>
   )
 }
 
