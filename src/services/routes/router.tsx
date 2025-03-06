@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
       {
         path: AppConstantRoutes.paths.profile,
         element: <Profile />,
-      }
+      },
     ],
   },
 ])

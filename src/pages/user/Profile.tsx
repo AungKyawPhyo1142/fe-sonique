@@ -37,8 +37,8 @@ const Profile = () => {
   const [uploadImage, setUploadImage] = useState(false)
   const [active, setActive] = useState(true)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [loadingButton, setLoadingButton] = useState(false)
-  
+  const [loadingButton,  setLoadingButton] = useState(false)
+
   const navigate = useNavigate()
 
   //get user details
