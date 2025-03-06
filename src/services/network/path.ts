@@ -20,7 +20,6 @@ export const ApiConstantRoutes = {
         },
         activateArtist(id: string) {
           return `/user/activate-artist/${id}`
-         
         },
         deactivateArtist(id: string) {
           return `/user/deactivate-artist/${id}`

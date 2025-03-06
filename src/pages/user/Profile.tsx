@@ -36,7 +36,7 @@ const Profile = () => {
   const [uploadImage, setUploadImage] = useState(false)
   const [active, setActive] = useState(true)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [loadingButton,setLoadingButton] = useState(false)  
+  const [loadingButton, setLoadingButton] = useState(false)
 
   //get user details
   const userId = useAuthStore((state) => state.auth.userId)
@@ -123,7 +123,7 @@ const Profile = () => {
     }
   }
   //image upload
-  const handleImageUpload = async() => {
+  const handleImageUpload = async () => {
     const formData = new FormData()
     formData.append('profile_image', selectedFile!)
     setLoadingButton(true)
