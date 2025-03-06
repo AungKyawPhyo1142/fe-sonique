@@ -25,6 +25,9 @@ export const AppConstantRoutes = {
     get home() {
       return '/home'
     },
+    get profile() {
+      return '/profile'
+    },
     get searchPage() {
       return '/search'
     },
