@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button'
+import GlassCard from '@/components/common/GlassCard'
 import Input from '@/components/common/Input'
 import Modal from '@/components/common/Modal'
 import Seperator from '@/components/common/Seperator'
@@ -260,20 +261,20 @@ const Profile = () => {
   }
   //toggle artist status button
   const ToggleSwitch = () => (
-    <div className='flex items-center space-x-3 p-3 rounded-lg'>
+    <div className='flex items-center space-x-3  rounded-lg'>
       <button
         onClick={toggleArtistStatus}
-        className={`w-12 h-6 flex items-center bg-gray-400 rounded-full p-1 transition ${
+        className={`w-12 h-6 flex items-center bg-gray-400 rounded-full p-1  cursor-pointer  ${
           enabled ? 'bg-gray-200' : 'bg-gray-600'
         }`}
       >
         <div
-          className={`bg-white w-5 h-5 rounded-full shadow-md transform transition ${
+          className={`bg-white w-4 h-4 rounded-full shadow-md transform  cursor-pointer ${
             enabled ? 'translate-x-6' : ''
           }`}
         />
       </button>
-      <span className='text-white font-semibold'>
+      <span className='text-white font-light'>
         {enabled ? 'You are already an artist!' : 'Become an artist?'}
       </span>
     </div>
@@ -281,28 +282,24 @@ const Profile = () => {
 
   const ProfileForm = () => {
     return (
-      <div className='flex flex-col items-center justify-center bg-[#202022] m-auto  h-full'>
-        <div
-          className={clsx(
-            disable ? 'bg-[#373739]' : 'bg-black',
-            'p-10 h-full w-full flex flex-col items-center justify-center space-y-5 rounded-lg',
-          )}
-        >
+      <div className='flex flex-col bg-[#202022] p-10 mx-auto min-h-screen'>
+        <GlassCard className='flex flex-col items-center justify-center space-y-5 min-w-[600px]'>
           {/* Form */}
           <form
-            className='flex flex-col items-start justify-center gap-y-5'
+            className='flex flex-col items-start justify-center gap-y-10 font-light w-full'
             onSubmit={formik.handleSubmit}
           >
-            <div>
+            <div className='flex flex-col gap-y-2'>
               <h1 className='text-3xl font-bold'>Profile Details</h1>
-              <span className='opacity-50'>
+              <span className='opacity-50 text-sm'>
                 Update your desired details here.
               </span>
             </div>
-            <fieldset disabled={disable} className='flex flex-col gap-y-5'>
+            <fieldset className='flex flex-col gap-y-10 w-full'>
               <div className='flex flex-row gap-x-5'>
                 <Input
                   type='text'
+                  disabled={disable}
                   id='firstName'
                   onChange={onInputChange}
                   value={formik.values.firstName}
@@ -312,6 +309,7 @@ const Profile = () => {
 
                 <Input
                   type='text'
+                  disabled={disable}
                   id='lastName'
                   onChange={onInputChange}
                   value={formik.values.lastName}
@@ -323,6 +321,7 @@ const Profile = () => {
               <Input
                 type='text'
                 id='bio'
+                disabled={disable}
                 onChange={onInputChange}
                 value={formik.values.bio}
                 error={formik.errors.bio}
@@ -332,6 +331,7 @@ const Profile = () => {
               <Input
                 type='email'
                 id='email'
+                disabled={disable}
                 onChange={onInputChange}
                 value={formik.values.email}
                 error={formik.errors.email}
@@ -341,6 +341,7 @@ const Profile = () => {
               <Input
                 type='text'
                 id='username'
+                disabled={disable}
                 onChange={onInputChange}
                 value={formik.values.username}
                 error={formik.errors.username}
@@ -378,11 +379,11 @@ const Profile = () => {
               )}
             </div>
           </form>
-          <Seperator />
+          <Seperator className='mb-10 mt-5' />
           <div className='flex justify-start w-full'>
             <ToggleSwitch />
           </div>
-        </div>
+        </GlassCard>
       </div>
     )
   }
@@ -441,7 +442,7 @@ const Profile = () => {
       <div className='flex flex-grow'>
         {/* Sidebar */}
         {enabled && (
-          <nav className='bg-[#242424] w-[240px] py-10'>
+          <nav className='bg-[#242424] w-[240px] py-10 transition-all duration-200 ease-in-out'>
             <ul className='flex flex-col gap-y-5 w-full items-center '>
               <SideBarItem
                 icon={<UserRound size={20} className='ml-5' />}
