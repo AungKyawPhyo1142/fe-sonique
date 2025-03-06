@@ -35,9 +35,9 @@ const Profile = () => {
   const [modalContent, setModalContent] = useState('')
   const imageRef = useRef<HTMLInputElement>(null)
   const [uploadImage, setUploadImage] = useState(false)
-  const [active, setActive] = useState(true)
+  const [index, setIndex] = useState(0)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [loadingButton,  setLoadingButton] = useState(false)
+  const [loadingButton, setLoadingButton] = useState(false)
 
   const navigate = useNavigate()
 
@@ -279,6 +279,124 @@ const Profile = () => {
     </div>
   )
 
+  const ProfileForm = () => {
+    return (
+      <div className='flex flex-col items-center justify-center bg-[#202022] m-auto  h-full'>
+        <div
+          className={clsx(
+            disable ? 'bg-[#373739]' : 'bg-black',
+            'p-10 h-full w-full flex flex-col items-center justify-center space-y-5 rounded-lg',
+          )}
+        >
+          {/* Form */}
+          <form
+            className='flex flex-col items-start justify-center gap-y-5'
+            onSubmit={formik.handleSubmit}
+          >
+            <div>
+              <h1 className='text-3xl font-bold'>Profile Details</h1>
+              <span className='opacity-50'>
+                Update your desired details here.
+              </span>
+            </div>
+            <fieldset disabled={disable} className='flex flex-col gap-y-5'>
+              <div className='flex flex-row gap-x-5'>
+                <Input
+                  type='text'
+                  id='firstName'
+                  onChange={onInputChange}
+                  value={formik.values.firstName}
+                  error={formik.errors.firstName}
+                  placeholder='First Name'
+                />
+
+                <Input
+                  type='text'
+                  id='lastName'
+                  onChange={onInputChange}
+                  value={formik.values.lastName}
+                  error={formik.errors.lastName}
+                  placeholder='Last Name'
+                />
+              </div>
+
+              <Input
+                type='text'
+                id='bio'
+                onChange={onInputChange}
+                value={formik.values.bio}
+                error={formik.errors.bio}
+                placeholder='Enter your bio'
+              />
+
+              <Input
+                type='email'
+                id='email'
+                onChange={onInputChange}
+                value={formik.values.email}
+                error={formik.errors.email}
+                placeholder='Email address'
+              />
+
+              <Input
+                type='text'
+                id='username'
+                onChange={onInputChange}
+                value={formik.values.username}
+                error={formik.errors.username}
+                placeholder='Username'
+              />
+            </fieldset>
+            <div className='flex flex-row justify-between w-full'>
+              <Button
+                className='w-fit px-10 h-[50px]'
+                secondary
+                type='button'
+                onClick={() => navigate('/')}
+              >
+                Back
+              </Button>
+              {disable ? (
+                <Button
+                  className='w-fit px-10 h-[50px]'
+                  primary
+                  type='button'
+                  onClick={handleEditButtonClick}
+                >
+                  Edit
+                </Button>
+              ) : (
+                <Button
+                  loading={formik.isSubmitting}
+                  disabled={formik.isSubmitting}
+                  className='w-fit px-10 h-[50px]'
+                  primary
+                  type='submit'
+                >
+                  Save
+                </Button>
+              )}
+            </div>
+          </form>
+          <Seperator />
+          <div className='flex justify-start w-full'>
+            <ToggleSwitch />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const SongContent = () => {
+    return (
+      <div className='flex flex-col flex-grow items-center justify-center bg-[#1A1A1A]'>
+        <div className='text-white text-2xl'>Upload Songs</div>
+      </div>
+    )
+  }
+
+  const contentList = [<ProfileForm />, <SongContent />]
+
   //error handling
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Something went wrong</div>
@@ -297,7 +415,7 @@ const Profile = () => {
       {uploadImage && <ImageUploadModal />}
       {/* Profile */}
       <div className='flex flex-row items-center p-5'>
-        <div className='relative px-10'>
+        <div className='relative '>
           <img
             src={user?.data.profile_image}
             alt='profile'
@@ -311,11 +429,11 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className='flex flex-col items-start gap-y-5 justify-center'>
-        <h1 className='text-6xl font-bold'>
-          {user?.data.firstName} {user?.data.lastName}
-        </h1>
-        <span className='opacity-50'>@{user?.data.username}</span>
+        <div className='flex flex-col items-start gap-y-5 px-10 justify-center'>
+          <h1 className='text-6xl font-bold'>
+            {user?.data.firstName} {user?.data.lastName}
+          </h1>
+          <span className='opacity-50'>@{user?.data.username}</span>
         </div>
       </div>
       {/* Bio */}
@@ -323,136 +441,32 @@ const Profile = () => {
       <div className='flex flex-grow'>
         {/* Sidebar */}
         {enabled && (
-          <nav className='bg-[#242424] w-[240px] p-10'>
-            <ul className='flex flex-col gap-y-5'>
+          <nav className='bg-[#242424] w-[240px] py-10'>
+            <ul className='flex flex-col gap-y-5 w-full items-center '>
               <SideBarItem
-                icon={<UserRound size={20} />}
+                icon={<UserRound size={20} className='ml-5' />}
                 key='profile'
                 title='Profile'
-                active={active}
-                onClick={() => setActive(!active)}
+                active={index === 0}
+                onClick={() => setIndex(0)}
+                activeColor='bg-[#202022]'
+                hoverColor='hover:bg-[#202022]'
+                className=''
               />
               <SideBarItem
-                icon={<Headphones size={20} />}
+                icon={<Headphones size={20} className='ml-5' />}
                 key='song'
                 title='Songs'
-                active={!active}
-                onClick={() => setActive(!active)}
+                active={index === 1}
+                onClick={() => setIndex(1)}
+                activeColor='bg-[#202022]'
+                hoverColor='hover:bg-[#202022]'
               />
             </ul>
           </nav>
         )}
         {/* Content */}
-        {active ? (
-          <div className='flex flex-col items-center justify-center bg-[#202022] m-auto  h-full'>
-            <div
-              className={clsx(
-                disable ? 'bg-[#373739]' : 'bg-black',
-                'p-10 h-full w-full flex flex-col items-center justify-center space-y-5 rounded-lg',
-              )}
-            >
-              {/* Form */}
-              <form
-                className='flex flex-col items-start justify-center gap-y-5'
-                onSubmit={formik.handleSubmit}
-              >
-                <div>
-                  <h1 className='text-3xl font-bold'>Profile Details</h1>
-                  <span className='opacity-50'>
-                    Update your desired details here.
-                  </span>
-                </div>
-                <fieldset disabled={disable} className='flex flex-col gap-y-5'>
-                  <div className='flex flex-row gap-x-5'>
-                    <Input
-                      type='text'
-                      id='firstName'
-                      onChange={onInputChange}
-                      value={formik.values.firstName}
-                      error={formik.errors.firstName}
-                      placeholder='First Name'
-                    />
-
-                    <Input
-                      type='text'
-                      id='lastName'
-                      onChange={onInputChange}
-                      value={formik.values.lastName}
-                      error={formik.errors.lastName}
-                      placeholder='Last Name'
-                    />
-                  </div>
-
-                  <Input
-                    type='text'
-                    id='bio'
-                    onChange={onInputChange}
-                    value={formik.values.bio}
-                    error={formik.errors.bio}
-                    placeholder='Enter your bio'
-                  />
-
-                  <Input
-                    type='email'
-                    id='email'
-                    onChange={onInputChange}
-                    value={formik.values.email}
-                    error={formik.errors.email}
-                    placeholder='Email address'
-                  />
-
-                  <Input
-                    type='text'
-                    id='username'
-                    onChange={onInputChange}
-                    value={formik.values.username}
-                    error={formik.errors.username}
-                    placeholder='Username'
-                  />
-                </fieldset>
-                <div className='flex flex-row justify-between w-full'>
-                  <Button
-                    className='w-fit px-10 h-[50px]'
-                    secondary
-                    type='button'
-                    onClick={() => navigate('/')}
-                  >
-                    Back
-                  </Button>
-                  {disable ? (
-                    <Button
-                      className='w-fit px-10 h-[50px]'
-                      primary
-                      type='button'
-                      onClick={handleEditButtonClick}
-                    >
-                      Edit
-                    </Button>
-                  ) : (
-                    <Button
-                      loading={formik.isSubmitting}
-                      disabled={formik.isSubmitting}
-                      className='w-fit px-10 h-[50px]'
-                      primary
-                      type='submit'
-                    >
-                      Save
-                    </Button>
-                  )}
-                </div>
-              </form>
-              <Seperator />
-              <div className='flex justify-start w-full'>
-                <ToggleSwitch />
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Upload Songs
-          <div className='flex flex-col flex-grow items-center justify-center bg-[#1A1A1A]'>
-            <div className='text-white text-2xl'>Upload Songs</div>
-          </div>
-        )}
+        {contentList[index]}
       </div>
     </div>
   )

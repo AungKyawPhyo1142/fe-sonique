@@ -1,8 +1,8 @@
 import { Outlet, useLocation } from 'react-router'
 
 import { AppConstantRoutes } from '@/services/routes/path'
-import Sidebar from '../navbar/Sidebar'
 import clsx from 'clsx'
+import Sidebar from '../navbar/Sidebar'
 
 const LayoutWithAuth = () => {
   const location = useLocation()

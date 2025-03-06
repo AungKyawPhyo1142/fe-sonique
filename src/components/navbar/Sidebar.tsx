@@ -15,6 +15,8 @@ interface SidebarItemProps {
   onClick?: () => void
   className?: string
   active?: boolean
+  activeColor?: string
+  hoverColor?: string
 }
 
 interface UserTileProps {
@@ -39,7 +41,7 @@ export const UserTile: React.FC<UserTileProps> = ({
       <img
         src={avatar}
         alt={name}
-        className='rounded-full size-15 hover:underline cursor-pointer'
+        className='rounded-full size-15 hover:underline cursor-pointer object-cover'
         onClick={handleProfileClick}
       />
       <div>
@@ -61,21 +63,20 @@ export const SideBarItem: React.FC<SidebarItemProps> = ({
   onClick,
   className,
   active,
+  activeColor,
+  hoverColor,
 }) => {
   return (
-    <li>
-      <div
-        onClick={onClick}
-        className={clsx(
-          'flex items-center space-x-2 cursor-pointer transition-all duration-150 ease-linear hover:bg-zinc-400/20 rounded-lg p-2 bg-clip-padding backdrop-filter  backdrop-blur-lg bg-opacity-30 backdrop-saturate-100 backdrop-contrast-100',
-          active &&
-            'bg-zinc-400/20 bg-clip-padding backdrop-filter  backdrop-blur-lg bg-opacity-30 backdrop-saturate-100 backdrop-contrast-100',
-          className,
-        )}
-      >
-        {icon}
-        <span>{title}</span>
-      </div>
+    <li
+      onClick={onClick}
+      className={clsx(
+        `w-full ${hoverColor || 'hover:bg-zinc-400/20'} flex items-center space-x-2 cursor-pointer transition-all duration-150 ease-linear rounded-lg px-4 py-2`, // Adjusted padding
+        active && `${activeColor || 'bg-zinc-400/20'}`,
+        className,
+      )}
+    >
+      {icon}
+      <span>{title}</span> {/* Ensure text expands properly */}
     </li>
   )
 }
