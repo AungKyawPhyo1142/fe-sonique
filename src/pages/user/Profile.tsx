@@ -1,3 +1,4 @@
+import BaseModal from '@/components/common/BaseModal'
 import Button from '@/components/common/Button'
 import GlassCard from '@/components/common/GlassCard'
 import Input from '@/components/common/Input'
@@ -13,7 +14,6 @@ import {
 import { ApiConstantRoutes } from '@/services/network/path'
 import { useAuthStore } from '@/services/zustand/authStore'
 import { useQuery } from '@tanstack/react-query'
-import { clsx } from 'clsx'
 import { useFormik } from 'formik'
 import { Camera, Headphones, UserRound } from 'lucide-react'
 import { ChangeEvent, useRef, useState } from 'react'
@@ -103,7 +103,7 @@ const Profile = () => {
       setDisable(!disable)
       setModalStatus(true)
       setModalTitle('Update Successful')
-      setModalContent('User updated successfully')
+      setModalContent('User updated successfully.')
       refetch()
     } else {
       console.log('Failed to update user')
@@ -140,7 +140,7 @@ const Profile = () => {
         setUploadImage(false)
         setModalStatus(true)
         setModalTitle('Upload Successful')
-        setModalContent('Profile image uploaded successfully')
+        setModalContent('Profile image uploaded successfully.')
         setLoadingButton(false)
         refetch()
       } else {
@@ -150,87 +150,71 @@ const Profile = () => {
       console.log('Failed to upload image: ', error)
       setModalStatus(true)
       setModalTitle('Upload Failed')
-      setModalContent('Failed to upload profile image')
+      setModalContent('Failed to upload profile image.')
     }
   }
 
   //image upload modal
   const ImageUploadModal = () => {
     return (
-      <div
-        className={clsx(
-          'fixed inset-0 flex items-center justify-center bg-white/30 z-50',
-          {
-            visible: uploadImage,
-            invisible: !uploadImage,
-          },
-        )}
+      <BaseModal
+        isOpen={uploadImage}
+        setIsOpen={setUploadImage}
+        title='Preview'
+        className='flex flex-col gap-y-5'
       >
-        {/* Modal Box */}
-        <div
-          className={clsx(
-            'bg-black rounded-lg shadow-lg text-white transition-all scale-100 opacity-100 relative',
-            'w-[90%] max-w-100 flex flex-col', // Added flex column
-          )}
-        >
-          {/* Header - Fixed at top */}
-          <div className='flex justify-between p-6'>
-            <h1 className='text-lg font-semibold'>Preview</h1>
+        {/* Image Preview */}
+        <div className='flex justify-center cursor-pointer items-center p-5 relative transition-all duration-200 ease-in-out border rounded-md border-zinc-500 border-dashed bg-zinc-800/50 w-full'>
+          <img
+            src={
+              selectedFile
+                ? URL.createObjectURL(selectedFile)
+                : user?.data.profile_image
+            }
+            alt='preview'
+            className='w-40 h-40 rounded-full object-cover'
+          />
+          <div
+            onClick={() => imageRef.current?.click()}
+            className='absolute  inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity backdrop-blur-2xl'
+          >
+            <Camera size={40} className='text-white' />
           </div>
 
-          {/* Image Preview */}
-          <div className='flex justify-center items-center p-5 relative'>
-            <img
-              src={
-                selectedFile
-                  ? URL.createObjectURL(selectedFile)
-                  : user?.data.profile_image
-              }
-              alt='preview'
-              className='w-40 h-40 rounded-full object-cover'
-            />
-            <div
-              onClick={() => imageRef.current?.click()}
-              className='absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity'
-            >
-              <Camera size={40} />
-            </div>
-
-            <input
-              ref={imageRef}
-              type='file'
-              accept='image/*'
-              className='hidden'
-              onChange={handleImageChange}
-            />
-          </div>
-
-          <div className='flex flex-row justify-between p-5'>
-            <Button
-              loading={formik.isSubmitting}
-              disabled={formik.isSubmitting}
-              onClick={() => {
-                console.log('Cancel image upload')
-                setSelectedFile(null)
-                setUploadImage(false)
-              }}
-              className='w-fit px-10 h-[50px]'
-              primary
-            >
-              Cancel
-            </Button>
-            <Button
-              loading={loadingButton}
-              disabled={loadingButton}
-              onClick={handleImageUpload}
-              className='w-fit px-10 h-[50px]'
-              primary
-            >
-              Save
-            </Button>
-          </div>
+          <input
+            ref={imageRef}
+            type='file'
+            accept='image/*'
+            className='hidden'
+            onChange={handleImageChange}
+          />
         </div>
-      </div>
+
+        <div className='flex w-full justify-between gap-x-5 mt-5'>
+          <Button
+            loading={formik.isSubmitting}
+            disabled={formik.isSubmitting}
+            onClick={() => {
+              console.log('Cancel image upload')
+              setSelectedFile(null)
+              setUploadImage(false)
+            }}
+            className='w-[150px] px-5 h-[50px]'
+            outline
+          >
+            Cancel
+          </Button>
+          <Button
+            loading={loadingButton}
+            disabled={loadingButton}
+            onClick={handleImageUpload}
+            className='w-[150px] px-5 h-[50px]'
+            primary
+          >
+            Save
+          </Button>
+        </div>
+      </BaseModal>
     )
   }
 
@@ -256,7 +240,7 @@ const Profile = () => {
       console.log('Failed to toggle artist status: ', error)
       setModalStatus(true)
       setModalTitle('Failed Activation')
-      setModalContent('Failed to activate artist status')
+      setModalContent('Failed to activate artist status.')
     }
   }
   //toggle artist status button
@@ -406,8 +390,9 @@ const Profile = () => {
     <div className='text-white bg-[#202022] min-h-screen flex flex-col'>
       {/* Modal */}
       <Modal
+        type='info'
         isOpen={modalStatus}
-        onClose={() => setModalStatus(false)}
+        setIsOpen={setModalStatus}
         title={modalTitle}
         content={modalContent}
         button
