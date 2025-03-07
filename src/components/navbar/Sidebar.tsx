@@ -8,6 +8,7 @@ import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import Seperator from '../common/Seperator'
+import Button from '../common/Button'
 
 interface SidebarItemProps {
   icon?: React.ReactNode
@@ -181,12 +182,20 @@ const Sidebar: React.FC = () => {
           />
           <Seperator className='my-4 w-full px-3' />
 
-          <SideBarItem
+          <Button
+            onClick={handleLogout}
+            className='flex items-center justify-center gap-x-2 px-5 ms-5'
+          >
+            <PowerOff size={20} />
+            <span>Logout</span>
+          </Button>
+
+          {/* <SideBarItem
             icon={<PowerOff size={20} />}
             title='Logout'
             onClick={handleLogout}
             className='m-5'
-          />
+          /> */}
         </ul>
       </nav>
     </div>
