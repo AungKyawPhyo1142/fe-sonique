@@ -28,3 +28,8 @@ Sonique is a personal practice project inspired by Spotify, built as a collabora
 - [Nyi Nyi Soe](https://github.com/Nyi-NyiSoe)
 - [Kyi Thant Sin](https://github.com/KyiThantSin)
 - [Linn Latt Cho](https://github.com/linnlatt132)
+
+## Our Top 2 Contributors
+
+- [ChatGPT](https://chatgpt.com/)
+- [Claude](https://claude.ai/new)

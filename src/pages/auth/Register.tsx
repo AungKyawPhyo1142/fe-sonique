@@ -86,19 +86,22 @@ const Register = () => {
       {/**Error Modal */}
       <Modal
         isOpen={errorModal}
-        onClose={() => setErrorModal(false)}
+        setIsOpen={setErrorModal}
         title='Registration Fail!'
+        type='error'
         content='Something went wrong. Please check your informations and try again.'
         button
       />
       {/**Success Modal */}
       <Modal
         isOpen={successModal}
-        onClose={() =>
+        setIsOpen={setSuccessModal}
+        onCloseModal={() =>
           navigate(AppConstantRoutes.paths.auth.login, { replace: true })
         }
         title='Registeration Success!'
         content='Your account have been created successfully.'
+        type='success'
         button
       />
       <div className='flex min-h-screen grid-bg'>

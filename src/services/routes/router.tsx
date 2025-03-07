@@ -1,13 +1,14 @@
-import { createBrowserRouter, Navigate } from 'react-router'
-import { AppConstantRoutes } from './path'
-import Login from '@/pages/auth/Login'
-import Example from '@/pages/Example'
-import Register from '@/pages/auth/Register'
 import SecureRoute from '@/components/auth/SecureRoute'
 import LayoutWithAuth from '@/components/layout/LayoutWithAuth'
+import Login from '@/pages/auth/Login'
+import Register from '@/pages/auth/Register'
+import Example from '@/pages/Example'
 import Home from '@/pages/user/Home'
-import SearchPage from '@/pages/user/SearchPage'
 import MusictypePage from '@/pages/user/MusictypePage'
+import Profile from '@/pages/user/Profile'
+import SearchPage from '@/pages/user/SearchPage'
+import { createBrowserRouter, Navigate } from 'react-router'
+import { AppConstantRoutes } from './path'
 
 /*
   This file is where you define the routes
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
       {
         path: '',
         element: <Navigate to={AppConstantRoutes.paths.home} replace />,
+      },
+      {
+        path: AppConstantRoutes.paths.profile,
+        element: <Profile />,
       },
     ],
   },

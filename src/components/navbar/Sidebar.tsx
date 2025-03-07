@@ -1,15 +1,14 @@
+import { apiClient } from '@/services/network/apiClient'
+import { ApiConstantRoutes } from '@/services/network/path'
 import { AppConstantRoutes } from '@/services/routes/path'
-import {
-  cleanupAfterLogout,
-  selectAuth,
-  useAuthStore,
-} from '@/services/zustand/authStore'
-import { useQueryClient } from '@tanstack/react-query'
+import { cleanupAfterLogout, useAuthStore } from '@/services/zustand/authStore'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import Seperator from '../common/Seperator'
+import Button from '../common/Button'
 
 interface SidebarItemProps {
   icon?: React.ReactNode
@@ -17,6 +16,8 @@ interface SidebarItemProps {
   onClick?: () => void
   className?: string
   active?: boolean
+  activeColor?: string
+  hoverColor?: string
 }
 
 interface UserTileProps {
@@ -32,11 +33,25 @@ export const UserTile: React.FC<UserTileProps> = ({
   avatar,
   className,
 }) => {
+  const navigate = useNavigate()
+  const handleProfileClick = () => {
+    navigate(AppConstantRoutes.paths.profile)
+  }
   return (
     <div className={clsx('flex items-center space-x-2', className)}>
-      <img src={avatar} alt={name} className='rounded-full size-15' />
+      <img
+        src={avatar}
+        alt={name}
+        className='rounded-full size-15 hover:underline cursor-pointer object-cover'
+        onClick={handleProfileClick}
+      />
       <div>
-        <h1>{name}</h1>
+        <h1
+          className='hover:underline cursor-pointer'
+          onClick={handleProfileClick}
+        >
+          {name}
+        </h1>
         <p className='text-xs text-gray-500'>{userName}</p>
       </div>
     </div>
@@ -49,21 +64,20 @@ export const SideBarItem: React.FC<SidebarItemProps> = ({
   onClick,
   className,
   active,
+  activeColor,
+  hoverColor,
 }) => {
   return (
-    <li>
-      <div
-        onClick={onClick}
-        className={clsx(
-          'flex items-center space-x-2 cursor-pointer transition-all duration-150 ease-linear',
-          'hover:bg-gray-800 rounded-lg p-2',
-          active && 'bg-gray-800',
-          className,
-        )}
-      >
-        {icon}
-        <span>{title}</span>
-      </div>
+    <li
+      onClick={onClick}
+      className={clsx(
+        `w-full ${hoverColor || 'hover:bg-zinc-400/20'} flex items-center space-x-2 cursor-pointer transition-all duration-150 ease-linear rounded-lg px-4 py-2`, // Adjusted padding
+        active && `${activeColor || 'bg-zinc-400/20'}`,
+        className,
+      )}
+    >
+      {icon}
+      <span>{title}</span> {/* Ensure text expands properly */}
     </li>
   )
 }
@@ -89,11 +103,24 @@ const SidebarItems = [
 ]
 
 const Sidebar: React.FC = () => {
-  const user = selectAuth(useAuthStore.getState())
+  const userId = useAuthStore((state) => state.auth.userId)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
   const { pathname } = useLocation()
+  const { data: user } = useQuery({
+    queryKey: ['getUser', userId], // Include userId to refetch when it changes
+    retry: 1,
+    queryFn: async () => {
+      const response = await apiClient.get(
+        ApiConstantRoutes.paths.auth.getUser(userId),
+      )
+      return response // Ensure only `data` is returned
+    },
+    enabled: !!userId, // Only run query if userId is defined
+  })
+
+  console.log('User:', user)
 
   const handleLogout = () => {
     cleanupAfterLogout()
@@ -145,19 +172,30 @@ const Sidebar: React.FC = () => {
 
         <ul className='absolute bottom-0 w-full'>
           <UserTile
-            name={`${user.firstName} ${user.lastName}`}
-            userName={`@${user.username}`}
-            avatar='https://randomuser.me/api/portraits/men/1.jpg'
+            name={`${user?.data.firstName} ${user?.data.lastName}`}
+            userName={`@${user?.data.username}`}
+            avatar={
+              user?.data.profile_image ||
+              'https://robohash.org/default-avatar.png'
+            }
             className='ml-5 mb-5'
           />
-          <Seperator className='my-4 w-full px-3 b' />
+          <Seperator className='my-4 w-full px-3' />
 
-          <SideBarItem
-            icon={<PowerOff />}
+          <Button
+            onClick={handleLogout}
+            className='flex items-center justify-center gap-x-2 px-5 ms-5'
+          >
+            <PowerOff size={20} />
+            <span>Logout</span>
+          </Button>
+
+          {/* <SideBarItem
+            icon={<PowerOff size={20} />}
             title='Logout'
             onClick={handleLogout}
             className='m-5'
-          />
+          /> */}
         </ul>
       </nav>
     </div>

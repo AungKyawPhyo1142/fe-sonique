@@ -11,7 +11,7 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ playlists, title }) => {
   return (
-    <div className='p-5  my-3'>
+    <div className=''>
       <div className='flex flex-row justify-between items-center p-4 text-white'>
         <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
         <span className='text-md text-gray-300 hover:underline'>Show all</span>
@@ -58,10 +58,16 @@ const Home = () => {
   ]
 
   return (
-    <div className='flex flex-col h-screen relative fade-in'>
-      <div className='bg-gradient-to-b from-[#121212] to-[#00000099] h-[35%] w-full'></div>
-      <div className='bg-[#3333] w-full h-[65%]'></div>
-      <div className='absolute  left-0 right-0 m-5'>
+    // <div className='flex flex-col h-screen relative fade-in '>
+    //   <div className='bg-gradient-to-b from-[#121212] to-[#00000099] h-[35%] w-full'></div>
+    //   <div className='bg-[#3333] w-full h-[65%]'></div>
+    //   <div className='absolute  left-0 right-0 m-5'>
+    //     <CardList playlists={playlists} title='Focus' />
+    //     <CardList playlists={playlists} title='Chill' />
+    //   </div>
+    // </div>
+    <div className='flex flex-col relative fade-in '>
+      <div className=' h-full'>
         <CardList playlists={playlists} title='Focus' />
         <CardList playlists={playlists} title='Chill' />
       </div>
