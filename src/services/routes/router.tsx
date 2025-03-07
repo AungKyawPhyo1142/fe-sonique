@@ -1,14 +1,21 @@
+import SecureRoute from '@/components/auth/SecureRoute'
+import LayoutWithAuth from '@/components/layout/LayoutWithAuth'
+import Login from '@/pages/auth/Login'
+import Register from '@/pages/auth/Register'
+import Example from '@/pages/Example'
+import Home from '@/pages/user/Home'
+import MusictypePage from '@/pages/user/MusictypePage'
+import Profile from '@/pages/user/Profile'
+import SearchPage from '@/pages/user/SearchPage'
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppConstantRoutes } from './path'
-import Login from '@/pages/auth/Login'
 
 /*
   This file is where you define the routes
 */
 
 export const getDefaultRoute = () => {
-  // TODO: return the default route (home?)
-  return AppConstantRoutes.paths.auth.default
+  return AppConstantRoutes.paths.home
 }
 
 // Define a default route handler
@@ -27,5 +34,44 @@ export const router = createBrowserRouter([
   {
     path: AppConstantRoutes.paths.auth.login,
     element: <Login />,
+  },
+  {
+    path: AppConstantRoutes.paths.auth.register,
+    element: <Register />,
+  },
+  {
+    path: AppConstantRoutes.paths.example,
+    element: <Example />,
+  },
+  // ** The following paths are all protected by SecureRoute component
+  {
+    path: AppConstantRoutes.paths.default,
+    element: (
+      <SecureRoute>
+        <LayoutWithAuth />
+      </SecureRoute>
+    ),
+    children: [
+      {
+        path: AppConstantRoutes.paths.home,
+        element: <Home />,
+      },
+      {
+        path: AppConstantRoutes.paths.searchPage,
+        element: <SearchPage />,
+      },
+      {
+        path: AppConstantRoutes.paths.musictypePage(':title'), // <-- Dynamic Path
+        element: <MusictypePage />,
+      },
+      {
+        path: '',
+        element: <Navigate to={AppConstantRoutes.paths.home} replace />,
+      },
+      {
+        path: AppConstantRoutes.paths.profile,
+        element: <Profile />,
+      },
+    ],
   },
 ])
