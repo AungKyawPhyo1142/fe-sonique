@@ -6,9 +6,11 @@ import { AppConstantRoutes } from '@/services/routes/path'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router'
 import { object, ObjectSchema, string } from 'yup'
-import musicPic from '/images/music.png'
+//import musicPic from '/images/music.png'
 import Modal from '@/components/common/Modal'
 import { useState } from 'react'
+import DisplaySong from '@/components/common/DisplaySong'
+import Seperator from '@/components/common/Seperator'
 
 // note that the names are identical to the id of the input fields
 export interface RegisterFormValues {
@@ -102,22 +104,39 @@ const Register = () => {
         type='success'
         button
       />
-      <div className='flex min-h-screen'>
+      <div className='flex min-h-screen grid-bg'>
         {/**Photo Section */}
+        {/**
         <div
           className='w-1/2 bg-cover bg-center'
           style={{ backgroundImage: `url(${musicPic})` }}
         ></div>
+         */}
+
+        {/**Display song */}
+        <div className='w-1/2 bg-cover bg-center align-middle flex'>
+          <DisplaySong
+            register
+            songSrc='/audio/APT.mp3'
+            imgSrc='/images/APT.jpg'
+          />
+        </div>
 
         {/**Form Section */}
         <div className='w-1/2 text-white flex flex-col justify-center items-center'>
           <form
             onSubmit={formik.handleSubmit}
-            className='w-full max-w-[400px] space-y-3  py-2'
+            className='w-full max-w-[480px] space-y-[1rem] py-7 px-9 rounded-[10px] text-[#FFFFFF]'
+            style={{
+              background: 'rgba(131, 131, 131, 0.31)',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+            }}
           >
             {/**First Name and Last Name */}
-            <div className='flex items-center  gap-x-3 '>
-              <div className='flex flex-col w-full gap-y-1'>
+            <div className='flex items-center gap-x-3 '>
+              <div className='flex flex-col w-full gap-y-1 '>
                 <label htmlFor='firstName'>First Name</label>
                 <Input
                   type='text'
@@ -192,11 +211,11 @@ const Register = () => {
             </div>
 
             {/**Register Button */}
-            <div className='flex justify-between mt-6 border-b-2 border-[#e5e7eb] pb-5'>
+            <div className='flex justify-between my-6'>
               <Button
                 loading={formik.isSubmitting}
                 disabled={formik.isSubmitting}
-                className='w-full font-semibold  h-[50px]'
+                className='w-full h-[50px]'
                 primary
                 type='submit'
               >
@@ -206,9 +225,12 @@ const Register = () => {
 
             {/**Already have an account */}
             <div className='text-center'>
-              <p className='text-[16px] py-2 mb-2'>Already have an account?</p>
+              <Seperator />
+              <p className='text-[16px] py-2 mb-2 pt-5  '>
+                Already have an account?
+              </p>
               <Button
-                className='w-full h-[50px] text-[16px]'
+                className='w-full h-[50px]'
                 outline
                 type='button'
                 onClick={() => navigate(AppConstantRoutes.paths.auth.login)}
