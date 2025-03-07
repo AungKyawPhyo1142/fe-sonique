@@ -1,6 +1,6 @@
 import Modal from '@/components/common/Modal'
-import ProfileForm from '@/components/common/ProfileForm'
-import SongContent from '@/components/common/SongContent'
+import ProfileForm from '@/components/features/settings/ProfileForm'
+import SongContent from '@/components/features/settings/SongContent'
 import ToggleSwitch from '@/components/common/ToggleSwitch'
 import ImageUploadModal from '@/components/modals/ImageUploadModal'
 import { SideBarItem } from '@/components/navbar/Sidebar'
@@ -18,6 +18,8 @@ import { Camera, Headphones, UserRound } from 'lucide-react'
 import { ChangeEvent, useRef, useState } from 'react'
 
 import { object, ObjectSchema, string } from 'yup'
+import Button from '@/components/common/Button'
+import { useNavigate } from 'react-router'
 
 export interface ProfileFormValues {
   id?: string
@@ -199,6 +201,7 @@ const Profile = () => {
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Something went wrong</div>
 
+  const navigate = useNavigate()
   return (
     <div className='text-white bg-[#202022] min-h-screen flex flex-col'>
       {/* Modal */}
@@ -227,26 +230,38 @@ const Profile = () => {
         />
       )}
       {/* Profile */}
-      <div className='flex flex-row items-center p-5'>
-        <div className='relative '>
-          <img
-            src={user?.data.profile_image}
-            alt='profile'
-            className='w-40 h-40 rounded-full object-cover'
-          />
-          <div
-            onClick={() => setUploadImage(true)}
-            className='absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity'
-          >
-            <Camera size={40} />
+      <div className='flex items-center justify-between'>
+        <div className='flex flex-row items-center p-5'>
+          <div className='relative '>
+            <img
+              src={user?.data.profile_image}
+              alt='profile'
+              className='w-40 h-40 rounded-full object-cover'
+            />
+            <div
+              onClick={() => setUploadImage(true)}
+              className='absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity'
+            >
+              <Camera size={40} />
+            </div>
+          </div>
+
+          <div className='flex flex-col items-start gap-y-5 px-10 justify-center'>
+            <h1 className='text-6xl font-bold'>
+              {user?.data.firstName} {user?.data.lastName}
+            </h1>
+            <span className='opacity-50'>@{user?.data.username}</span>
           </div>
         </div>
-
-        <div className='flex flex-col items-start gap-y-5 px-10 justify-center'>
-          <h1 className='text-6xl font-bold'>
-            {user?.data.firstName} {user?.data.lastName}
-          </h1>
-          <span className='opacity-50'>@{user?.data.username}</span>
+        <div className='flex flex-col mr-2'>
+          <Button
+            className='w-fit px-10 h-[50px]'
+            secondary
+            type='button'
+            onClick={() => navigate('/')}
+          >
+            Back
+          </Button>
         </div>
       </div>
       {/* Bio */}

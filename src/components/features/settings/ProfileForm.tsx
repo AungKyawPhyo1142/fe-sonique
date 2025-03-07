@@ -1,10 +1,10 @@
 import { ProfileFormValues } from '@/pages/user/Profile'
 import { FormikProps } from 'formik'
-import { useNavigate } from 'react-router'
-import Button from './Button'
-import GlassCard from './GlassCard'
-import Input from './Input'
-import Seperator from './Seperator'
+//import { useNavigate } from 'react-router'
+import Button from '../../common/Button'
+import GlassCard from '../../common/GlassCard'
+import Input from '../../common/Input'
+import Seperator from '../../common/Seperator'
 interface ProfileFormProps {
   formik: FormikProps<ProfileFormValues>
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -19,7 +19,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   disable,
   component,
 }) => {
-  const navigate = useNavigate()
   return (
     <div className='flex flex-col bg-[#202022] p-10 mx-auto min-h-screen'>
       <GlassCard className='flex flex-col items-center justify-center space-y-5 min-w-[600px]'>
@@ -92,9 +91,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
               className='w-fit px-10 h-[50px]'
               secondary
               type='button'
-              onClick={() => navigate('/')}
+              onClick={() => formik.resetForm()}
             >
-              Back
+              Clear
             </Button>
             {disable ? (
               <Button
