@@ -118,7 +118,7 @@ const Example = () => {
         </Button>
         <Modal
           isOpen={isModalOpen}
-          onClose={() => setModalOpen(false)}
+          setIsOpen={setModalOpen}
           title='Modal'
           content='It is Modal contents.'
           button
