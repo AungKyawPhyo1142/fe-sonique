@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone'
 import BaseModal from '../common/BaseModal'
 import Input from '../common/Input'
 import Button from '../common/Button'
+import { Music, Upload } from 'lucide-react'
 
 interface SongUploadModalProps {
   isOpen: boolean
@@ -55,24 +56,29 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
     formik.setFieldValue('cover', acceptedFiles[0])
   }
 
+  const audioMaxSize = 30 * 1024 * 1024
+  const coverMaxSize = 2 * 1024 * 1024
+
   const { getRootProps: getAudioRootProps, getInputProps: getAudioInputProps } =
     useDropzone({
       onDrop: onDropAudio,
-      accept: { 'audio/*': ['.mp3', '.wav', '.flac'] },
+      accept: { 'audio/*': ['.mp3', '.wav'] },
       maxFiles: 1,
+      maxSize: audioMaxSize,
     })
 
   const { getRootProps: getCoverRootProps, getInputProps: getCoverInputProps } =
     useDropzone({
       onDrop: onDropCover,
-      accept: { 'image/*': ['.jpg', '.png'] },
+      accept: { 'image/*': ['.jpg', '.jpeg', '.png', '.webp'] },
       maxFiles: 1,
+      maxSize: coverMaxSize,
     })
 
   return (
     <BaseModal isOpen={isOpen} setIsOpen={setIsOpen} title='Upload your track'>
       <form onSubmit={formik.handleSubmit}>
-        <div className='flex flex-col gap-y-6 w-full'>
+        <div className='flex flex-col gap-y-6 w-full '>
           <Input
             type='text'
             name='title'
@@ -97,10 +103,12 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             <h2 className='text-zinc-500 mb-2'>Audio File</h2>
             <div
               {...getAudioRootProps()}
-              className='p-4 border border-zinc-500 text-zinc-500 rounded flex flex-col items-center cursor-pointer'
+              className='text-center p-4 border border-zinc-500 text-zinc-500 rounded flex flex-col items-center cursor-pointer  gap-y-3 '
             >
               <input {...getAudioInputProps()} />
-              <p>Drag & drop your audio file here or click to browse</p>
+              <Music size={30} />
+              <p>Drag & drop your audio file or click to browse</p>
+              <p className='text-sm'>Supports MP3,WAV (max 30MB) </p>
               {formik.values.audio && (
                 <p className='text-sm text-gray-300'>
                   {formik.values.audio.name}
@@ -114,10 +122,12 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             <h2 className='text-zinc-500 mb-2'>Cover Image</h2>
             <div
               {...getCoverRootProps()}
-              className='p-4 border border-zinc-500 text-zinc-500 rounded flex flex-col items-center cursor-pointer'
+              className='text-center p-4 border border-zinc-500 text-zinc-500 rounded flex flex-col items-center cursor-pointer  gap-y-3 '
             >
               <input {...getCoverInputProps()} />
-              <p>Drag & drop your cover image here or click to browse</p>
+              <Upload size={30} />
+              <p>Drag & drop your cover image or click to browse</p>
+              <p className='text-sm'>Supports JPG, JPEG, PNG, WEBP (max 2MB)</p>
               {formik.values.cover && (
                 <p className='text-sm text-gray-300'>
                   {formik.values.cover.name}
@@ -129,16 +139,12 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
           <div className='flex justify-between w-full'>
             <Button
               secondary
-              className='px-[30px] py-2 !font-semibold'
+              className='px-[30px] py-2'
               onClick={() => setIsOpen(false)}
             >
               Cancel
             </Button>
-            <Button
-              primary
-              className='px-[30px] py-2 !font-semibold'
-              type='submit'
-            >
+            <Button primary className='px-[30px] py-2' type='submit'>
               Upload Track
             </Button>
           </div>
