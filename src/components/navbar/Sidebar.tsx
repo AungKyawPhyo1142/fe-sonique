@@ -7,8 +7,8 @@ import clsx from 'clsx'
 import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import Seperator from '../common/Seperator'
 import Button from '../common/Button'
+import Seperator from '../common/Seperator'
 
 interface SidebarItemProps {
   icon?: React.ReactNode

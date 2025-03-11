@@ -34,5 +34,8 @@ export const AppConstantRoutes = {
     get musictypePage() {
       return (title = ':title') => `/musictype/${title}`
     },
+    get songDetailPage() {
+      return (id: string) => `/songDetail/${id}`
+    }
   },
 }

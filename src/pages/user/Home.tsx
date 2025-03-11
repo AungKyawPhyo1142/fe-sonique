@@ -1,30 +1,36 @@
 import PlaylistCard from '@/components/common/PlaylistCard'
+import { AppConstantRoutes } from '@/services/routes/path'
+import { useNavigate } from 'react-router'
 
 interface CardListProps {
-  playlists: {
+  songLists: {
+    id: string
     image: string
     title: string
-    description: string
+    description: string 
+    songSrc?: string
   }[]
   title: string
 }
 
-const CardList: React.FC<CardListProps> = ({ playlists, title }) => {
+const CardList: React.FC<CardListProps> = ({ songLists, title }) => {
+  const navigate = useNavigate()
   return (
     <div className=''>
       <div className='flex flex-row justify-between items-center p-4 text-white'>
         <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
         <span className='text-md text-gray-300 hover:underline'>Show all</span>
       </div>
-      <div className=''>
-        <ul className='flex flex-row gap-10 p-4  '>
-          {playlists.map((playlist, index) => (
+      <div>
+        <ul className='flex flex-row gap-10 p-4  ' >
+          {songLists.map((songList, index) => (
             <PlaylistCard
               key={index}
               className='w-full'
-              image={playlist.image}
-              title={playlist.title}
-              description={playlist.description}
+              image={songList.image}
+              title={songList.title}
+              description={songList.description}
+              onClick={() => navigate(AppConstantRoutes.paths.songDetailPage(songList.id))}
             />
           ))}
         </ul>
@@ -36,24 +42,26 @@ const CardList: React.FC<CardListProps> = ({ playlists, title }) => {
 const Home = () => {
   const playlists = [
     {
-      image: 'https://picsum.photos/200/200',
-      title: 'Focus',
-      description: 'Lorem ipsum dolor sit amet',
+      id: '1',
+      image: 'https://i.scdn.co/image/ab67616d0000b27336032cb4acd9df050bc2e197',
+      title: 'APT',
+      description: 'Rose, BrunoMars',
+      songSrc: '/audio/APT.mp3',
     },
     {
-      image: 'https://picsum.photos/200/200',
-      title: 'Chill',
-      description: 'Consectetur adipiscing elit',
+      id: '2',
+      image:
+        'https://upload.wikimedia.org/wikipedia/en/0/0b/JustinBieberLoveYourself.png',
+      title: 'Love Yourself',
+      description: 'Justin Bieber',
+      songSrc: '/audio/LoveYourself.mp3',
     },
     {
-      image: 'https://picsum.photos/200/200',
-      title: 'Workout',
-      description: 'Sed do eiusmod tempor',
-    },
-    {
-      image: 'https://picsum.photos/200/200',
-      title: 'Party',
-      description: 'Incididunt ut labore et dolore',
+      id: '3',
+      image: 'https://i.scdn.co/image/ab67616d0000b2735a039ed450d3e9a5caaf7818',
+      title: 'Moonlist Floor',
+      description: 'Lisa',
+      songSrc: '/audio/MoonlistFloor.mp3',
     },
   ]
 
@@ -68,8 +76,8 @@ const Home = () => {
     // </div>
     <div className='flex flex-col relative fade-in '>
       <div className=' h-full'>
-        <CardList playlists={playlists} title='Focus' />
-        <CardList playlists={playlists} title='Chill' />
+        <CardList songLists={playlists} title='Focus' />
+        <CardList songLists={playlists} title='Chill' />
       </div>
     </div>
   )

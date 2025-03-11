@@ -7,6 +7,7 @@ import Home from '@/pages/user/Home'
 import MusictypePage from '@/pages/user/MusictypePage'
 import Profile from '@/pages/user/Profile'
 import SearchPage from '@/pages/user/SearchPage'
+import SongDetail from '@/pages/user/SongDetail'
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppConstantRoutes } from './path'
 
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
         path: AppConstantRoutes.paths.profile,
         element: <Profile />,
       },
+      {
+        path: AppConstantRoutes.paths.songDetailPage(":id"), // <-- Dynamic Path
+        element: <SongDetail />,
+      }
     ],
   },
 ])
