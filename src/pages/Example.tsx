@@ -19,7 +19,7 @@ const Example = () => {
   }
 
   //select
-  const [selectList, setSelectList] = useState('')
+  const [selectList] = useState('')
   const someList: ListBox[] = [
     {
       label: 'Label 1',
@@ -35,29 +35,7 @@ const Example = () => {
     },
   ]
 
-  const [selectedValue, setSelectedValue] = useState('')
-  const [options, setOptions] = useState<ListBox[]>([
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-    { value: 'Create Yourself', label: 'Create Yourself', isCreateNew: true },
-  ])
-
-  const handleSelectChange = (newValue: any) => {
-    setSelectedValue(newValue)
-  }
-
-  const handleAddOption = (newOption: ListBox) => {
-    setOptions([
-      ...options.slice(0, options.length - 1),
-      newOption,
-      options[options.length - 1],
-    ])
-  }
-
-  const handleList = (val: any) => {
-    setSelectList(val)
-  }
+  // const [selectedValue, setSelectedValue] = useState('')
 
   return (
     <div>
@@ -109,23 +87,14 @@ const Example = () => {
             placeholder='Select a company'
             className='mt-5 w-full'
             listOption={someList}
-            onSelected={handleList}
+            onSelected={() => {
+              console.log('selected')
+            }}
             value={selectList}
           />
         </fieldset>
       </div>
-      <div className='ml-5 mt-5 w-80'>
-        <Select
-          listOption={options}
-          onSelected={handleSelectChange}
-          value={selectedValue}
-          onAddOption={handleAddOption}
-          placeholder='Choose an option'
-          error={
-            selectedValue === 'option2' ? 'option 2 is not valid' : undefined
-          }
-        />
-      </div>
+
       <div className='mt-5'>
         <ErrorContent
           reload={() => {
