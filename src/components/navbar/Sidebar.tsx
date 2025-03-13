@@ -8,6 +8,7 @@ import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import Button from '../common/Button'
+import Player from '../common/Player'
 import Seperator from '../common/Seperator'
 
 interface SidebarItemProps {
@@ -120,8 +121,6 @@ const Sidebar: React.FC = () => {
     enabled: !!userId, // Only run query if userId is defined
   })
 
-  console.log('User:', user)
-
   const handleLogout = () => {
     cleanupAfterLogout()
     queryClient.clear()
@@ -144,17 +143,6 @@ const Sidebar: React.FC = () => {
               onClick={() => navigate(sidebar_item.path)}
             />
           ))}
-          {/* <SideBarItem
-            icon={<House />}
-            title='Home'
-            onClick={() => navigate(AppConstantRoutes.paths.home)}
-          />
-          <SideBarItem icon={<Search />} title='Search' onClick={undefined} />
-          <SideBarItem
-            icon={<Library />}
-            title='Your Library'
-            onClick={undefined}
-          /> */}
         </ul>
 
         <ul className='space-y-5 mt-5 p-5'>
@@ -169,7 +157,13 @@ const Sidebar: React.FC = () => {
             onClick={undefined}
           />
         </ul>
-
+        <div className='felx flex row items-center justify-center'>
+        <Seperator className=' !w-[80%] ' />
+        </div>
+        {/*Player will be here*/}
+        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && (
+          <Player />
+        )}
         <ul className='absolute bottom-0 w-full'>
           <UserTile
             name={`${user?.data.firstName} ${user?.data.lastName}`}
