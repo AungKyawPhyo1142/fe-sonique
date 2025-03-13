@@ -78,7 +78,7 @@ const BaseModal: React.FC<Props> = ({
               {/* The actual dialog panel  */}
               <DialogPanel
                 className={clsx(
-                  'max-w-lg flex flex-col gap-y-4 items-start justify-between bg-zinc-500/40 p-12 transform transition-all rounded-lg min-w-[500px] min-h-[300px] relative',
+                  'flex flex-col gap-y-4 items-start justify-between bg-zinc-500/40 p-12 transform transition-all rounded-lg min-w-[500px] min-h-[300px] relative',
                   className,
                 )}
               >

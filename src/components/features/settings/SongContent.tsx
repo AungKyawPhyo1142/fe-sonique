@@ -1,8 +1,9 @@
 import Button from '@/components/common/Button'
 import GlassCard from '@/components/common/GlassCard'
 import SongUploadModal from '@/components/modals/SongUploadModal'
-import { Music2, Clock3 } from 'lucide-react'
+import { Music2, Clock3, Pencil, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
+import EmptySong from '/images/EmptySongList.svg'
 /**
 const songs = [
   { title: 'GNX', duration: '1:59', date: 'Mar 12, 2025' },
@@ -49,34 +50,52 @@ const SongContent: React.FC = () => {
           />
         )}
       </div>
-      <GlassCard className='flex flex-col items-center !p-2 justify-center min-w-[900px]'>
-        <table className='text-left w-full table-auto ml-2 mb-[50px]'>
-          <thead className='text-[20px] text-zinc-500 '>
-            <tr>
-              <th className='py-4 px-4 font-light '>#</th>
-              <th className='py-4 px-4 font-light '>Title</th>
-              <th className='py-4 px-4 font-light '>
-                <Clock3 size={20} />
-              </th>
-              <th className='py-4 px-4 font-light '>Created At</th>
-            </tr>
-          </thead>
-          <tbody className='text-[20px] font-extralight '>
-            {songs.map((song, index) => (
-              <tr key={index}>
-                <td className='py-4 px-4'>
-                  <Music2 size={20} />
-                </td>
-                <td className='py-4 px-4 flex items-center gap-2'>
-                  {song.title}
-                </td>
-                <td className='py-4 px-4'>{song.duration}</td>
-                <td className='py-4 px-4'>{song.date}</td>
+
+      {songs.length === 0 ? (
+        <div className='min-w-[900px] justify-items-center'>
+          <img src={EmptySong} className=' min-w-[300px] rounded-2xl' />
+        </div>
+      ) : (
+        <GlassCard className='flex flex-col items-center !p-2 justify-center min-w-[900px]'>
+          <table className='text-left w-full ml-2 mb-[50px]'>
+            <thead className='text-[20px] text-zinc-500 '>
+              <tr>
+                <th className='py-4 px-4 font-light w-10'>#</th>
+                <th className='py-4 px-4 font-light flex-grow'>Title</th>
+                <th className='py-4 px-4 font-light w-20'>
+                  <Clock3 size={20} />
+                </th>
+                <th className='py-4 px-4 font-light w-40'>Created At</th>
+                <th className='py-4 px-4 font-light w-32 text-center'>
+                  Action
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </GlassCard>
+            </thead>
+            <tbody className='text-[20px] font-extralight '>
+              {songs.map((song, index) => (
+                <tr key={index}>
+                  <td className='py-4 px-4 w-10'>
+                    <Music2 size={20} />
+                  </td>
+                  <td className='py-4 px-4 flex items-center gap-2 flex-grow'>
+                    {song.title}
+                  </td>
+                  <td className='py-4 px-4 w-16'>{song.duration}</td>
+                  <td className='py-4 px-4 w-40'>{song.date}</td>
+                  <td className='py-4 px-4 w-32  '>
+                    <td className='w-16 px-2 hover:cursor-pointer'>
+                      <Pencil size={20} />
+                    </td>
+                    <td className='w-16 px-2 hover:cursor-pointer'>
+                      <Trash2 size={20} />
+                    </td>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </GlassCard>
+      )}
     </div>
   )
 }

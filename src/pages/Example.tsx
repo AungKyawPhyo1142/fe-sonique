@@ -19,6 +19,7 @@ const Example = () => {
   }
 
   //select
+  const [selectList, setSelectList] = useState('')
   const someList: ListBox[] = [
     {
       label: 'Label 1',
@@ -33,6 +34,30 @@ const Example = () => {
       value: 'val3',
     },
   ]
+
+  const [selectedValue, setSelectedValue] = useState('')
+  const [options, setOptions] = useState<ListBox[]>([
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+    { value: 'option3', label: 'Option 3' },
+    { value: 'Create Yourself', label: 'Create Yourself', isCreateNew: true },
+  ])
+
+  const handleSelectChange = (newValue: any) => {
+    setSelectedValue(newValue)
+  }
+
+  const handleAddOption = (newOption: ListBox) => {
+    setOptions([
+      ...options.slice(0, options.length - 1),
+      newOption,
+      options[options.length - 1],
+    ])
+  }
+
+  const handleList = (val: any) => {
+    setSelectList(val)
+  }
 
   return (
     <div>
@@ -74,7 +99,7 @@ const Example = () => {
         />
       </div>
       <div className='mt-5 w-[300px]'>
-        <fieldset className='flex-col'>
+        <fieldset className='flex-col ml-5'>
           <label htmlFor='company' className='text-lg font-[600] text-white'>
             Company
           </label>
@@ -82,12 +107,24 @@ const Example = () => {
             id='companyName'
             name='companyName'
             placeholder='Select a company'
-            className='mt-2 w-full'
-            value={'val'}
+            className='mt-5 w-full'
             listOption={someList}
-            onSelected={(value) => console.log(value)}
+            onSelected={handleList}
+            value={selectList}
           />
         </fieldset>
+      </div>
+      <div className='ml-5 mt-5 w-80'>
+        <Select
+          listOption={options}
+          onSelected={handleSelectChange}
+          value={selectedValue}
+          onAddOption={handleAddOption}
+          placeholder='Choose an option'
+          error={
+            selectedValue === 'option2' ? 'option 2 is not valid' : undefined
+          }
+        />
       </div>
       <div className='mt-5'>
         <ErrorContent

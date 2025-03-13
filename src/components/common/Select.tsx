@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import {
   Listbox,
   ListboxOption,
@@ -7,18 +7,22 @@ import {
   ListboxButton,
 } from '@headlessui/react'
 import { ChevronRight } from 'lucide-react'
-import { Props as InputProps } from './Input'
+import Input, { Props as InputProps } from './Input'
 import clsx from 'clsx'
+import BaseModal from './BaseModal'
+import Button from './Button'
 
 export interface ListBox {
   value: string
   label: string
+  isCreateNew?: boolean
 }
 
 interface Props extends InputProps {
   listOption: ListBox[]
   onSelected: (value: string | number | boolean) => void
   value: string
+  onAddOption?: (newOption: ListBox) => void
 }
 
 const Select: React.FC<Props> = (props) => {
@@ -30,22 +34,37 @@ const Select: React.FC<Props> = (props) => {
     value,
     placeholder,
     disabled,
+    onAddOption,
   } = props
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [newOption, setNewOption] = useState('')
+
+  const handleCreateNew = () => {
+    setIsModalOpen(true)
+  }
+  const handleAdd = () => {
+    if (newOption.trim() !== '' && onAddOption) {
+      onAddOption({ value: newOption, label: newOption })
+      setIsModalOpen(false)
+    }
+  }
 
   return (
     <Listbox value={value} onChange={onSelected}>
       <div className='relative mt-1 w-full'>
         <ListboxButton
           as='div'
-          className={clsx('relative w-full cursor-pointer bg-white text-left', {
+          className={clsx('relative w-full cursor-pointer text-left', {
             'pointer-events-none cursor-not-allowed': disabled,
           })}
         >
           <div
             className={clsx(
-              'block h-[49px] w-full rounded-lg border border-gray-300 !bg-transparent px-1 py-3 text-base text-gray-500 outline-none transition-colors duration-200 placeholder:text-dark-600 focus:border-primary-600 focus:ring-0',
+              'block h-[49px] w-full rounded-lg border border-zinc-200/30 !bg-transparent px-1 py-3 text-base text-zinc-500 outline-none transition-colors duration-200 placeholder:text-dark-600 focus:border-zinc-300/80 focus:ring-2',
               {
                 'text-[#303332ff] pl-3': placeholder,
+                '!text-white': value && placeholder,
               },
               error ? 'border-red-500' : 'border-dark-600',
               disabled
@@ -76,18 +95,20 @@ const Select: React.FC<Props> = (props) => {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <ListboxOptions className='absolute z-10 mt-2 max-h-60 w-full !overflow-auto rounded-md bg-white px-2 py-3 text-base shadow-lg ring-1 ring-gray-300 ring-opacity-5 focus:outline-none'>
+          <ListboxOptions className='absolute z-10 mt-2 max-h-60 w-full !overflow-auto rounded-md bg-zinc-200 text-base shadow-lg ring-1 ring-zinc-200/30 ring-opacity-5 focus:outline-none'>
             {listOption.map((item, itemIdx) => (
               <ListboxOption
                 key={itemIdx}
                 className={({ focus, selected }) =>
-                  `relative cursor-pointer select-none hover:bg-gray-50 transition-colors duration-150 ease-in-out p-4 border-b border-gray-300 text-dark-400 ${
+                  `relative cursor-pointer select-none transition-colors duration-150 ease-in-out p-4 border-b border-zinc-200/30 text-zinc-500 hover:text-zinc-900 ${
                     (focus || selected) && 'bg-primary-100'
                   } ${
                     itemIdx === listOption.length - 1 && 'border-b-0' // remove border bottom on last item
                   }`
                 }
-                value={item.value}
+                //Create New option
+                value={item.isCreateNew ? '' : item.value}
+                onClick={item.isCreateNew ? handleCreateNew : undefined}
               >
                 <span className='block truncate'>{item.label}</span>
               </ListboxOption>
@@ -95,6 +116,39 @@ const Select: React.FC<Props> = (props) => {
           </ListboxOptions>
         </Transition>
       </div>
+      <BaseModal
+        isOpen={isModalOpen}
+        setIsOpen={handleCreateNew}
+        title='Create your list'
+        className='flex flex-col gap-y-5'
+      >
+        <Input
+          type='text'
+          name='title'
+          placeholder='album'
+          className='font-light'
+          value={newOption}
+          onChange={(e) => setNewOption(e.target.value)}
+        />
+        <div className='fex w-full gap-x-5 justify-between'>
+          <Button
+            primary
+            onClick={() => setIsModalOpen(false)}
+            className='px-[30px] py-2'
+            type='submit'
+          >
+            Cancel
+          </Button>
+          <Button
+            secondary
+            onClick={handleAdd}
+            className='px-[30px] py-2'
+            type='submit'
+          >
+            Upload
+          </Button>
+        </div>
+      </BaseModal>
     </Listbox>
   )
 }

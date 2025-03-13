@@ -14,9 +14,8 @@ import { ApiConstantRoutes } from '@/services/network/path'
 import { useAuthStore } from '@/services/zustand/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { useFormik } from 'formik'
-import { Camera, Headphones, UserRound } from 'lucide-react'
+import { Camera, Headphones, UserRound, Undo2 } from 'lucide-react'
 import { ChangeEvent, useRef, useState } from 'react'
-
 import { object, ObjectSchema, string } from 'yup'
 import Button from '@/components/common/Button'
 import { useNavigate } from 'react-router'
@@ -255,12 +254,12 @@ const Profile = () => {
         </div>
         <div className='flex flex-col mr-2'>
           <Button
-            className='w-fit px-10 h-[50px]'
+            className='w-fit px-5 h-[50px]'
             secondary
             type='button'
             onClick={() => navigate('/')}
           >
-            Back
+            <Undo2 size={30}/>
           </Button>
         </div>
       </div>

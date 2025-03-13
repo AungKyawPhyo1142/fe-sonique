@@ -77,25 +77,28 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
 
   return (
     <BaseModal isOpen={isOpen} setIsOpen={setIsOpen} title='Upload your track'>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} className='w-[700px]'>
         <div className='flex flex-col gap-y-6 w-full '>
           <Input
             type='text'
             name='title'
             placeholder='Track Title'
             onChange={formik.handleChange}
+            className='font-light'
           />
           <Input
             type='text'
             name='genere'
             placeholder='Genere'
             onChange={formik.handleChange}
+            className='font-light'
           />
           <Input
             type='text'
             name='album'
             placeholder='Album'
             onChange={formik.handleChange}
+            className='font-light'
           />
 
           {/* Audio Upload */}
@@ -107,8 +110,8 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             >
               <input {...getAudioInputProps()} />
               <Music size={30} />
-              <p>Drag & drop your audio file or click to browse</p>
-              <p className='text-sm'>Supports MP3,WAV (max 30MB) </p>
+              <p className='text-[16px] font-semibold'>Drag & drop your audio file or click to browse</p>
+              <p className='text-[12px] font-light text-zinc-400/70'>Supports MP3,WAV (max 30MB) </p>
               {formik.values.audio && (
                 <p className='text-sm text-gray-300'>
                   {formik.values.audio.name}
@@ -126,8 +129,8 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             >
               <input {...getCoverInputProps()} />
               <Upload size={30} />
-              <p>Drag & drop your cover image or click to browse</p>
-              <p className='text-sm'>Supports JPG, JPEG, PNG, WEBP (max 2MB)</p>
+              <p className='text-[16px] font-semibold'>Drag & drop your cover image or click to browse</p>
+              <p className='text-[12px] font-light text-zinc-400/70'>Supports JPG, JPEG, PNG, WEBP (max 2MB)</p>
               {formik.values.cover && (
                 <p className='text-sm text-gray-300'>
                   {formik.values.cover.name}
