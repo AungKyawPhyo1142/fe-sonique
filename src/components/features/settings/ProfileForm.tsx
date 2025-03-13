@@ -20,8 +20,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   component,
 }) => {
   return (
-    <div className='flex flex-col bg-[#202022] p-10 mx-auto min-h-screen'>
-      <GlassCard className='flex flex-col items-center justify-center space-y-5 min-w-[600px]'>
+    <div className='flex flex-col bg-[#202022] p-10 w-full min-h-screen'>
+      <GlassCard className='flex flex-col items-center justify-center space-y-5 mx-auto w-[600px]'>
         {/* Form */}
         <form
           className='flex flex-col items-start justify-center gap-y-10 font-light w-full'

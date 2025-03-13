@@ -12,7 +12,7 @@ import { Fragment } from 'react/jsx-runtime'
 import React from 'react'
 import { X } from 'lucide-react'
 
-interface Props {
+export interface Props {
   children?: React.ReactNode
   className?: string
   title?: string
@@ -94,7 +94,6 @@ const BaseModal: React.FC<Props> = ({
                     <p className='text-sm text-gray-300'>{content}</p>
                   </div>
                 </div>
-
                 {children}
               </DialogPanel>
             </TransitionChild>

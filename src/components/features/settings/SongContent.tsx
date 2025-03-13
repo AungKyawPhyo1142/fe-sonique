@@ -3,7 +3,7 @@ import GlassCard from '@/components/common/GlassCard'
 import SongUploadModal from '@/components/modals/SongUploadModal'
 import { Music2, Clock3, Pencil, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
-import EmptySong from '/images/EmptySongList.svg'
+import EmptyState from '@/components/common/EmptyState'
 /**
 const songs = [
   { title: 'GNX', duration: '1:59', date: 'Mar 12, 2025' },
@@ -29,7 +29,7 @@ const SongContent: React.FC = () => {
     setIsModalOpen(false)
   }
   return (
-    <div className='flex flex-col bg-[#202022] p-10 mx-auto min-h-screen'>
+    <div className='flex flex-col bg-[#202022] p-10 w-full min-h-screen'>
       <div className='flex justify-between mt-5 mb-[50px]'>
         <h1 className='text-3xl font-bold'>Your Songs</h1>
         <Button
@@ -52,9 +52,10 @@ const SongContent: React.FC = () => {
       </div>
 
       {songs.length === 0 ? (
-        <div className='min-w-[900px] justify-items-center'>
-          <img src={EmptySong} className=' min-w-[300px] rounded-2xl' />
-        </div>
+        <EmptyState
+          heading='Empty Song List'
+          subheading="You haven't added any songs yet!"
+        />
       ) : (
         <GlassCard className='flex flex-col items-center !p-2 justify-center min-w-[900px]'>
           <table className='text-left w-full ml-2 mb-[50px]'>

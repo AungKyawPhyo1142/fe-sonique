@@ -5,47 +5,85 @@ import BaseModal from '../common/BaseModal'
 import Input from '../common/Input'
 import Button from '../common/Button'
 import { Music, Upload } from 'lucide-react'
+import { ListBox } from '../common/Select'
+import { useCustomEvents } from '@/services/formik/hooks'
+import SelectWithModal from '../common/SelectWithModal'
+import CreateGenreModalContent from '../features/genres/CreateGenreModalContent'
+import { useGetAllGenres } from '@/services/network/lib/songs'
+
+interface SongUploadFormValues {
+  title: string
+  genre: string
+  album: string
+  audio: File | null
+  cover: File | null
+}
 
 interface SongUploadModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   setSongUpload: (song: {
     title: string
-    genere: string
+    genre: string
     album: string
     duration: string
     date: string
   }) => void
 }
 
+let genreOptions: ListBox[]
+
 const SongUploadModal: React.FC<SongUploadModalProps> = ({
   isOpen,
   setIsOpen,
   setSongUpload,
 }) => {
+  const [createGenreModalOpen, setCreateGenreModalOpen] = React.useState(false)
+
+  const {
+    data: genreData,
+    refetch: genreRefetch,
+    isSuccess,
+  } = useGetAllGenres()
+
+  // update genre options when genreData changes
+  if (isSuccess && genreData) {
+    genreOptions = genreData.data.map((genre) => ({
+      label: genre.name,
+      value: genre.id.toString(),
+    }))
+  }
+
+  console.log('opt', genreOptions)
+
+  const initialValues: SongUploadFormValues = {
+    title: '',
+    genre: '',
+    album: '',
+    audio: null,
+    cover: null,
+  }
+
+  const onSubmit = async (values: SongUploadFormValues) => {
+    console.log(values)
+    const date = new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    })
+    const duration = '03:35'
+    setSongUpload({
+      title: values.title,
+      genre: values.genre,
+      album: values.album,
+      duration,
+      date,
+    })
+  }
+
   const formik = useFormik({
-    initialValues: {
-      title: '',
-      genere: '',
-      album: '',
-      audio: null as File | null,
-      cover: null as File | null,
-    },
-    onSubmit: (values) => {
-      const date = new Date().toLocaleDateString('en-US', {
-        month: 'short',
-        day: '2-digit',
-        year: 'numeric',
-      })
-      const duration = '03:35'
-      setSongUpload({
-        title: values.title,
-        genere: values.genere,
-        album: values.album,
-        duration,
-        date,
-      })
-    },
+    initialValues,
+    onSubmit,
   })
 
   const onDropAudio = (acceptedFiles: File[]) => {
@@ -75,6 +113,8 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
       maxSize: coverMaxSize,
     })
 
+  const { onSetValueById } = useCustomEvents<SongUploadFormValues>(formik)
+
   return (
     <BaseModal isOpen={isOpen} setIsOpen={setIsOpen} title='Upload your track'>
       <form onSubmit={formik.handleSubmit} className='w-[700px]'>
@@ -86,12 +126,37 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             onChange={formik.handleChange}
             className='font-light'
           />
-          <Input
-            type='text'
-            name='genere'
-            placeholder='Genere'
-            onChange={formik.handleChange}
-            className='font-light'
+          {/* <Select
+            name='genre'
+            placeholder='Select music genre'
+            listOption={genreOptions}
+            value={formik.values.genre}
+            onSelected={(value) => {
+              onSetValueById('genre', value)
+            }}
+          /> */}
+          <SelectWithModal
+            isOpen={createGenreModalOpen}
+            onModalClose={() => {
+              genreRefetch()
+              setCreateGenreModalOpen(false)
+            }}
+            setIsOpen={setCreateGenreModalOpen}
+            ModalTitle='Create Genre'
+            ModalSubHeading='Fill all the fields to create a new genre'
+            ModalContent={
+              <CreateGenreModalContent
+                setModalOpen={setCreateGenreModalOpen}
+                refetch={genreRefetch}
+              />
+            }
+            name='genre'
+            placeholder='Select music genre'
+            listOption={genreOptions ?? []}
+            value={formik.values.genre}
+            onSelected={(value) => {
+              onSetValueById('genre', value)
+            }}
           />
           <Input
             type='text'
@@ -110,8 +175,12 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             >
               <input {...getAudioInputProps()} />
               <Music size={30} />
-              <p className='text-[16px] font-semibold'>Drag & drop your audio file or click to browse</p>
-              <p className='text-[12px] font-light text-zinc-400/70'>Supports MP3,WAV (max 30MB) </p>
+              <p className='text-[16px] font-semibold'>
+                Drag & drop your audio file or click to browse
+              </p>
+              <p className='text-[12px] font-light text-zinc-400/70'>
+                Supports MP3,WAV (max 30MB){' '}
+              </p>
               {formik.values.audio && (
                 <p className='text-sm text-gray-300'>
                   {formik.values.audio.name}
@@ -129,8 +198,12 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             >
               <input {...getCoverInputProps()} />
               <Upload size={30} />
-              <p className='text-[16px] font-semibold'>Drag & drop your cover image or click to browse</p>
-              <p className='text-[12px] font-light text-zinc-400/70'>Supports JPG, JPEG, PNG, WEBP (max 2MB)</p>
+              <p className='text-[16px] font-semibold'>
+                Drag & drop your cover image or click to browse
+              </p>
+              <p className='text-[12px] font-light text-zinc-400/70'>
+                Supports JPG, JPEG, PNG, WEBP (max 2MB)
+              </p>
               {formik.values.cover && (
                 <p className='text-sm text-gray-300'>
                   {formik.values.cover.name}

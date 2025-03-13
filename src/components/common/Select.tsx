@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import {
   Listbox,
   ListboxOption,
@@ -7,22 +7,22 @@ import {
   ListboxButton,
 } from '@headlessui/react'
 import { ChevronRight } from 'lucide-react'
-import Input, { Props as InputProps } from './Input'
+import { Props as InputProps } from './Input'
 import clsx from 'clsx'
-import BaseModal from './BaseModal'
-import Button from './Button'
+// import BaseModal from './BaseModal'
+// import Button from './Button'
 
 export interface ListBox {
   value: string
   label: string
-  isCreateNew?: boolean
+  // isCreateNew?: boolean
 }
 
 interface Props extends InputProps {
   listOption: ListBox[]
   onSelected: (value: string | number | boolean) => void
   value: string
-  onAddOption?: (newOption: ListBox) => void
+  // onAddOption?: (newOption: ListBox) => void
 }
 
 const Select: React.FC<Props> = (props) => {
@@ -34,21 +34,21 @@ const Select: React.FC<Props> = (props) => {
     value,
     placeholder,
     disabled,
-    onAddOption,
+    // onAddOption,
   } = props
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [newOption, setNewOption] = useState('')
+  // const [isModalOpen, setIsModalOpen] = useState(false)
+  // const [newOption, setNewOption] = useState('')
 
-  const handleCreateNew = () => {
-    setIsModalOpen(true)
-  }
-  const handleAdd = () => {
-    if (newOption.trim() !== '' && onAddOption) {
-      onAddOption({ value: newOption, label: newOption })
-      setIsModalOpen(false)
-    }
-  }
+  // const handleCreateNew = () => {
+  //   setIsModalOpen(true)
+  // }
+  // const handleAdd = () => {
+  //   if (newOption.trim() !== '' && onAddOption) {
+  //     onAddOption({ value: newOption, label: newOption })
+  //     setIsModalOpen(false)
+  //   }
+  // }
 
   return (
     <Listbox value={value} onChange={onSelected}>
@@ -79,7 +79,7 @@ const Select: React.FC<Props> = (props) => {
           {/* <ArrowRightIcon className='absolute right-[16px] top-[20px] rotate-90 fill-dark-800' /> */}
           {!disabled && (
             <ChevronRight
-              className='absolute right-[16px] top-[15px] rotate-90'
+              className='absolute right-[16px]  top-[15px] rotate-90'
               color='#d1d5dc'
             />
           )}
@@ -95,20 +95,21 @@ const Select: React.FC<Props> = (props) => {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <ListboxOptions className='absolute z-10 mt-2 max-h-60 w-full !overflow-auto rounded-md bg-zinc-200 text-base shadow-lg ring-1 ring-zinc-200/30 ring-opacity-5 focus:outline-none'>
+          <ListboxOptions className='absolute z-10 mt-2 max-h-60 w-full !overflow-auto rounded-md bg-zinc-700/20 backdrop-blur-2xl text-base shadow-lg ring-1 ring-zinc-200/30 ring-opacity-5 focus:outline-none'>
             {listOption.map((item, itemIdx) => (
               <ListboxOption
                 key={itemIdx}
                 className={({ focus, selected }) =>
-                  `relative cursor-pointer select-none transition-colors duration-150 ease-in-out p-4 border-b border-zinc-200/30 text-zinc-500 hover:text-zinc-900 ${
+                  `relative cursor-pointer select-none transition-colors duration-150 ease-in-out p-4 border-b border-zinc-200/30 text-zinc-400 hover:text-white ${
                     (focus || selected) && 'bg-primary-100'
                   } ${
                     itemIdx === listOption.length - 1 && 'border-b-0' // remove border bottom on last item
                   }`
                 }
                 //Create New option
-                value={item.isCreateNew ? '' : item.value}
-                onClick={item.isCreateNew ? handleCreateNew : undefined}
+                value={item.value}
+                // value={item.isCreateNew ? '' : item.value}
+                // onClick={item.isCreateNew ? handleCreateNew : undefined}
               >
                 <span className='block truncate'>{item.label}</span>
               </ListboxOption>
@@ -116,7 +117,7 @@ const Select: React.FC<Props> = (props) => {
           </ListboxOptions>
         </Transition>
       </div>
-      <BaseModal
+      {/* <BaseModal
         isOpen={isModalOpen}
         setIsOpen={handleCreateNew}
         title='Create your list'
@@ -148,7 +149,7 @@ const Select: React.FC<Props> = (props) => {
             Upload
           </Button>
         </div>
-      </BaseModal>
+      </BaseModal> */}
     </Listbox>
   )
 }

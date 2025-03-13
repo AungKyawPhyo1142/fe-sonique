@@ -26,5 +26,15 @@ export const ApiConstantRoutes = {
         },
       }
     },
+    get songs() {
+      return {
+        get default() {
+          return '/songs'
+        },
+        get getAllGenres() {
+          return `${this.default}/genres`
+        },
+      }
+    },
   },
 }

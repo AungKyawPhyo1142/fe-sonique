@@ -39,7 +39,7 @@ const Profile = () => {
   const [index, setIndex] = useState(0)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [loadingButton, setLoadingButton] = useState(false)
-
+  const navigate = useNavigate()
   //get user details
   const userId = useAuthStore((state) => state.auth.userId)
   const {
@@ -200,9 +200,8 @@ const Profile = () => {
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Something went wrong</div>
 
-  const navigate = useNavigate()
   return (
-    <div className='text-white bg-[#202022] min-h-screen flex flex-col'>
+    <div className='text-white bg-[#202022] min-h-screen w-full flex flex-col'>
       {/* Modal */}
       <Modal
         type='info'
@@ -259,7 +258,7 @@ const Profile = () => {
             type='button'
             onClick={() => navigate('/')}
           >
-            <Undo2 size={30}/>
+            <Undo2 size={30} />
           </Button>
         </div>
       </div>
