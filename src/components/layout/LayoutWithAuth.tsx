@@ -12,7 +12,7 @@ const LayoutWithAuth = () => {
       {location.pathname !== AppConstantRoutes.paths.profile && <Sidebar />}
       <main
         className={clsx(
-          'bg-zinc-400/2 min-h-screen',
+          'bg-zinc-400/20 min-h-screen',
           location.pathname !== AppConstantRoutes.paths.profile && 'ml-[240px]',
           !location.pathname.startsWith(
             AppConstantRoutes.paths.songDetailPage(''),

@@ -7,7 +7,7 @@ import { useParams } from 'react-router'
 
 const SongDetail = () => {
   const { id } = useParams()
-  const {addToQueue} =  useSongStore()
+  const { addToQueue } = useSongStore()
   const playlists = [
     {
       id: '1',
@@ -40,26 +40,26 @@ const SongDetail = () => {
       <div
         style={{ backgroundImage: `url(${song?.image})` }}
         className={clsx(
-          `flex flex-col text-white items-center brightness-75 justify-center h-[90vh] bg-cover bg-center bg-no-repeat `,
+          `flex flex-col text-white items-center  justify-center h-[90vh] bg-cover bg-center bg-no-repeat `,
         )}
       >
-        <GlassCard className='!rounded-none !bg-black/40 flex flex-col items-center justify-center space-y-5 w-full h-full !backdrop-blur-md'>
-          <h1 className='text-[150px] font-bold'>{song?.title}</h1>
+        <GlassCard className='!rounded-none  flex flex-col items-center justify-center space-y-5 w-full h-full !backdrop-blur-md bg-black/50 text-white'>
+          <h1 className='text-[150px] font-bold  '>{song?.title}</h1>
           <div className='flex flex-row items-center justify-center text-2xl space-x-2 '>
             <span>{song?.description}</span>
             <div className='rounded-full bg-white w-2 h-2'></div>
             <span>2:50</span>
             <button
-            onClick={() => {
-              if (song) {
-                addToQueue(song)
-                console.log('Added to queue')
-              }
-            }}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-          >
-            <CirclePlay size={40} />
-          </button>
+              onClick={() => {
+                if (song) {
+                  addToQueue(song)
+                  console.log('Added to queue')
+                }
+              }}
+              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            >
+              <CirclePlay size={40} />
+            </button>
           </div>
         </GlassCard>
       </div>
