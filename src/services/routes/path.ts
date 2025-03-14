@@ -36,6 +36,6 @@ export const AppConstantRoutes = {
     },
     get songDetailPage() {
       return (id: string) => `/songDetail/${id}`
-    }
+    },
   },
 }

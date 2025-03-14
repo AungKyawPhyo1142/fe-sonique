@@ -158,7 +158,7 @@ const Sidebar: React.FC = () => {
           />
         </ul>
         <div className='felx flex row items-center justify-center'>
-        <Seperator className=' !w-[80%] ' />
+          <Seperator className=' !w-[80%] ' />
         </div>
         {/*Player will be here*/}
         {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && (

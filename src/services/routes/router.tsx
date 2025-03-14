@@ -74,9 +74,9 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: AppConstantRoutes.paths.songDetailPage(":id"), // <-- Dynamic Path
+        path: AppConstantRoutes.paths.songDetailPage(':id'), // <-- Dynamic Path
         element: <SongDetail />,
-      }
+      },
     ],
   },
 ])

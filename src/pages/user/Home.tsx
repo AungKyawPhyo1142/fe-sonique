@@ -7,7 +7,7 @@ interface CardListProps {
     id: string
     image: string
     title: string
-    description: string 
+    description: string
     songSrc?: string
   }[]
   title: string
@@ -22,7 +22,7 @@ const CardList: React.FC<CardListProps> = ({ songLists, title }) => {
         <span className='text-md text-gray-300 hover:underline'>Show all</span>
       </div>
       <div>
-        <ul className='flex flex-row gap-10 p-4  ' >
+        <ul className='flex flex-row gap-10 p-4  '>
           {songLists.map((songList, index) => (
             <PlaylistCard
               key={index}
@@ -30,7 +30,9 @@ const CardList: React.FC<CardListProps> = ({ songLists, title }) => {
               image={songList.image}
               title={songList.title}
               description={songList.description}
-              onClick={() => navigate(AppConstantRoutes.paths.songDetailPage(songList.id))}
+              onClick={() =>
+                navigate(AppConstantRoutes.paths.songDetailPage(songList.id))
+              }
             />
           ))}
         </ul>

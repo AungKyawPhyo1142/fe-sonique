@@ -26,7 +26,6 @@ const PlaylistCard: React.FC<Props> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-     
     >
       <div className='relative'>
         {/* <img

@@ -104,27 +104,26 @@ const Player = () => {
             </span>
           </div>
           <div className='flex flex-row items-center space-x-4'>
-          <button
-            onClick={undefined}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-          >
-            <SkipBack size={20} />
-          </button>
+            <button
+              onClick={undefined}
+              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            >
+              <SkipBack size={20} />
+            </button>
 
-          <button
-            onClick={togglePlayPause}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-          >
-            {isPlaying ? <CirclePause size={30} /> : <CirclePlay size={30} />}
-          </button>
+            <button
+              onClick={togglePlayPause}
+              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            >
+              {isPlaying ? <CirclePause size={30} /> : <CirclePlay size={30} />}
+            </button>
 
-          <button
-            onClick={undefined}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-          >
-            <SkipForward size={20} />
-          </button>
-
+            <button
+              onClick={undefined}
+              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            >
+              <SkipForward size={20} />
+            </button>
           </div>
         </div>
       </div>
