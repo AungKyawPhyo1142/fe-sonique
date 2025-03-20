@@ -9,12 +9,17 @@ import { ListBox } from '../common/Select'
 import { useCustomEvents } from '@/services/formik/hooks'
 import SelectWithModal from '../common/SelectWithModal'
 import CreateGenreModalContent from '../features/genres/CreateGenreModalContent'
-import { useGetAllGenres } from '@/services/network/lib/songs'
+import { songRequests, useGetAllGenres } from '@/services/network/lib/songs'
+import { useAuthStore } from '@/services/zustand/authStore'
+import { useQuery } from '@tanstack/react-query'
+import { ApiConstantRoutes } from '@/services/network/path'
+import { apiClient } from '@/services/network/apiClient'
+//import { object, ObjectSchema, string, mixed } from 'yup'
 
-interface SongUploadFormValues {
+export interface SongUploadFormValues {
+  id?: string
   title: string
   genre: string
-  album: string
   audio: File | null
   cover: File | null
 }
@@ -22,24 +27,19 @@ interface SongUploadFormValues {
 interface SongUploadModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setSongUpload: (song: {
-    title: string
-    genre: string
-    album: string
-    duration: string
-    date: string
-  }) => void
+  // setSongUpload:()=>void
 }
 
 let genreOptions: ListBox[]
 
+//Song Upload Modal
 const SongUploadModal: React.FC<SongUploadModalProps> = ({
   isOpen,
   setIsOpen,
-  setSongUpload,
+  //setSongUpload,
 }) => {
+  //Create Genre
   const [createGenreModalOpen, setCreateGenreModalOpen] = React.useState(false)
-
   const {
     data: genreData,
     refetch: genreRefetch,
@@ -47,42 +47,74 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
   } = useGetAllGenres()
 
   // update genre options when genreData changes
-  if (isSuccess && genreData) {
+  if (isSuccess && genreData.data.length > 0) {
     genreOptions = genreData.data.map((genre) => ({
       label: genre.name,
       value: genre.id.toString(),
     }))
   }
+  // console.log('opt', genreOptions)
 
-  console.log('opt', genreOptions)
+  //check user ID
+  const userId = useAuthStore((state) => state.auth.userId)
+  const { error, refetch } = useQuery({
+    queryKey: ['getUser', userId],
+    retry: 1,
+    queryFn: async () => {
+      const response = await apiClient.get(
+        ApiConstantRoutes.paths.auth.getUser(userId),
+      )
+      return response
+    },
+    enabled: !!userId,
+  })
 
+  //Song Form Value
   const initialValues: SongUploadFormValues = {
     title: '',
     genre: '',
-    album: '',
     audio: null,
     cover: null,
   }
-
+  /**
+  const validationSchema: ObjectSchema<SongUploadFormValues> = object().shape({
+    title: string().required('Title is required'),
+    genre: string().required('Genre is required'),
+    audio: mixed().required('Audio file is required'),
+    cover: mixed().required('Cover image is required'),
+  })
+  */
   const onSubmit = async (values: SongUploadFormValues) => {
-    console.log(values)
-    const date = new Date().toLocaleDateString('en-US', {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    })
-    const duration = '03:35'
-    setSongUpload({
-      title: values.title,
-      genre: values.genre,
-      album: values.album,
-      duration,
-      date,
-    })
+    const formData = new FormData()
+    formData.append('title', values.title!)
+    formData.append('genre', values.genre!)
+    formData.append('audio', values.audio!)
+    formData.append('cover', values.cover!)
+
+    try {
+      const res = await songRequests.uploadSong({
+        id: userId!,
+        formData,
+      })
+      console.log('API Response: ', res)
+      if (res && res.status === 'SUCCESS') {
+        console.log('Song Uploaded:', res.data)
+        setIsOpen(false)
+        refetch()
+      } else {
+        console.error('Error uploading song:', error)
+      }
+    } catch (error: any) {
+      console.error(
+        'Error uploading song:',
+        error.response?.data || error.message,
+      )
+    }
   }
 
   const formik = useFormik({
     initialValues,
+    //validationSchema,
     onSubmit,
   })
 
@@ -126,15 +158,6 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             onChange={formik.handleChange}
             className='font-light'
           />
-          {/* <Select
-            name='genre'
-            placeholder='Select music genre'
-            listOption={genreOptions}
-            value={formik.values.genre}
-            onSelected={(value) => {
-              onSetValueById('genre', value)
-            }}
-          /> */}
           <SelectWithModal
             isOpen={createGenreModalOpen}
             onModalClose={() => {
@@ -158,14 +181,6 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
               onSetValueById('genre', value)
             }}
           />
-          <Input
-            type='text'
-            name='album'
-            placeholder='Album'
-            onChange={formik.handleChange}
-            className='font-light'
-          />
-
           {/* Audio Upload */}
           <div>
             <h2 className='text-zinc-500 mb-2'>Audio File</h2>

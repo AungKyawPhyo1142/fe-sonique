@@ -32,7 +32,16 @@ export const ApiConstantRoutes = {
           return '/songs'
         },
         get getAllGenres() {
-          return `${this.default}/genres`
+          return `${this.default}/genres/all`
+        },
+        get genres() {
+          return `${this.default}/genres` // API route for creating a genre
+        },
+        get UploadSong() {
+          return `${this.default}/upload`
+        },
+        getSongByArtist(id: string) {
+          return `${this.default}/artist/${id}` //show shongs by artis id
         },
       }
     },

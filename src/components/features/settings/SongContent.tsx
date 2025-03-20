@@ -4,30 +4,68 @@ import SongUploadModal from '@/components/modals/SongUploadModal'
 import { Music2, Clock3, Pencil, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 import EmptyState from '@/components/common/EmptyState'
-/**
-const songs = [
-  { title: 'GNX', duration: '1:59', date: 'Mar 12, 2025' },
-  { title: 'DNA', duration: '1:59', date: 'Apr 12, 2025' },
-  { title: 'M.A.A.D City', duration: '1:59', date: 'Jun 12, 2025' },
-  { title: 'DAMN', duration: '1:59', date: 'Dec 12, 2025' },
-  { title: 'SECTION 80', duration: '1:59', date: 'Feb 12, 2025' },
-  { title: 'ABCD', duration: '2:30', date: 'March 6, 2020' },
-]
-*/
-interface Song {
+import { useAuthStore } from '@/services/zustand/authStore'
+import { useQuery } from '@tanstack/react-query'
+import { apiClient } from '@/services/network/apiClient'
+import { ApiConstantRoutes } from '@/services/network/path'
+
+interface SongLists {
+  id?: string
   title: string
-  duration: string
+  duration: number
   date: string
+  create_at: string
 }
 
 const SongContent: React.FC = () => {
-  const [songs, setSongs] = useState<Song[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  //get userId
+  const userId = useAuthStore((state) => state.auth.userId)
+  const {
+    data: user,
+    isLoading,
+    error,
+    //refetch,
+  } = useQuery({
+    queryKey: ['getSongByArtist', userId],
+    retry: 1,
+    queryFn: async () => {
+      const res = await apiClient.get(
+        ApiConstantRoutes.paths.songs.getSongByArtist(userId),
+      )
+      return res.data
+    },
+    enabled: !!userId,
+  })
 
-  const addSong = (song: Song) => {
-    setSongs([...songs, song])
+  //get songs
+  //const [songs, setSongs] = useState<SongLists[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  /**
+  const addSong = () => {
+    refetch()
     setIsModalOpen(false)
   }
+  */
+  //Formating date and time
+  const formatDuration = (sec: number) => {
+    const minutes = Math.floor(sec / 60)
+    const secs = Math.floor(sec % 60)
+    return `${minutes}:${secs.toString().padStart(2, '0')}`
+  }
+
+  const formatDate = (d: string) => {
+    const date = new Date(d)
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  }
+
+  //error handling
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Something went wrong</div>
+
   return (
     <div className='flex flex-col bg-[#202022] p-10 w-full min-h-screen'>
       <div className='flex justify-between mt-5 mb-[50px]'>
@@ -46,12 +84,11 @@ const SongContent: React.FC = () => {
           <SongUploadModal
             isOpen={isModalOpen}
             setIsOpen={setIsModalOpen}
-            setSongUpload={addSong}
+            //setSongUpload={addSong}
           />
         )}
       </div>
-
-      {songs.length === 0 ? (
+      {user?.length === 0 ? (
         <EmptyState
           heading='Empty Song List'
           subheading="You haven't added any songs yet!"
@@ -67,30 +104,34 @@ const SongContent: React.FC = () => {
                   <Clock3 size={20} />
                 </th>
                 <th className='py-4 px-4 font-light w-40'>Created At</th>
-                <th className='py-4 px-4 font-light w-32 text-center'>
-                  Action
-                </th>
+                <th className='py-4 px-4 font-light w-32'>Action</th>
               </tr>
             </thead>
             <tbody className='text-[20px] font-extralight '>
-              {songs.map((song, index) => (
-                <tr key={index}>
+              {/**{songs.map((song, index) => ( ))}*/}
+
+              {user?.map((song: SongLists) => (
+                <tr key={song.id}>
                   <td className='py-4 px-4 w-10'>
                     <Music2 size={20} />
                   </td>
-                  <td className='py-4 px-4 flex items-center gap-2 flex-grow'>
+                  <td className='py-4 px-4 flex gap-2 flex-grow'>
                     {song.title}
                   </td>
-                  <td className='py-4 px-4 w-16'>{song.duration}</td>
-                  <td className='py-4 px-4 w-40'>{song.date}</td>
-                  <td className='py-4 px-4 w-32  '>
+                  <td className='py-4 px-4 w-16'>
+                    {formatDuration(song.duration)}
+                  </td>
+                  <td className='py-4 px-4 w-40'>
+                    {formatDate(song.create_at)}
+                  </td>
+                  <tr className='py-4 px-4 w-32'>
                     <td className='w-16 px-2 hover:cursor-pointer'>
                       <Pencil size={20} />
                     </td>
                     <td className='w-16 px-2 hover:cursor-pointer'>
                       <Trash2 size={20} />
                     </td>
-                  </td>
+                  </tr>
                 </tr>
               ))}
             </tbody>

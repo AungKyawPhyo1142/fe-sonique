@@ -72,7 +72,7 @@ const SelectWithModal: React.FC<Props> = (props) => {
         >
           <div
             className={clsx(
-              'block h-[49px] w-full rounded-lg border border-zinc-200/30 !bg-transparent px-1 py-3 text-base text-zinc-500 outline-none transition-colors duration-200 placeholder:text-dark-600 focus:border-zinc-300/80 focus:ring-2',
+              'block w-full rounded-lg border border-zinc-200/30 !bg-transparent px-3 py-2 text-base text-zinc-500 outline-none transition-colors duration-200 placeholder:text-dark-600 focus:border-zinc-300/80 focus:ring-2',
               {
                 'text-[#303332ff] pl-3': placeholder,
                 '!text-white': value && placeholder,
@@ -90,7 +90,7 @@ const SelectWithModal: React.FC<Props> = (props) => {
           {/* <ArrowRightIcon className='absolute right-[16px] top-[20px] rotate-90 fill-dark-800' /> */}
           {!disabled && (
             <ChevronRight
-              className='absolute right-[16px]  top-[15px] rotate-90'
+              className='absolute right-[16px]  top-[10px] rotate-90'
               color='#d1d5dc'
             />
           )}
