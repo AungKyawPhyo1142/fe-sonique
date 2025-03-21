@@ -8,6 +8,7 @@ import { useAuthStore } from '@/services/zustand/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '@/services/network/apiClient'
 import { ApiConstantRoutes } from '@/services/network/path'
+import { formatDate, formatDuration } from '@/helpers/helpers'
 
 interface SongLists {
   id?: string
@@ -46,21 +47,22 @@ const SongContent: React.FC = () => {
     setIsModalOpen(false)
   }
   */
-  //Formating date and time
-  const formatDuration = (sec: number) => {
-    const minutes = Math.floor(sec / 60)
-    const secs = Math.floor(sec % 60)
-    return `${minutes}:${secs.toString().padStart(2, '0')}`
-  }
 
-  const formatDate = (d: string) => {
-    const date = new Date(d)
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-  }
+  //Formating date and time
+  // const formatDuration = (sec: number) => {
+  //   const minutes = Math.floor(sec / 60)
+  //   const secs = Math.floor(sec % 60)
+  //   return `${minutes}:${secs.toString().padStart(2, '0')}`
+  // }
+
+  // const formatDate = (d: string) => {
+  //   const date = new Date(d)
+  //   return date.toLocaleDateString('en-US', {
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //   })
+  // }
 
   //error handling
   if (isLoading) return <div>Loading...</div>
@@ -121,17 +123,17 @@ const SongContent: React.FC = () => {
                   <td className='py-4 px-4 w-16'>
                     {formatDuration(song.duration)}
                   </td>
-                  <td className='py-4 px-4 w-40'>
+                  <td className='py-4 px-4 w-40 text-center'>
                     {formatDate(song.create_at)}
                   </td>
-                  <tr className='py-4 px-4 w-32'>
-                    <td className='w-16 px-2 hover:cursor-pointer'>
+                  <td className='py-4 px-4 w-32 flex items-center '>
+                    <span className='w-16 px-2 hover:cursor-pointer'>
                       <Pencil size={20} />
-                    </td>
-                    <td className='w-16 px-2 hover:cursor-pointer'>
+                    </span>
+                    <span className='w-16 px-2 hover:cursor-pointer'>
                       <Trash2 size={20} />
-                    </td>
-                  </tr>
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>

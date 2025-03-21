@@ -85,6 +85,8 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
   })
   */
   const onSubmit = async (values: SongUploadFormValues) => {
+    console.log('Form Values:', values)
+
     const formData = new FormData()
     formData.append('title', values.title!)
     formData.append('genre', values.genre!)
@@ -235,7 +237,13 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             >
               Cancel
             </Button>
-            <Button primary className='px-[30px] py-2' type='submit'>
+            <Button
+              disabled={formik.isSubmitting}
+              loading={formik.isSubmitting}
+              primary
+              className='px-[30px] py-2'
+              type='submit'
+            >
               Upload Track
             </Button>
           </div>

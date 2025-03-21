@@ -52,9 +52,19 @@ export const songRequests = {
   },
 
   async uploadSong(v: UploadSongValue): Promise<UploadSongResponse> {
+    // your original request-body(v.formData) is not matching with what the Backend is expecting,
+    // so you need to create a new request-body that matches the Backend's expected format.
+    const resquestBody = {
+      audio: v.formData.get('audio'),
+      coverImage: v.formData.get('cover'),
+      genreId: v.formData.get('genre'),
+      title: v.formData.get('title'),
+      artistId: v.id,
+    }
+
     return apiClient.post(
       ApiConstantRoutes.paths.songs.UploadSong,
-      v.formData,
+      resquestBody,
       {
         headers: {
           'Content-Type': 'multipart/form-data',
