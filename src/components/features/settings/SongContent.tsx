@@ -9,6 +9,8 @@ import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '@/services/network/apiClient'
 import { ApiConstantRoutes } from '@/services/network/path'
 import { formatDate, formatDuration } from '@/helpers/helpers'
+import DeleteSong from './DeleteSong'
+import Alert from '@/components/common/Alert'
 
 interface SongLists {
   id?: string
@@ -19,13 +21,21 @@ interface SongLists {
 }
 
 const SongContent: React.FC = () => {
+  //delete
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
+  const [alertMessage, setAlertMessage] = useState<{
+    message: string
+    type: 'success' | 'error' | 'info'
+  } | null>(null)
+
   //get userId
   const userId = useAuthStore((state) => state.auth.userId)
   const {
     data: user,
     isLoading,
     error,
-    //refetch,
+    refetch: SongRefetch,
   } = useQuery({
     queryKey: ['getSongByArtist', userId],
     retry: 1,
@@ -39,30 +49,7 @@ const SongContent: React.FC = () => {
   })
 
   //get songs
-  //const [songs, setSongs] = useState<SongLists[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  /**
-  const addSong = () => {
-    refetch()
-    setIsModalOpen(false)
-  }
-  */
-
-  //Formating date and time
-  // const formatDuration = (sec: number) => {
-  //   const minutes = Math.floor(sec / 60)
-  //   const secs = Math.floor(sec % 60)
-  //   return `${minutes}:${secs.toString().padStart(2, '0')}`
-  // }
-
-  // const formatDate = (d: string) => {
-  //   const date = new Date(d)
-  //   return date.toLocaleDateString('en-US', {
-  //     year: 'numeric',
-  //     month: 'short',
-  //     day: 'numeric',
-  //   })
-  // }
 
   //error handling
   if (isLoading) return <div>Loading...</div>
@@ -86,7 +73,7 @@ const SongContent: React.FC = () => {
           <SongUploadModal
             isOpen={isModalOpen}
             setIsOpen={setIsModalOpen}
-            //setSongUpload={addSong}
+            refetchSong={SongRefetch}
           />
         )}
       </div>
@@ -130,13 +117,31 @@ const SongContent: React.FC = () => {
                     <span className='w-16 px-2 hover:cursor-pointer'>
                       <Pencil size={20} />
                     </span>
-                    <span className='w-16 px-2 hover:cursor-pointer'>
+                    <span
+                      className='w-16 px-2 hover:cursor-pointer '
+                      onClick={() => {
+                        setSelectedSongId(song.id!)
+                        setDeleteModalOpen(true)
+                      }}
+                    >
                       <Trash2 size={20} />
                     </span>
                   </td>
                 </tr>
               ))}
             </tbody>
+            {isDeleteModalOpen && selectedSongId && (
+              <DeleteSong
+                isOpen={isDeleteModalOpen}
+                setIsOpen={setDeleteModalOpen}
+                songId={selectedSongId}
+                refetch={SongRefetch}
+                setAlertMessage={setAlertMessage}
+              />
+            )}
+            {alertMessage && (
+              <Alert message={alertMessage.message} type={alertMessage.type} />
+            )}
           </table>
         </GlassCard>
       )}

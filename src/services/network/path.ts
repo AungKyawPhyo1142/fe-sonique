@@ -43,6 +43,9 @@ export const ApiConstantRoutes = {
         getSongByArtist(id: string) {
           return `${this.default}/artist/${id}` //show shongs by artis id
         },
+        deleteSong(songId: string) {
+          return `${this.default}/${songId}`
+        },
       }
     },
   },

@@ -39,6 +39,29 @@ export interface UploadSongResponse {
   status: STATUS
 }
 
+//delete song
+export interface DeleteSongValue {
+  songId: string
+}
+export interface DeleteSongResponse {
+  data: {
+    id: string
+    title: string
+    fileName: string
+    fileUrl: string
+    duration: string
+    coverImage: string
+    coverImageUrl: string
+    genreId: string
+    artistId: string
+    albumId: string
+    create_at: string
+    updated_at: string
+    deleted_at: string
+  }
+  status: STATUS
+}
+
 export const useGetAllGenres = () => {
   return useQuery<getAllGenresResponse>({
     queryKey: ['get-all-genres'],
@@ -71,5 +94,10 @@ export const songRequests = {
         },
       },
     )
+  },
+
+  //delete song
+  async DeleteSong(v: DeleteSongValue): Promise<DeleteSongResponse> {
+    return apiClient.delete(ApiConstantRoutes.paths.songs.deleteSong(v.songId!))
   },
 }

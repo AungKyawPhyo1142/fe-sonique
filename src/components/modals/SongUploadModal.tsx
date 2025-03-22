@@ -27,7 +27,7 @@ export interface SongUploadFormValues {
 interface SongUploadModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  // setSongUpload:()=>void
+  refetchSong: () => void
 }
 
 let genreOptions: ListBox[]
@@ -36,7 +36,7 @@ let genreOptions: ListBox[]
 const SongUploadModal: React.FC<SongUploadModalProps> = ({
   isOpen,
   setIsOpen,
-  //setSongUpload,
+  refetchSong,
 }) => {
   //Create Genre
   const [createGenreModalOpen, setCreateGenreModalOpen] = React.useState(false)
@@ -57,7 +57,7 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
 
   //check user ID
   const userId = useAuthStore((state) => state.auth.userId)
-  const { error, refetch } = useQuery({
+  const { error } = useQuery({
     queryKey: ['getUser', userId],
     retry: 1,
     queryFn: async () => {
@@ -76,14 +76,6 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
     audio: null,
     cover: null,
   }
-  /**
-  const validationSchema: ObjectSchema<SongUploadFormValues> = object().shape({
-    title: string().required('Title is required'),
-    genre: string().required('Genre is required'),
-    audio: mixed().required('Audio file is required'),
-    cover: mixed().required('Cover image is required'),
-  })
-  */
   const onSubmit = async (values: SongUploadFormValues) => {
     console.log('Form Values:', values)
 
@@ -101,8 +93,8 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
       console.log('API Response: ', res)
       if (res && res.status === 'SUCCESS') {
         console.log('Song Uploaded:', res.data)
+        refetchSong()
         setIsOpen(false)
-        refetch()
       } else {
         console.error('Error uploading song:', error)
       }
@@ -203,6 +195,9 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
                   {formik.values.audio.name}
                 </p>
               )}
+              {formik.errors.audio && (
+                <p className='text-sm text-red-500'>{formik.errors.audio}</p>
+              )}
             </div>
           </div>
 
@@ -225,6 +220,9 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
                 <p className='text-sm text-gray-300'>
                   {formik.values.cover.name}
                 </p>
+              )}
+              {formik.errors.cover && (
+                <p className='text-sm text-red-500'>{formik.errors.cover}</p>
               )}
             </div>
           </div>
