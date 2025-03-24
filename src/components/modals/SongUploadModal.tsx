@@ -14,7 +14,7 @@ import { useAuthStore } from '@/services/zustand/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { ApiConstantRoutes } from '@/services/network/path'
 import { apiClient } from '@/services/network/apiClient'
-//import { object, ObjectSchema, string, mixed } from 'yup'
+import { object, ObjectSchema, string, mixed } from 'yup'
 
 export interface SongUploadFormValues {
   id?: string
@@ -38,6 +38,9 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
   setIsOpen,
   refetchSong,
 }) => {
+  const audioMaxSize = 30 * 1024 * 1024
+  const coverMaxSize = 2 * 1024 * 1024
+
   //Create Genre
   const [createGenreModalOpen, setCreateGenreModalOpen] = React.useState(false)
   const {
@@ -76,6 +79,37 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
     audio: null,
     cover: null,
   }
+  const validationSchema: ObjectSchema<SongUploadFormValues> = object().shape({
+    id: string().optional(),
+    title: string().required('Title is required'),
+    genre: string().required('Genre is required'),
+    audio: mixed<File>()
+      .required('Audio file is required')
+      .test(
+        'fileSize',
+        'Audio file must be less than 30MB',
+        (value) => value && value.size <= audioMaxSize,
+      )
+      .test(
+        'fileType',
+        'Only MP3 and WAV formats are allowed',
+        (value) => value && ['audio/mpeg', 'audio/wav'].includes(value.type),
+      ),
+    cover: mixed<File>()
+      .required('Cover image is required')
+      .test(
+        'fileSize',
+        'Cover image must be less than 2MB',
+        (value) => value && value.size <= coverMaxSize,
+      )
+      .test(
+        'fileType',
+        'Only JPG, JPEG, PNG, and WEBP formats are allowed',
+        (value) =>
+          value &&
+          ['image/jpeg', 'image/png', 'image/webp'].includes(value.type),
+      ),
+  })
   const onSubmit = async (values: SongUploadFormValues) => {
     console.log('Form Values:', values)
 
@@ -90,9 +124,9 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
         id: userId!,
         formData,
       })
-      console.log('API Response: ', res)
+      //console.log('API Response: ', res)
       if (res && res.status === 'SUCCESS') {
-        console.log('Song Uploaded:', res.data)
+        //console.log('Song Uploaded:', res.data)
         refetchSong()
         setIsOpen(false)
       } else {
@@ -106,12 +140,6 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
     }
   }
 
-  const formik = useFormik({
-    initialValues,
-    //validationSchema,
-    onSubmit,
-  })
-
   const onDropAudio = (acceptedFiles: File[]) => {
     formik.setFieldValue('audio', acceptedFiles[0])
   }
@@ -119,9 +147,6 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
   const onDropCover = (acceptedFiles: File[]) => {
     formik.setFieldValue('cover', acceptedFiles[0])
   }
-
-  const audioMaxSize = 30 * 1024 * 1024
-  const coverMaxSize = 2 * 1024 * 1024
 
   const { getRootProps: getAudioRootProps, getInputProps: getAudioInputProps } =
     useDropzone({
@@ -139,6 +164,14 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
       maxSize: coverMaxSize,
     })
 
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+    validateOnChange: false,
+    validateOnBlur: false,
+  })
+
   const { onSetValueById } = useCustomEvents<SongUploadFormValues>(formik)
 
   return (
@@ -146,6 +179,8 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
       <form onSubmit={formik.handleSubmit} className='w-[700px]'>
         <div className='flex flex-col gap-y-6 w-full '>
           <Input
+            value={formik.values.title}
+            error={formik.errors.title}
             type='text'
             name='title'
             placeholder='Track Title'
@@ -171,6 +206,7 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
             placeholder='Select music genre'
             listOption={genreOptions ?? []}
             value={formik.values.genre}
+            error={formik.errors.genre}
             onSelected={(value) => {
               onSetValueById('genre', value)
             }}
@@ -188,7 +224,7 @@ const SongUploadModal: React.FC<SongUploadModalProps> = ({
                 Drag & drop your audio file or click to browse
               </p>
               <p className='text-[12px] font-light text-zinc-400/70'>
-                Supports MP3,WAV (max 30MB){' '}
+                Supports MP3,WAV (max 30MB)
               </p>
               {formik.values.audio && (
                 <p className='text-sm text-gray-300'>
