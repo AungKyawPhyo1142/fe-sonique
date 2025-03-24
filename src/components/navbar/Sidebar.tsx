@@ -161,9 +161,11 @@ const Sidebar: React.FC = () => {
           <Seperator className=' !w-[80%] ' />
         </div>
         {/*Player will be here*/}
+        <div className='flex flex-col items-center justify-center my-5'> 
         {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && (
           <Player />
         )}
+        </div>
         <ul className='absolute bottom-0 w-full'>
           <UserTile
             name={`${user?.data.firstName} ${user?.data.lastName}`}

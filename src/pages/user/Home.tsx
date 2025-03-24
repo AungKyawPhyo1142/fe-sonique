@@ -1,14 +1,19 @@
 import PlaylistCard from '@/components/common/PlaylistCard'
+import { apiClient } from '@/services/network/apiClient'
+import { ApiConstantRoutes } from '@/services/network/path'
 import { AppConstantRoutes } from '@/services/routes/path'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
 
 interface CardListProps {
   songLists: {
+    artistId: string
+    audioUrl: string
+    coverImageUrl: string
+    duration: number
+    genre: string
     id: string
-    image: string
     title: string
-    description: string
-    songSrc?: string
   }[]
   title: string
 }
@@ -18,55 +23,58 @@ const CardList: React.FC<CardListProps> = ({ songLists, title }) => {
   return (
     <div className=''>
       <div className='flex flex-row justify-between items-center p-4 text-white'>
-        <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
-        <span className='text-md text-gray-300 hover:underline'>Show all</span>
+      <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
+      <span className='text-md text-gray-300 hover:underline'>Show all</span>
       </div>
       <div>
-        <ul className='flex flex-row gap-10 p-4  '>
-          {songLists.map((songList, index) => (
-            <PlaylistCard
-              key={index}
-              className='w-full'
-              image={songList.image}
-              title={songList.title}
-              description={songList.description}
-              onClick={() =>
-                navigate(AppConstantRoutes.paths.songDetailPage(songList.id))
-              }
-            />
-          ))}
-        </ul>
+      <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4'>
+        {songLists.map((songList, index) => (
+        <PlaylistCard
+          key={index}
+          className='w-full'
+          image={songList.coverImageUrl}
+          title={songList.title}
+          description={songList.artistId}
+          onClick={() =>
+          navigate(AppConstantRoutes.paths.songDetailPage(songList.id))
+          }
+        />
+        ))}
+      </ul>
       </div>
     </div>
   )
 }
 
 const Home = () => {
-  const playlists = [
-    {
-      id: '1',
-      image: 'https://i.scdn.co/image/ab67616d0000b27336032cb4acd9df050bc2e197',
-      title: 'APT',
-      description: 'Rose, BrunoMars',
-      songSrc: '/audio/APT.mp3',
-    },
-    {
-      id: '2',
-      image:
-        'https://upload.wikimedia.org/wikipedia/en/0/0b/JustinBieberLoveYourself.png',
-      title: 'Love Yourself',
-      description: 'Justin Bieber',
-      songSrc: '/audio/LoveYourself.mp3',
-    },
-    {
-      id: '3',
-      image: 'https://i.scdn.co/image/ab67616d0000b2735a039ed450d3e9a5caaf7818',
-      title: 'Moonlist Floor',
-      description: 'Lisa',
-      songSrc: '/audio/MoonlistFloor.mp3',
-    },
-  ]
+  const fetchSongs = async ({ pageParam = '' }) => {
+    const response = await apiClient.get(
+      ApiConstantRoutes.paths.auth.getAllSongs(pageParam),
+    )
 
+    return response.data
+  }
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['getAllSongs'],
+    queryFn: ({ pageParam = '' }) => fetchSongs({ pageParam }),
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  })
+  console.log('data', data)
+  console.log('data.pages', data?.pages)
+  const songs = data?.pages?.flatMap((page) => page.songs ?? []) ?? []
+
+  console.log('songs', songs)
+
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
   return (
     // <div className='flex flex-col h-screen relative fade-in '>
     //   <div className='bg-gradient-to-b from-[#121212] to-[#00000099] h-[35%] w-full'></div>
@@ -78,8 +86,7 @@ const Home = () => {
     // </div>
     <div className='flex flex-col relative fade-in '>
       <div className=' h-full'>
-        <CardList songLists={playlists} title='Focus' />
-        <CardList songLists={playlists} title='Chill' />
+        {songs && <CardList songLists={songs} title='All Songs' />}
       </div>
     </div>
   )

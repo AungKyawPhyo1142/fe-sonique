@@ -68,7 +68,7 @@ const Player = () => {
   }
   if (!location.pathname.includes(AppConstantRoutes.paths.songDetailPage(''))) {
     return (
-      <div className='flex flex-col items-center justify-center mx-1 px-5'>
+      <div className='flex flex-col items-center justify-center'>
         <audio
           ref={audioRef}
           src={queue[currentSongIndex].songSrc}
@@ -78,7 +78,7 @@ const Player = () => {
         <img
           src={queue[currentSongIndex].image}
           alt={queue[currentSongIndex].title}
-          className='w-[90%] h-45 rounded-md m-5'
+          className='w-fit h-40 rounded-md m-5 object-cover'
         />
         <div className='flex flex-col items-center w-full'>
           <input
@@ -87,7 +87,7 @@ const Player = () => {
             max={duration}
             value={currentTime}
             onChange={handleSeek}
-            className='w-full max-w-[90%]  hover:cursor-pointer appearance-none bg-transparent
+            className='w-full max-w-[80%]  hover:cursor-pointer appearance-none bg-transparent
                               [&::-webkit-slider-runnable-track]:bg-[#686767] 
                               [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full
                               [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-thumb]:appearance-none 
@@ -95,7 +95,7 @@ const Player = () => {
                               [&::-webkit-slider-thumb]:bg-[#ffffff] [&::-webkit-slider-thumb]:rounded-full 
                               [&::-webkit-slider-thumb]:mt-[-6px]'
           />
-          <div className='flex flex-row items-center justify-between w-full m-1.5'>
+          <div className='flex flex-row items-center justify-between w-[80%] m-1.5'>
             <span className='text-sm min-w-[40px] text-right'>
               {formatTime(currentTime)}
             </span>
@@ -245,7 +245,7 @@ const Player = () => {
           value={volume}
           step={0.01}
           onChange={handleVolume}
-          className='w-full max-w-[15%] md:max-w-[22%] lg:max-w-[30%] hover:cursor-pointer appearance-none bg-transparent
+          className='w-full max-w-[50%] md:max-w-[%] lg:max-w-[30%] hover:cursor-pointer appearance-none bg-transparent
                               [&::-webkit-slider-runnable-track]:bg-[#686767] 
                               [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full
                               [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-thumb]:appearance-none 

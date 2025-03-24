@@ -1,13 +1,10 @@
 import GlassCard from '@/components/common/GlassCard'
 import Player from '@/components/common/Player'
-import { useSongStore } from '@/services/zustand/songStore'
 import clsx from 'clsx'
-import { CirclePlay } from 'lucide-react'
 import { useParams } from 'react-router'
 
 const SongDetail = () => {
   const { id } = useParams()
-  const { addToQueue } = useSongStore()
   const playlists = [
     {
       id: '1',
@@ -44,22 +41,32 @@ const SongDetail = () => {
         )}
       >
         <GlassCard className='!rounded-none  flex flex-col items-center justify-center space-y-5 w-full h-full !backdrop-blur-md bg-black/50 text-white'>
-          <h1 className='text-[150px] font-bold  '>{song?.title}</h1>
-          <div className='flex flex-row items-center justify-center text-2xl space-x-2 '>
-            <span>{song?.description}</span>
-            <div className='rounded-full bg-white w-2 h-2'></div>
-            <span>2:50</span>
-            <button
-              onClick={() => {
-                if (song) {
-                  addToQueue(song)
-                  console.log('Added to queue')
-                }
-              }}
-              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-            >
-              <CirclePlay size={40} />
-            </button>
+          <div className='flex flex-row items-center justify-center space-x-5'>
+            {/* Song Image */}
+
+            <img
+              src={song?.image}
+              alt={song?.title}
+              className='w-fit h-50 rounded-lg'
+            />
+
+            {/* Song Detail */}
+            <div className='flex flex-col items-center justify-center'>
+              <h1 className='text-[100px] font-bold leading-none'>
+                {song?.title}
+              </h1>
+              <div className='flex flex-row items-center justify-center text-2xl space-x-2 '>
+                <img
+                  src='https://robohash.org/default-avatar.png'
+                  alt={song?.title}
+                  className='w-10 h-10 rounded-lg object-cover '
+                />
+
+                <span>{song?.description}</span>
+                <div className='rounded-full bg-white w-2 h-2'></div>
+                <span>2:50</span>
+              </div>
+            </div>
           </div>
         </GlassCard>
       </div>
