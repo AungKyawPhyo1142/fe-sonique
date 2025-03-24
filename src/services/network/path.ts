@@ -26,6 +26,9 @@ export const ApiConstantRoutes = {
         },
         getAllSongs(cursor?: string) {
           return `/songs/all?limit=10${cursor ? `&cursor=${cursor}` : ''}`
+        },
+        getSongDetail(id?: string) {
+          return `/songs/${id}`
         }
       }
     },

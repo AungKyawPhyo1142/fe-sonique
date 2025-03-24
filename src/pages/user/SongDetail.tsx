@@ -1,41 +1,56 @@
 import GlassCard from '@/components/common/GlassCard'
 import Player from '@/components/common/Player'
+import { apiClient } from '@/services/network/apiClient'
+import { ApiConstantRoutes } from '@/services/network/path'
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useParams } from 'react-router'
 
 const SongDetail = () => {
   const { id } = useParams()
-  const playlists = [
-    {
-      id: '1',
-      image: 'https://i.scdn.co/image/ab67616d0000b27336032cb4acd9df050bc2e197',
-      title: 'APT',
-      description: 'Rose, BrunoMars',
-      songSrc: '/audio/APT.mp3',
-    },
-    {
-      id: '2',
-      image:
-        'https://upload.wikimedia.org/wikipedia/en/0/0b/JustinBieberLoveYourself.png',
-      title: 'Love Yourself',
-      description: 'Justin Bieber',
-      songSrc: '/audio/LoveYourself.mp3',
-    },
-    {
-      id: '3',
-      image: 'https://i.scdn.co/image/ab67616d0000b2735a039ed450d3e9a5caaf7818',
-      title: 'Moonlist Floor',
-      description: 'Lisa',
-      songSrc: '/audio/MoonlistFloor.mp3',
-    },
-  ]
-  const song = playlists.find((song) => song.id === id)
+  const fetchSongDetail = async () => {
+    const response = await apiClient.get(
+      ApiConstantRoutes.paths.auth.getSongDetail(id),
+    )
+    console.log('song detail response', response)
+    return response.data
+  }
 
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['getSongDetail'],
+    queryFn: fetchSongDetail,
+  })
+
+  const duration = () => {
+    const minutes = Math.floor(data?.duration / 60)
+    const seconds = Math.round(data?.duration % 60)
+    return `${minutes}:${seconds}`
+  }
+
+  const {
+    data: user,
+    isFetching,
+    isError,
+  } = useQuery({
+    queryKey: ['getUser', data?.artist?.id], // Use optional chaining
+    retry: 1,
+    queryFn: async () => {
+      const response = await apiClient.get(
+        ApiConstantRoutes.paths.auth.getUser(data.artist.id),
+      )
+      console.log('user response', response)
+      return response.data // Ensure only relevant data is returned
+    },
+    enabled: !!data?.artist?.id, // Ensure the query runs only when artist ID is available
+  })
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error...</div>
   return (
     <div className='min-h-screen flex flex-col'>
       {/* Song Detail */}
       <div
-        style={{ backgroundImage: `url(${song?.image})` }}
+        style={{ backgroundImage: `url(${data?.coverImageURL})` }}
         className={clsx(
           `flex flex-col text-white items-center  justify-center h-[90vh] bg-cover bg-center bg-no-repeat `,
         )}
@@ -45,26 +60,28 @@ const SongDetail = () => {
             {/* Song Image */}
 
             <img
-              src={song?.image}
-              alt={song?.title}
+              src={data?.coverImageURL}
+              alt={data?.title}
               className='w-fit h-50 rounded-lg'
             />
 
             {/* Song Detail */}
-            <div className='flex flex-col items-center justify-center'>
+            <div className='flex flex-col items-start justify-center space-y-5'>
               <h1 className='text-[100px] font-bold leading-none'>
-                {song?.title}
+                {data?.title}
               </h1>
-              <div className='flex flex-row items-center justify-center text-2xl space-x-2 '>
+              <div className='flex flex-row items-center justify-start text-2xl space-x-2 '>
                 <img
-                  src='https://robohash.org/default-avatar.png'
-                  alt={song?.title}
+                  src={
+                    user?.profile_image ||
+                    'https://robohash.org/default-avatar.png'
+                  }
+                  alt={data.artist.name}
                   className='w-10 h-10 rounded-lg object-cover '
                 />
-
-                <span>{song?.description}</span>
+                <span>{data?.artist.name}</span>
                 <div className='rounded-full bg-white w-2 h-2'></div>
-                <span>2:50</span>
+                <span>{duration()}</span>
               </div>
             </div>
           </div>
@@ -72,7 +89,7 @@ const SongDetail = () => {
       </div>
 
       {/* Audio Player (Footer) */}
-      {song && <Player />}
+      {data && <Player />}
     </div>
   )
 }

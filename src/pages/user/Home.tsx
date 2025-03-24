@@ -1,5 +1,6 @@
 import PlaylistCard from '@/components/common/PlaylistCard'
 import { apiClient } from '@/services/network/apiClient'
+import { Artist } from '@/services/network/lib/artist'
 import { ApiConstantRoutes } from '@/services/network/path'
 import { AppConstantRoutes } from '@/services/routes/path'
 import { useInfiniteQuery } from '@tanstack/react-query'
@@ -7,7 +8,7 @@ import { useNavigate } from 'react-router'
 
 interface CardListProps {
   songLists: {
-    artistId: string
+    artist: Artist
     audioUrl: string
     coverImageUrl: string
     duration: number
@@ -23,24 +24,26 @@ const CardList: React.FC<CardListProps> = ({ songLists, title }) => {
   return (
     <div className=''>
       <div className='flex flex-row justify-between items-center p-4 text-white'>
-      <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
-      <span className='text-md text-gray-300 hover:underline'>Show all</span>
+        <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
+        <span className='text-md text-gray-300 hover:underline'>Show all</span>
       </div>
       <div>
-      <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4'>
-        {songLists.map((songList, index) => (
-        <PlaylistCard
-          key={index}
-          className='w-full'
-          image={songList.coverImageUrl}
-          title={songList.title}
-          description={songList.artistId}
-          onClick={() =>
-          navigate(AppConstantRoutes.paths.songDetailPage(songList.id))
-          }
-        />
-        ))}
-      </ul>
+        <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4'>
+          {songLists.map((songList, index) => (
+            <div key={index} className='w-full'>
+              {' '}
+              {/* Wrap in a div to maintain spacing */}
+              <PlaylistCard
+                image={songList.coverImageUrl}
+                title={songList.title}
+                description={songList.artist.name}
+                onClick={() =>
+                  navigate(AppConstantRoutes.paths.songDetailPage(songList.id))
+                }
+              />
+            </div>
+          ))}
+        </ul>
       </div>
     </div>
   )
