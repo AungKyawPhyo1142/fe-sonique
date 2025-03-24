@@ -4,28 +4,31 @@ interface AlertProps {
   message: string
   type?: 'success' | 'error' | 'info'
   duration?: number
+  onClose?: () => void
 }
 
 const Alert: React.FC<AlertProps> = ({
   message,
   type = 'info',
   duration = 2000,
+  onClose,
 }) => {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    //console.log('Alert rendered:', message, type)
+    setVisible(true)
     const timer = setTimeout(() => {
       setVisible(false)
+      if (onClose) onClose()
     }, duration)
     return () => clearTimeout(timer)
-  }, [duration])
+  }, [message, duration, onClose])
 
   if (!visible) return null
 
   return (
     <div
-      className={`fixed top-4 right-4 px-4 py-2 rounded shadow-lg text-white ${
+      className={`fixed top-0 left-0 right-0 rounded w-full flex justify-center p-3 text-white text-lg shadow-lg transition-opacity duration-300 ${
         type === 'success'
           ? 'bg-green-500'
           : type === 'error'

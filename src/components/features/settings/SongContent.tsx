@@ -57,6 +57,14 @@ const SongContent: React.FC = () => {
 
   return (
     <div className='flex flex-col bg-[#202022] p-10 w-full min-h-screen'>
+      {/** Alert Message (Placed at the top of the page) */}
+      {alertMessage && (
+        <Alert
+          message={alertMessage.message}
+          type={alertMessage.type}
+          onClose={() => setAlertMessage(null)}
+        />
+      )}
       <div className='flex justify-between mt-5 mb-[50px]'>
         <h1 className='text-3xl font-bold'>Your Songs</h1>
         <Button
@@ -138,9 +146,6 @@ const SongContent: React.FC = () => {
                 refetch={SongRefetch}
                 setAlertMessage={setAlertMessage}
               />
-            )}
-            {alertMessage && (
-              <Alert message={alertMessage.message} type={alertMessage.type} />
             )}
           </table>
         </GlassCard>

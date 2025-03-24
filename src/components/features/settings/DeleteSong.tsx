@@ -1,7 +1,8 @@
 import BaseModal from '@/components/common/BaseModal'
 import Button from '@/components/common/Button'
 import { songRequests } from '@/services/network/lib/songs'
-import React, { useState } from 'react'
+//import React, { useState } from 'react'
+import React from 'react'
 
 interface DeleteSongProps {
   isOpen: boolean
@@ -23,18 +24,10 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
   refetch,
   setAlertMessage,
 }) => {
-  const [isDeleting, setIsDeleting] = useState(false)
-  const handleCancel = () => {
-    setIsOpen(false)
-    setAlertMessage({ message: 'Song deletion was cancelled.', type: 'info' })
-    console.log('Cancel Alert:', {
-      message: 'Song deletion was cancelled.',
-      type: 'info',
-    })
-  }
+  //const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
-    setIsDeleting(true)
+    //setIsDeleting(true)
     try {
       const res = await songRequests.DeleteSong({ songId })
       if (res && res.status === 'SUCCESS') {
@@ -44,11 +37,7 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
         setAlertMessage({
           message: 'The song was deleted successfully!',
           type: 'success',
-        })
-        console.log('Success Alert:', {
-          message: 'The song was deleted successfully!',
-          type: 'success',
-        })
+        }) // Use the prop here
       } else {
         console.error('Error deleting song:', res)
       }
@@ -57,9 +46,13 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
         'Error deleting song:',
         error.response?.data || error.message,
       )
-    } finally {
-      setIsDeleting(false)
+      setAlertMessage({ message: 'Error deleting song.', type: 'error' }) 
     }
+  }
+
+  const handleCancel = () => {
+    setIsOpen(false)
+    setAlertMessage({ message: 'Song deletion was cancelled.', type: 'info' }) 
   }
   return (
     <>
@@ -78,7 +71,7 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
             className='p-4 flex'
             primary
             onClick={handleDelete}
-            disabled={isDeleting}
+            //disabled={isDeleting}
           >
             Delete
           </Button>
