@@ -12,7 +12,7 @@ import { Fragment } from 'react/jsx-runtime'
 import React from 'react'
 import { X } from 'lucide-react'
 
-interface Props {
+export interface Props {
   children?: React.ReactNode
   className?: string
   title?: string
@@ -78,7 +78,7 @@ const BaseModal: React.FC<Props> = ({
               {/* The actual dialog panel  */}
               <DialogPanel
                 className={clsx(
-                  'max-w-lg flex flex-col gap-y-4 items-start justify-between bg-zinc-500/40 p-12 transform transition-all rounded-lg min-w-[500px] min-h-[300px] relative',
+                  'flex flex-col gap-y-4 items-start justify-between bg-zinc-500/40 p-12 transform transition-all rounded-lg min-w-[500px] min-h-[300px] relative',
                   className,
                 )}
               >
@@ -86,15 +86,12 @@ const BaseModal: React.FC<Props> = ({
                   className='text-white absolute top-5 right-5 cursor-pointer'
                   onClick={() => setIsOpen(false)}
                 />
-                <div className='flex flex-col gap-y-5'>
-                  <div className='flex flex-col gap-y-2'>
-                    <DialogTitle className='text-2xl font-bold text-white'>
-                      {title}
-                    </DialogTitle>
-                    <p className='text-sm text-gray-300'>{content}</p>
-                  </div>
+                <div className='flex flex-col gap-y-7'>
+                  <DialogTitle className='text-2xl font-bold text-white'>
+                    {title}
+                  </DialogTitle>
+                  <p className='text-sm text-gray-300'>{content}</p>
                 </div>
-
                 {children}
               </DialogPanel>
             </TransitionChild>

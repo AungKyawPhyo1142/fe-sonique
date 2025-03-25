@@ -87,7 +87,7 @@ const Input: React.FC<Props> = (props) => {
               ? 'text-zinc-500 border-zinc-200/30'
               : 'border-zinc-200/30 text-white',
             primary && 'text-white outline-none',
-            secondary && 'bg-[#FFFFFF] text-[#121212]',
+            secondary && 'bg-[#FFFFFF] !text-[#121212]',
             type === 'password' && 'pr-8',
             type === 'file' && 'opacity-0',
             error ? 'border-red-500' : 'border-gray-500',

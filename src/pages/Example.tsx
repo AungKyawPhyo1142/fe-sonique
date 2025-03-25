@@ -19,6 +19,7 @@ const Example = () => {
   }
 
   //select
+  const [selectList] = useState('')
   const someList: ListBox[] = [
     {
       label: 'Label 1',
@@ -33,6 +34,8 @@ const Example = () => {
       value: 'val3',
     },
   ]
+
+  // const [selectedValue, setSelectedValue] = useState('')
 
   return (
     <div>
@@ -74,7 +77,7 @@ const Example = () => {
         />
       </div>
       <div className='mt-5 w-[300px]'>
-        <fieldset className='flex-col'>
+        <fieldset className='flex-col ml-5'>
           <label htmlFor='company' className='text-lg font-[600] text-white'>
             Company
           </label>
@@ -82,13 +85,16 @@ const Example = () => {
             id='companyName'
             name='companyName'
             placeholder='Select a company'
-            className='mt-2 w-full'
-            value={'val'}
+            className='mt-5 w-full'
             listOption={someList}
-            onSelected={(value) => console.log(value)}
+            onSelected={() => {
+              console.log('selected')
+            }}
+            value={selectList}
           />
         </fieldset>
       </div>
+
       <div className='mt-5'>
         <ErrorContent
           reload={() => {
