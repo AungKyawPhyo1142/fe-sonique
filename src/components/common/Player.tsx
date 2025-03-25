@@ -1,5 +1,5 @@
 import { AppConstantRoutes } from '@/services/routes/path'
-import { useSongStore } from '@/services/zustand/songStore'
+import { usePlayerStore } from '@/services/zustand/usePlayerStore'
 import {
   CirclePause,
   CirclePlay,
@@ -11,29 +11,35 @@ import {
   Volume1,
   Volume2,
 } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 
 const Player = () => {
-  const { playPause, isPlaying, addToQueue, queue, currentSongIndex } =
-    useSongStore()
+  const {
+    queue,
+    currentSong,
+    isPlaying,
+    volume,
+    updateProgress,
+    playlist,
+    initializeAudio,
+    setCurrentSong,
+
+    onChangeCurrentTime,
+    togglePlay,
+    setVolume,
+    playNext,
+    playPrevious,
+  } = usePlayerStore()
+
+  useEffect(() => {
+    initializeAudio()
+  }, [initializeAudio])
   //const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(0.5)
   const location = useLocation()
   const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  const togglePlayPause = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause()
-      } else {
-        audioRef.current.play()
-      }
-      playPause()
-    }
-  }
 
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
@@ -41,13 +47,6 @@ const Player = () => {
       setVolume(parseFloat(e.target.value))
     }
   }
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60)
-    const seconds = Math.floor(time % 60)
-    return `${minutes}:${String(seconds).padStart(2, '0')}`
-  }
-
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime)
@@ -66,18 +65,24 @@ const Player = () => {
       setCurrentTime(parseFloat(e.target.value))
     }
   }
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60)
+    const seconds = Math.floor(time % 60)
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
+
   if (!location.pathname.includes(AppConstantRoutes.paths.songDetailPage(''))) {
     return (
       <div className='flex flex-col items-center justify-center'>
         <audio
           ref={audioRef}
-          src={queue[currentSongIndex].songSrc}
-          onTimeUpdate={handleTimeUpdate}
+          src={currentSong?.songSrc}
+          onTimeUpdate={updateProgress}
           onLoadedMetadata={handleTimeDuration}
         />
         <img
-          src={queue[currentSongIndex].image}
-          alt={queue[currentSongIndex].title}
+          src={currentSong?.image}
+          alt={currentSong?.title}
           className='w-fit h-40 rounded-md m-5 object-cover'
         />
         <div className='flex flex-col items-center w-full'>
@@ -86,7 +91,10 @@ const Player = () => {
             min='0'
             max={duration}
             value={currentTime}
-            onChange={handleSeek}
+            onChange={(e)=> {
+              onChangeCurrentTime(parseFloat(e.target.value))
+              handleSeek(e)
+            }}
             className='w-full max-w-[80%]  hover:cursor-pointer appearance-none bg-transparent
                               [&::-webkit-slider-runnable-track]:bg-[#686767] 
                               [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full
@@ -112,7 +120,7 @@ const Player = () => {
             </button>
 
             <button
-              onClick={togglePlayPause}
+              onClick={() => togglePlay()}
               className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
             >
               {isPlaying ? <CirclePause size={30} /> : <CirclePlay size={30} />}
@@ -134,22 +142,22 @@ const Player = () => {
       {/* Song detail */}
       <div className='flex flex-row items-center space-x-2 flex-[1]'>
         <img
-          src={queue[currentSongIndex].image}
-          alt={queue[currentSongIndex].title}
+          src={currentSong?.image}
+          alt={currentSong?.title}
           className='w-12 h-12 rounded-md'
         />
         <div className='flex flex-col w-full overflow-hidden'>
           <span className='text-md font-bold truncate'>
-            {queue[currentSongIndex].title}
+            {currentSong?.title}
           </span>
-          <span className='text-sm'>{queue[currentSongIndex].description}</span>
+          <span className='text-sm'>{currentSong?.artist}</span>
         </div>
       </div>
 
       <audio
         ref={audioRef}
-        src={queue[currentSongIndex].songSrc}
-        onTimeUpdate={handleTimeUpdate}
+        src={currentSong?.songSrc}
+        onTimeUpdate={updateProgress}
         onLoadedMetadata={handleTimeDuration}
       />
 
@@ -157,7 +165,7 @@ const Player = () => {
         {/* song controls */}
         <div className='flex flex-row items-center space-x-4'>
           <button
-            onClick={() => addToQueue(queue[currentSongIndex])}
+            onClick={undefined}
             className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
           >
             <Shuffle size={25} />
@@ -171,7 +179,7 @@ const Player = () => {
           </button>
 
           <button
-            onClick={togglePlayPause}
+            onClick={togglePlay}
             className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
           >
             {isPlaying ? <CirclePause size={40} /> : <CirclePlay size={40} />}
@@ -205,7 +213,10 @@ const Player = () => {
             min='0'
             max={duration}
             value={currentTime}
-            onChange={handleSeek}
+            onChange={(e)=> {
+              onChangeCurrentTime(parseFloat(e.target.value))
+              handleSeek(e)
+            }}
             className='w-full max-w-[30%] md:max-w-[45%] lg:max-w-[60%] hover:cursor-pointer appearance-none bg-transparent
                               [&::-webkit-slider-runnable-track]:bg-[#686767] 
                               [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full

@@ -2,6 +2,7 @@ import { apiClient } from '@/services/network/apiClient'
 import { ApiConstantRoutes } from '@/services/network/path'
 import { AppConstantRoutes } from '@/services/routes/path'
 import { cleanupAfterLogout, useAuthStore } from '@/services/zustand/authStore'
+import { usePlayerStore } from '@/services/zustand/usePlayerStore'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
@@ -107,6 +108,7 @@ const Sidebar: React.FC = () => {
   const userId = useAuthStore((state) => state.auth.userId)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const {queue} = usePlayerStore()
 
   const { pathname } = useLocation()
   const { data: user } = useQuery({
@@ -162,7 +164,7 @@ const Sidebar: React.FC = () => {
         </div>
         {/*Player will be here*/}
         <div className='flex flex-col items-center justify-center my-5'> 
-        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && (
+        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && queue.length != 0 && (
           <Player />
         )}
         </div>
