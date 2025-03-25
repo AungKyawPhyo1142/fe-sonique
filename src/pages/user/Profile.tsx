@@ -1,6 +1,6 @@
 import Modal from '@/components/common/Modal'
-import ProfileForm from '@/components/common/ProfileForm'
-import SongContent from '@/components/common/SongContent'
+import ProfileForm from '@/components/features/settings/ProfileForm'
+import SongContent from '@/components/features/settings/SongContent'
 import ToggleSwitch from '@/components/common/ToggleSwitch'
 import ImageUploadModal from '@/components/modals/ImageUploadModal'
 import { SideBarItem } from '@/components/navbar/Sidebar'
@@ -14,10 +14,11 @@ import { ApiConstantRoutes } from '@/services/network/path'
 import { useAuthStore } from '@/services/zustand/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { useFormik } from 'formik'
-import { Camera, Headphones, UserRound } from 'lucide-react'
+import { Camera, Headphones, UserRound, Undo2 } from 'lucide-react'
 import { ChangeEvent, useRef, useState } from 'react'
-
 import { object, ObjectSchema, string } from 'yup'
+import Button from '@/components/common/Button'
+import { useNavigate } from 'react-router'
 
 export interface ProfileFormValues {
   id?: string
@@ -38,7 +39,7 @@ const Profile = () => {
   const [index, setIndex] = useState(0)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [loadingButton, setLoadingButton] = useState(false)
-
+  const navigate = useNavigate()
   //get user details
   const userId = useAuthStore((state) => state.auth.userId)
   const {
@@ -200,7 +201,7 @@ const Profile = () => {
   if (error) return <div>Something went wrong</div>
 
   return (
-    <div className='text-white bg-[#202022] min-h-screen flex flex-col'>
+    <div className='text-white bg-[#202022] min-h-screen w-full flex flex-col'>
       {/* Modal */}
       <Modal
         type='info'
@@ -227,26 +228,38 @@ const Profile = () => {
         />
       )}
       {/* Profile */}
-      <div className='flex flex-row items-center p-5'>
-        <div className='relative '>
-          <img
-            src={user?.data.profile_image}
-            alt='profile'
-            className='w-40 h-40 rounded-full object-cover'
-          />
-          <div
-            onClick={() => setUploadImage(true)}
-            className='absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity'
-          >
-            <Camera size={40} />
+      <div className='flex items-center justify-between'>
+        <div className='flex flex-row items-center p-5'>
+          <div className='relative '>
+            <img
+              src={user?.data.profile_image}
+              alt='profile'
+              className='w-40 h-40 rounded-full object-cover'
+            />
+            <div
+              onClick={() => setUploadImage(true)}
+              className='absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity'
+            >
+              <Camera size={40} />
+            </div>
+          </div>
+
+          <div className='flex flex-col items-start gap-y-5 px-10 justify-center'>
+            <h1 className='text-6xl font-bold'>
+              {user?.data.firstName} {user?.data.lastName}
+            </h1>
+            <span className='opacity-50'>@{user?.data.username}</span>
           </div>
         </div>
-
-        <div className='flex flex-col items-start gap-y-5 px-10 justify-center'>
-          <h1 className='text-6xl font-bold'>
-            {user?.data.firstName} {user?.data.lastName}
-          </h1>
-          <span className='opacity-50'>@{user?.data.username}</span>
+        <div className='flex flex-col mr-2'>
+          <Button
+            className='w-fit px-5 h-[50px]'
+            secondary
+            type='button'
+            onClick={() => navigate('/')}
+          >
+            <Undo2 size={30} />
+          </Button>
         </div>
       </div>
       {/* Bio */}
