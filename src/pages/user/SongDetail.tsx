@@ -29,8 +29,7 @@ const SongDetail = () => {
 
   const {
     data: user,
-    isFetching,
-    isError,
+    
   } = useQuery({
     queryKey: ['getUser', data?.artist?.id], // Use optional chaining
     retry: 1,
@@ -66,7 +65,7 @@ const SongDetail = () => {
             />
 
             {/* Song Detail */}
-            <div className='flex flex-col items-start justify-center space-y-5'>
+            <div className='flex flex-col items-start justify-center'>
               <h1 className='text-[100px] font-bold leading-none'>
                 {data?.title}
               </h1>
