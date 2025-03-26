@@ -32,7 +32,7 @@ export const useSongStore = create<SongState>((set, get) => ({
     {
       id: '1',
       image: 'https://i.scdn.co/image/ab67616d0000b27336032cb4acd9df050bc2e197',
-      title: 'APT',
+      title: 'A very long long title here i guess',
       description: 'Rose, BrunoMars',
       songSrc: '/audio/APT.mp3',
     },

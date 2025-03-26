@@ -60,6 +60,23 @@
     opacity: 1;
   }
 }
+
+/* Add this to your CSS or Tailwind configuration */
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-text-scroll {
+  display: inline-block;
+  animation: scroll 6s linear infinite;
+}
+
 /* Grid background */
 @layer utilities {
   .grid-bg {

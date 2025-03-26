@@ -78,6 +78,27 @@ export interface Song {
   title: string
 }
 
+interface SongDetailResponse {
+  data: {
+    artist: {
+      artistId: number
+      name: string
+      username: string
+      profile_image: string
+    }
+    audioURL: string
+    coverImageURL: string
+    duration: number
+    genre: {
+      id: number
+      name: string
+    }
+    id: string
+    title: string
+  }
+  status: STATUS
+}
+
 export interface GetAllSongsResponse {
   data: {
     hasMore: boolean
@@ -113,6 +134,14 @@ export const useGetAllSongs = () => {
     },
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.data.nextCursor,
+  })
+}
+
+export const useGetSongDetail = (id: string) => {
+  return useQuery<SongDetailResponse>({
+    queryKey: ['get-song-detail', id],
+    queryFn: () =>
+      apiClient.get(ApiConstantRoutes.paths.auth.getSongDetail(id)),
   })
 }
 
