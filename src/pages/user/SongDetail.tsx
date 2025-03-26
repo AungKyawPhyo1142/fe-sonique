@@ -16,7 +16,7 @@ const SongDetail = () => {
     return response.data
   }
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, isError } = useQuery({
     queryKey: ['getSongDetail'],
     queryFn: fetchSongDetail,
   })
@@ -27,10 +27,7 @@ const SongDetail = () => {
     return `${minutes}:${seconds}`
   }
 
-  const {
-    data: user,
-    
-  } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ['getUser', data?.artist?.id], // Use optional chaining
     retry: 1,
     queryFn: async () => {
@@ -43,49 +40,55 @@ const SongDetail = () => {
     enabled: !!data?.artist?.id, // Ensure the query runs only when artist ID is available
   })
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error...</div>
+  if (isError) {
+    console.log('error', error)
+    return <div>Error...</div>
+  }
   return (
     <div className='min-h-screen flex flex-col'>
+      {isLoading && <div>Loading...</div>}
+
       {/* Song Detail */}
-      <div
-        style={{ backgroundImage: `url(${data?.coverImageURL})` }}
-        className={clsx(
-          `flex flex-col text-white items-center  justify-center h-[90vh] bg-cover bg-center bg-no-repeat `,
-        )}
-      >
-        <GlassCard className='!rounded-none  flex flex-col items-center justify-center space-y-5 w-full h-full !backdrop-blur-md bg-black/50 text-white'>
-          <div className='flex flex-row items-center justify-center space-x-5'>
-            {/* Song Image */}
+      {!isLoading && !isError && data && (
+        <div
+          style={{ backgroundImage: `url(${data?.coverImageURL})` }}
+          className={clsx(
+            `flex flex-col text-white items-center  justify-center h-[90vh] bg-cover bg-center bg-no-repeat `,
+          )}
+        >
+          <GlassCard className='!rounded-none  flex flex-col items-center justify-center space-y-5 w-full h-full !backdrop-blur-md bg-black/50 text-white'>
+            <div className='flex flex-row items-center justify-center space-x-5'>
+              {/* Song Image */}
 
-            <img
-              src={data?.coverImageURL}
-              alt={data?.title}
-              className='w-fit h-50 rounded-lg'
-            />
+              <img
+                src={data?.coverImageURL}
+                alt={data?.title}
+                className='w-fit h-50 rounded-lg'
+              />
 
-            {/* Song Detail */}
-            <div className='flex flex-col items-start justify-center'>
-              <h1 className='text-[100px] font-bold leading-none'>
-                {data?.title}
-              </h1>
-              <div className='flex flex-row items-center justify-start text-2xl space-x-2 '>
-                <img
-                  src={
-                    user?.profile_image ||
-                    'https://robohash.org/default-avatar.png'
-                  }
-                  alt={data.artist.name}
-                  className='w-10 h-10 rounded-lg object-cover '
-                />
-                <span>{data?.artist.name}</span>
-                <div className='rounded-full bg-white w-2 h-2'></div>
-                <span>{duration()}</span>
+              {/* Song Detail */}
+              <div className='flex flex-col items-start justify-center'>
+                <h1 className='text-[100px] font-bold leading-none'>
+                  {data?.title}
+                </h1>
+                <div className='flex flex-row items-center justify-start text-2xl space-x-2 '>
+                  <img
+                    src={
+                      user?.profile_image ||
+                      'https://robohash.org/default-avatar.png'
+                    }
+                    alt={data.artist.name}
+                    className='w-10 h-10 rounded-lg object-cover '
+                  />
+                  <span>{data?.artist.name}</span>
+                  <div className='rounded-full bg-white w-2 h-2'></div>
+                  <span>{duration()}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </GlassCard>
-      </div>
+          </GlassCard>
+        </div>
+      )}
 
       {/* Audio Player (Footer) */}
       {data && <Player />}
