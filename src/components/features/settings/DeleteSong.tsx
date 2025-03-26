@@ -1,8 +1,7 @@
 import BaseModal from '@/components/common/BaseModal'
 import Button from '@/components/common/Button'
 import { songRequests } from '@/services/network/lib/songs'
-//import React, { useState } from 'react'
-import React from 'react'
+import React, { useState } from 'react'
 
 interface DeleteSongProps {
   isOpen: boolean
@@ -24,10 +23,10 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
   refetch,
   setAlertMessage,
 }) => {
-  //const [isDeleting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
-    //setIsDeleting(true)
+    setIsDeleting(true)
     try {
       const res = await songRequests.DeleteSong({ songId })
       if (res && res.status === 'SUCCESS') {
@@ -37,7 +36,7 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
         setAlertMessage({
           message: 'The song was deleted successfully!',
           type: 'success',
-        }) // Use the prop here
+        })
       } else {
         console.error('Error deleting song:', res)
       }
@@ -46,13 +45,14 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
         'Error deleting song:',
         error.response?.data || error.message,
       )
-      setAlertMessage({ message: 'Error deleting song.', type: 'error' }) 
+      setAlertMessage({ message: 'Error deleting song.', type: 'error' })
     }
+    setIsDeleting(false)
   }
 
   const handleCancel = () => {
     setIsOpen(false)
-    setAlertMessage({ message: 'Song deletion was cancelled.', type: 'info' }) 
+    setAlertMessage({ message: 'Song deletion was cancelled.', type: 'info' })
   }
   return (
     <>
@@ -62,6 +62,7 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
         title='Delete Song'
         content='Are you sure you want to delete this song?'
         button
+        type='info'
       >
         <div className='flex place-self-end gap-x-4'>
           <Button className='p-4 flex' outline onClick={handleCancel}>
@@ -71,7 +72,8 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
             className='p-4 flex'
             primary
             onClick={handleDelete}
-            //disabled={isDeleting}
+            disabled={isDeleting}
+            loading={isDeleting}
           >
             Delete
           </Button>
