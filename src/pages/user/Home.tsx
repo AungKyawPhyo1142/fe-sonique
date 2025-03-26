@@ -1,75 +1,65 @@
+import InfiniteScrollContainer from '@/components/common/InfiniteScrollContainer'
 import PlaylistCard from '@/components/common/PlaylistCard'
+import { Song, useGetAllSongs } from '@/services/network/lib/songs'
+
+import { AppConstantRoutes } from '@/services/routes/path'
+
+import { useNavigate } from 'react-router'
 
 interface CardListProps {
-  playlists: {
-    image: string
-    title: string
-    description: string
-  }[]
+  songLists: Song[]
   title: string
 }
 
-const CardList: React.FC<CardListProps> = ({ playlists, title }) => {
+const CardList: React.FC<CardListProps> = ({ songLists, title }) => {
+  const navigate = useNavigate()
   return (
     <div className=''>
       <div className='flex flex-row justify-between items-center p-4 text-white'>
         <h1 className='font-bold text-2xl hover:underline'>{title}</h1>
         <span className='text-md text-gray-300 hover:underline'>Show all</span>
       </div>
-      <div className=''>
-        <ul className='flex flex-row gap-10 p-4  '>
-          {playlists.map((playlist, index) => (
+
+      <div className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 bg-greem '>
+        {songLists.map((songList, index) => (
+          <div key={index} className='w-full'>
+            {/* Wrap in a div to maintain spacing */}
             <PlaylistCard
-              key={index}
-              className='w-full'
-              image={playlist.image}
-              title={playlist.title}
-              description={playlist.description}
+              image={songList.coverImageUrl}
+              title={songList.title}
+              description={songList.artist.name}
+              onClick={() =>
+                navigate(AppConstantRoutes.paths.songDetailPage(songList.id))
+              }
             />
-          ))}
-        </ul>
+          </div>
+        ))}
       </div>
     </div>
   )
 }
 
 const Home = () => {
-  const playlists = [
-    {
-      image: 'https://picsum.photos/200/200',
-      title: 'Focus',
-      description: 'Lorem ipsum dolor sit amet',
-    },
-    {
-      image: 'https://picsum.photos/200/200',
-      title: 'Chill',
-      description: 'Consectetur adipiscing elit',
-    },
-    {
-      image: 'https://picsum.photos/200/200',
-      title: 'Workout',
-      description: 'Sed do eiusmod tempor',
-    },
-    {
-      image: 'https://picsum.photos/200/200',
-      title: 'Party',
-      description: 'Incididunt ut labore et dolore',
-    },
-  ]
+  const { data, isLoading, isError, fetchNextPage, isFetchingNextPage } =
+    useGetAllSongs()
 
+  console.log('data', data)
+  console.log('data.pages', data?.pages)
+  const songs = data?.pages?.flatMap((page) => page.data.songs ?? []) ?? []
+
+  console.log('songs', songs)
+
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
   return (
-    // <div className='flex flex-col h-screen relative fade-in '>
-    //   <div className='bg-gradient-to-b from-[#121212] to-[#00000099] h-[35%] w-full'></div>
-    //   <div className='bg-[#3333] w-full h-[65%]'></div>
-    //   <div className='absolute  left-0 right-0 m-5'>
-    //     <CardList playlists={playlists} title='Focus' />
-    //     <CardList playlists={playlists} title='Chill' />
-    //   </div>
-    // </div>
     <div className='flex flex-col relative fade-in '>
-      <div className=' h-full'>
-        <CardList playlists={playlists} title='Focus' />
-        <CardList playlists={playlists} title='Chill' />
+      <div className=' h-full flex flex-col gap-y-10'>
+        {songs && (
+          <InfiniteScrollContainer onBottomReached={() => fetchNextPage()}>
+            <CardList songLists={songs} title='All Songs' />
+          </InfiniteScrollContainer>
+        )}
+        {isFetchingNextPage && <div>Loading more...</div>}
       </div>
     </div>
   )

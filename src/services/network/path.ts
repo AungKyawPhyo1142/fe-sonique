@@ -24,6 +24,13 @@ export const ApiConstantRoutes = {
         deactivateArtist(id: string) {
           return `/user/deactivate-artist/${id}`
         },
+        getAllSongs() {
+          // return `/songs/all?limit=10${cursor ? `&cursor=${cursor}` : ''}`
+          return `/songs/all`
+        },
+        getSongDetail(id?: string) {
+          return `/songs/${id}`
+        },
       }
     },
     get songs() {
