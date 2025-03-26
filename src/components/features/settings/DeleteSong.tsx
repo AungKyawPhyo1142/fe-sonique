@@ -41,18 +41,19 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
       } else {
         console.error('Error deleting song:', res)
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(
         'Error deleting song:',
         error.response?.data || error.message,
       )
-      setAlertMessage({ message: 'Error deleting song.', type: 'error' }) 
+      setAlertMessage({ message: 'Error deleting song.', type: 'error' })
     }
   }
 
   const handleCancel = () => {
     setIsOpen(false)
-    setAlertMessage({ message: 'Song deletion was cancelled.', type: 'info' }) 
+    setAlertMessage({ message: 'Song deletion was cancelled.', type: 'info' })
   }
   return (
     <>

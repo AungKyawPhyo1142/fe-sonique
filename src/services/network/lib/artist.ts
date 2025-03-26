@@ -1,5 +1,5 @@
-export interface Artist{
-    artistId: string;
-    name: string;
-    username: string;
+export interface Artist {
+  artistId: string
+  name: string
+  username: string
 }
