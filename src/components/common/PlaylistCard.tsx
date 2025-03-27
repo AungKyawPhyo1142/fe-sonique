@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
-import { Play } from 'lucide-react'
 import clsx from 'clsx'
+import { Play } from 'lucide-react'
+import React, { useState } from 'react'
 
 interface Props {
   image: string
   title: string
   description: string
   className?: string
+  onClick?: () => void
 }
 const PlaylistCard: React.FC<Props> = ({
   image,
   title,
   description,
   className,
+  onClick,
 }) => {
   const [isHovered, setIsHovered] = useState(false)
   return (
@@ -23,6 +25,7 @@ const PlaylistCard: React.FC<Props> = ({
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       <div className='relative'>
         {/* <img

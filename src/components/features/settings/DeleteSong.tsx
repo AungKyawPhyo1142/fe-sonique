@@ -40,6 +40,7 @@ const DeleteSong: React.FC<DeleteSongProps> = ({
       } else {
         console.error('Error deleting song:', res)
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(
         'Error deleting song:',

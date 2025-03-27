@@ -32,7 +32,10 @@ export const AppConstantRoutes = {
       return '/search'
     },
     get musictypePage() {
-      return (title = ':title') => `/musictype/${title}`
+      return (title = ':title') => `/music-type/${title}`
+    },
+    get songDetailPage() {
+      return (id: string) => `/song/${id}`
     },
   },
 }
