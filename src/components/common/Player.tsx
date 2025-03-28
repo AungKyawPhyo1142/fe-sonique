@@ -27,6 +27,7 @@ const Player = () => {
     playlist,
     initializeAudio,
     setCurrentSong,
+    toggleShuffle,
     repeatMode,
     shuffleMode,
     time,
@@ -35,7 +36,7 @@ const Player = () => {
     setVolume,
     playNext,
     playPrevious,
-    toggleShuffle,
+
     setCurrentTime,
     toggleRepeatMode,
   } = usePlayerStore()

@@ -7,9 +7,9 @@ export interface Song {
   image: string
   songSrc: string
 }
-type RepeatMode = 'off' | 'song' | 'playlist';
+type RepeatMode = 'off' | 'song' | 'playlist'
 
-type ShuffleMode = 'on' | 'off';
+type ShuffleMode = 'on' | 'off'
 
 interface PlayerStore {
   currentSong: Song | null
@@ -19,6 +19,11 @@ interface PlayerStore {
   volume: number
   audioElement: HTMLAudioElement | null
   queue: Song[]
+  shuffleMode: ShuffleMode
+  repeatMode: RepeatMode
+  isShuffled: boolean
+
+  shuffledPlaylist: Song[]
   playThisSong: (song: Song) => void
   setNewQueue: (songs: Song[]) => void
   setCurrentSong: (song: Song) => void
@@ -32,9 +37,16 @@ interface PlayerStore {
   addToQueue: (song: Song) => void
   toogleShuffle: () => void
   setCurrentTime: (time: number) => void
-  shuffleMode: ShuffleMode
-  repeatMode: RepeatMode  
+
   toggleRepeatMode: () => void
+}
+const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
 }
 
 export const usePlayerStore = create<PlayerStore>((set, get) => ({
@@ -43,8 +55,10 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   isPaused: false,
   volume: 0.5,
   duration: 0,
+  isShuffled: false,
   repeatMode: 'off',
   time: 0,
+  shuffledPlaylist: [],
   shuffleMode: 'off',
   audioElement: null,
   queue: [],
@@ -62,18 +76,21 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
 
       audio.addEventListener('ended', () => {
         const { repeatMode } = get()
+
         if (repeatMode === 'song') {
           const { currentSong } = get()
           if (currentSong) {
             get().setCurrentSong(currentSong)
           }
         } else if (repeatMode === 'playlist') {
-          const { queue, currentSong } = get()
-          const currentIndex = queue.findIndex(
-            (song) => song.id === currentSong!.id,
+          const { currentSong, queue, shuffledPlaylist, isShuffled } = get()
+          const currentPlaylist = isShuffled ? shuffledPlaylist : queue
+          const currentIndex = currentPlaylist.findIndex(
+            (song) => song.id === currentSong?.id,
           )
-          if (currentIndex < queue.length - 1) {
-            get().setCurrentSong(queue[0])
+          if (currentIndex === currentPlaylist.length - 1) {
+            // If it's the last song, start from the beginning
+            get().setCurrentSong(currentPlaylist[0])
           } else {
             get().playNext()
           }
@@ -89,13 +106,13 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     set({ queue: newQueue })
   },
 
- toggleRepeatMode: () => {
-  const { repeatMode } = get();
-    const modes: RepeatMode[] = ['off', 'song', 'playlist'];
-    const currentIndex = modes.indexOf(repeatMode);
-    const nextIndex = (currentIndex + 1) % modes.length;
-    set({ repeatMode: modes[nextIndex] });
- },
+  toggleRepeatMode: () => {
+    const { repeatMode } = get()
+    const modes: RepeatMode[] = ['off', 'song', 'playlist']
+    const currentIndex = modes.indexOf(repeatMode)
+    const nextIndex = (currentIndex + 1) % modes.length
+    set({ repeatMode: modes[nextIndex] })
+  },
 
   setCurrentTime: (time: number) => {
     const { audioElement } = get()
@@ -131,23 +148,35 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     }
   },
   toogleShuffle: () => {
-    const { queue, currentSong } = get()
-    const shuffledQueue = [...queue].sort(() => Math.random() - 0.5)
+    const { isShuffled, queue, currentSong } = get()
+    if (!isShuffled) {
+      // When enabling shuffle, create a new shuffled playlist
+      const newShuffledPlaylist = shuffleArray(queue)
 
-    if (currentSong) {
-      const currentIndex = shuffledQueue.findIndex(
-        (song) => song.id === currentSong.id,
-      )
+      // If there's a current song, make sure it stays in its current position
+      if (currentSong) {
+        const currentIndex = queue.findIndex(
+          (song) => song.id === currentSong.id,
+        )
+        const shuffledIndex = newShuffledPlaylist.findIndex(
+          (song) => song.id === currentSong.id,
+        )
+        if (currentIndex !== shuffledIndex) {
+          ;[
+            newShuffledPlaylist[currentIndex],
+            newShuffledPlaylist[shuffledIndex],
+          ] = [
+            newShuffledPlaylist[shuffledIndex],
+            newShuffledPlaylist[currentIndex],
+          ]
+        }
+      }
 
-      // Remove the current song from its position and move it to the start
-      const songToMove = shuffledQueue[currentIndex]
-      shuffledQueue.splice(currentIndex, 1)
-      shuffledQueue.unshift(songToMove)
+      set({ isShuffled: true, shuffledPlaylist: newShuffledPlaylist })
+    } else {
+      // When disabling shuffle, clear the shuffled playlist
+      set({ isShuffled: false, shuffledPlaylist: [] })
     }
-
-    set({ queue: shuffledQueue })
-    set({ shuffleMode: get().shuffleMode === 'on' ? 'off' : 'on' })
-    console.log('Shuffled queue:', get().queue)
   },
 
   setCurrentSong: (song: Song) => {
@@ -214,32 +243,39 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   },
 
   playNext: () => {
-    const { currentSong, queue } = get()
+    const { currentSong, queue, shuffledPlaylist, isShuffled } = get()
+    const currentPlaylist = isShuffled ? shuffledPlaylist : queue
     if (!currentSong) {
-      if (queue.length > 0) {
-        get().setCurrentSong(queue[0])
+      if (currentPlaylist.length > 0) {
+        get().setCurrentSong(currentPlaylist[0])
       }
       return
     }
 
-    const currentIndex = queue.findIndex((song) => song.id === currentSong.id)
-    if (currentIndex < queue.length - 1) {
-      get().setCurrentSong(queue[currentIndex + 1])
+    const currentIndex = currentPlaylist.findIndex(
+      (song) => song.id === currentSong.id,
+    )
+    if (currentIndex < currentPlaylist.length - 1) {
+      get().setCurrentSong(currentPlaylist[currentIndex + 1])
     }
   },
 
   playPrevious: () => {
-    const { currentSong, queue } = get()
+    const { currentSong, queue, shuffledPlaylist, isShuffled } = get()
+    const currentPlaylist = isShuffled ? shuffledPlaylist : queue
+
     if (!currentSong) {
-      if (queue.length > 0) {
-        get().setCurrentSong(queue[0])
+      if (currentPlaylist.length > 0) {
+        get().setCurrentSong(currentPlaylist[0])
       }
       return
     }
 
-    const currentIndex = queue.findIndex((song) => song.id === currentSong.id)
+    const currentIndex = currentPlaylist.findIndex(
+      (song) => song.id === currentSong.id,
+    )
     if (currentIndex > 0) {
-      get().setCurrentSong(queue[currentIndex - 1])
+      get().setCurrentSong(currentPlaylist[currentIndex - 1])
     }
   },
 }))

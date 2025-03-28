@@ -38,6 +38,7 @@ export const UserTile: React.FC<UserTileProps> = ({
   const handleProfileClick = () => {
     navigate(AppConstantRoutes.paths.profile)
   }
+
   return (
     <div className={clsx('flex items-center space-x-2', className)}>
       <img
@@ -107,10 +108,10 @@ const Sidebar: React.FC = () => {
   const userId = useAuthStore((state) => state.auth.userId)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const {queue} = usePlayerStore()
 
   const { pathname } = useLocation()
   const { data: user } = useGetUser(+userId)
+  const { queue, shuffledPlaylist } = usePlayerStore()
 
   const handleLogout = () => {
     cleanupAfterLogout()
@@ -144,9 +145,9 @@ const Sidebar: React.FC = () => {
       </ul>
       {/*Player will be here*/}
       <div className='flex flex-col items-center justify-center '>
-        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && (
-          <Player />
-        )}
+        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) &&
+          Array.isArray(queue) && queue.length > 0 &&
+          Array.isArray(shuffledPlaylist) && shuffledPlaylist.length > 0 && <Player />}
       </div>
       <ul className='w-full mt-auto'>
         <UserTile
