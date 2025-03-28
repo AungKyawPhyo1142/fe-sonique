@@ -1,5 +1,6 @@
 import { AppConstantRoutes } from '@/services/routes/path'
 import { usePlayerStore } from '@/services/zustand/usePlayerStore'
+import clsx from 'clsx'
 import {
   CirclePause,
   CirclePlay,
@@ -75,7 +76,7 @@ const Player = () => {
 
   if (!location.pathname.includes(AppConstantRoutes.paths.songDetailPage(''))) {
     return (
-      <div className='flex flex-col items-center justify-center'>
+      <div className='flex flex-col items-center justify-center gap-y-3  w-44'>
         <audio
           ref={audioRef}
           src={currentSong?.songSrc}
@@ -87,54 +88,102 @@ const Player = () => {
           alt={currentSong?.title}
           className='w-fit h-40 rounded-md m-5 object-cover'
         />
-        <div className='flex flex-col items-center w-full'>
-          <input
-            type='range'
-            min='0'
-            max={duration}
-            value={currentTime}
-            onChange={(e) => {
-              onChangeCurrentTime(parseFloat(e.target.value))
-              handleSeek(e)
-            }}
-            className='w-full max-w-[80%]  hover:cursor-pointer appearance-none bg-transparent
+        <div className=' overflow-hidden whitespace-nowrap text-ellipsis  w-full'>
+          <h1
+            className={clsx(
+              'font-bold tracking-wide  ',
+              currentSong && currentSong?.title.length > 0 && 'animate-text-scroll',
+            )}
+          >
+            {currentSong?.title}
+          </h1>
+        </div>
+
+        <div className='w-full flex flex-col gap-y-3 '>
+          <div className='flex items-center justify-between'>
+            <button
+              onClick={undefined}
+              className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            >
+              <SkipBack size={20} className='stroke-[#838383]/70 stroke-2' />
+            </button>
+
+            <button
+              onClick={togglePlay}
+              className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            >
+              {isPlaying ? (
+                <CirclePause
+                  size={25}
+                  className='stroke-[#838383]/70 stroke-2'
+                />
+              ) : (
+                <CirclePlay
+                  size={25}
+                  className='stroke-[#838383]/70 stroke-2'
+                />
+              )}
+            </button>
+
+            <button
+              onClick={undefined}
+              className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            >
+              <SkipForward size={20} className='stroke-[#838383]/70 stroke-2' />
+            </button>
+          </div>
+
+          <div className='flex flex-col items-center gap-y-3'>
+            <input
+              type='range'
+              min='0'
+              max={duration}
+              value={currentTime}
+              onChange={handleSeek}
+              className='w-full   hover:cursor-pointer appearance-none bg-transparent
                               [&::-webkit-slider-runnable-track]:bg-[#686767] 
                               [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full
                               [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-thumb]:appearance-none 
                               [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 
                               [&::-webkit-slider-thumb]:bg-[#ffffff] [&::-webkit-slider-thumb]:rounded-full 
                               [&::-webkit-slider-thumb]:mt-[-6px]'
-          />
-          <div className='flex flex-row items-center justify-between w-[80%] m-1.5'>
-            <span className='text-sm min-w-[40px] text-right'>
-              {formatTime(currentTime)}
-            </span>
-            <span className='text-sm min-w-[40px] text-left'>
-              {formatTime(duration)}
-            </span>
-          </div>
-          <div className='flex flex-row items-center space-x-4'>
-            <button
-              onClick={playPrevious}
-              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-            >
-              <SkipBack size={20} />
-            </button>
+            />
+            <div className='flex flex-row items-center justify-between w-[80%] m-1.5'>
+              <span className='text-sm min-w-[40px] text-right'>
+                {formatTime(currentTime)}
+              </span>
+              <span className='text-sm min-w-[40px] text-left'>
+                {formatTime(duration)}
+              </span>
+            </div>
+            <div className='flex flex-row items-center space-x-4'>
+              <button
+                onClick={playPrevious}
+                className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+              >
+                <SkipBack size={20} />
+              </button>
 
-            <button
-              onClick={() => togglePlay()}
-              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-            >
-              {isPlaying ? <CirclePause size={30} /> : <CirclePlay size={30} />}
-            </button>
+              <button
+                onClick={() => togglePlay()}
+                className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+              >
+                {isPlaying ? (
+                  <CirclePause size={30} />
+                ) : (
+                  <CirclePlay size={30} />
+                )}
+              </button>
 
-            <button
-              onClick={playNext}
-              className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-            >
-              <SkipForward size={20} />
-            </button>
+              <button
+                onClick={playNext}
+                className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+              >
+                <SkipForward size={20} />
+              </button>
+            </div>
           </div>
+          <div className='flex flex-col '></div>
         </div>
       </div>
     )
@@ -148,10 +197,21 @@ const Player = () => {
           alt={currentSong?.title}
           className='w-12 h-12 rounded-md'
         />
-        <div className='flex flex-col w-full overflow-hidden'>
-          <span className='text-md font-bold truncate'>
-            {currentSong?.title}
-          </span>
+        <div className='flex flex-col overflow-hidden w-32 '>
+          <div className=' overflow-hidden whitespace-nowrap text-ellipsis '>
+            <h1
+              className={clsx(
+                'font-bold tracking-wide  ',
+               currentSong && currentSong?.title.length > 0 &&
+                  'animate-text-scroll',
+              )}
+            >
+              {currentSong?.title}
+            </h1>
+          </div>
+          {/* <span className='text-md font-bold truncate'>
+            {currentSong.title}
+          </span> */}
           <span className='text-sm'>{currentSong?.artist}</span>
         </div>
       </div>

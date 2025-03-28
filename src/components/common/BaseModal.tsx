@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-
 import {
   Dialog,
   DialogBackdrop,
@@ -10,7 +9,7 @@ import {
 } from '@headlessui/react'
 import { Fragment } from 'react/jsx-runtime'
 import React from 'react'
-import { X } from 'lucide-react'
+import { AlertTriangle, CheckCircle, Info, X } from 'lucide-react'
 
 export interface Props {
   children?: React.ReactNode
@@ -33,6 +32,7 @@ const BaseModal: React.FC<Props> = ({
   isOpen,
   setIsOpen,
   onCloseModal,
+  type,
 }) => {
   function closeModal() {
     setIsOpen(false)
@@ -87,10 +87,23 @@ const BaseModal: React.FC<Props> = ({
                   onClick={() => setIsOpen(false)}
                 />
                 <div className='flex flex-col gap-y-7'>
-                  <DialogTitle className='text-2xl font-bold text-white'>
-                    {title}
-                  </DialogTitle>
-                  <p className='text-sm text-gray-300'>{content}</p>
+                  <div className='flex items-center'>
+                    {type && (
+                      <div className='text-white me-5'>
+                        {type === 'info' && <Info size={24} />}
+                        {type === 'error' && (
+                          <AlertTriangle className='text-red-400' size={24} />
+                        )}
+                        {type === 'success' && (
+                          <CheckCircle size={24} className='text-green-400' />
+                        )}
+                      </div>
+                    )}
+                    <DialogTitle className='text-3xl font-bold text-white'>
+                      {title}
+                    </DialogTitle>
+                  </div>
+                  <p className='text-white font-light'>{content}</p>
                 </div>
                 {children}
               </DialogPanel>

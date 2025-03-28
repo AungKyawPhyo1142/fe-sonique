@@ -1,11 +1,10 @@
-import { apiClient } from '@/services/network/apiClient'
-import { ApiConstantRoutes } from '@/services/network/path'
+import { useGetUser } from '@/services/network/lib/user'
 import { AppConstantRoutes } from '@/services/routes/path'
 import { cleanupAfterLogout, useAuthStore } from '@/services/zustand/authStore'
 import { usePlayerStore } from '@/services/zustand/usePlayerStore'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { Heart, House, Library, Plus, PowerOff, Search } from 'lucide-react'
+import { Heart, House, Library, ListPlus, PowerOff, Search } from 'lucide-react'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import Button from '../common/Button'
@@ -111,17 +110,7 @@ const Sidebar: React.FC = () => {
   const {queue} = usePlayerStore()
 
   const { pathname } = useLocation()
-  const { data: user } = useQuery({
-    queryKey: ['getUser', userId], // Include userId to refetch when it changes
-    retry: 1,
-    queryFn: async () => {
-      const response = await apiClient.get(
-        ApiConstantRoutes.paths.auth.getUser(userId),
-      )
-      return response // Ensure only `data` is returned
-    },
-    enabled: !!userId, // Only run query if userId is defined
-  })
+  const { data: user } = useGetUser(+userId)
 
   const handleLogout = () => {
     cleanupAfterLogout()
@@ -130,72 +119,55 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <div className='h-screen bg-black text-white w-[240px] z-10 fixed'>
+    <div className='h-screen bg-black text-white w-[240px] z-10 fixed flex flex-col justify-between'>
       <div className='flex items-center justify-start text-3xl font-bold p-5'>
         <h1>Sonique</h1>
       </div>
-      <nav className=''>
-        <ul className='space-y-5 mt-5 mb-10 p-5'>
-          {SidebarItems.map((sidebar_item) => (
-            <SideBarItem
-              key={sidebar_item.title}
-              icon={sidebar_item.icon}
-              title={sidebar_item.title}
-              active={pathname === sidebar_item.path}
-              onClick={() => navigate(sidebar_item.path)}
-            />
-          ))}
-        </ul>
 
-        <ul className='space-y-5 mt-5 p-5'>
+      <ul className='space-y-5 mt-5 p-5'>
+        {SidebarItems.map((sidebar_item) => (
           <SideBarItem
-            icon={<Plus className='border-0 bg-white text-black p-1' />}
-            title='Create Playlist'
-            onClick={undefined}
+            key={sidebar_item.title}
+            icon={sidebar_item.icon}
+            title={sidebar_item.title}
+            active={pathname === sidebar_item.path}
+            onClick={() => navigate(sidebar_item.path)}
           />
-          <SideBarItem
-            icon={<Heart className='border-0 bg-white text-black p-1' />}
-            title='Liked Songs'
-            onClick={undefined}
-          />
-        </ul>
-        <div className='felx flex row items-center justify-center'>
-          <Seperator className=' !w-[80%] ' />
-        </div>
-        {/*Player will be here*/}
-        <div className='flex flex-col items-center justify-center my-5'> 
-        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && queue.length != 0 && (
+        ))}
+        <SideBarItem
+          icon={<ListPlus />}
+          title='Create Playlist'
+          onClick={undefined}
+        />
+        <SideBarItem icon={<Heart />} title='Liked Songs' onClick={undefined} />
+        <Seperator className='  ' />
+      </ul>
+      {/*Player will be here*/}
+      <div className='flex flex-col items-center justify-center '>
+        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && (
           <Player />
         )}
-        </div>
-        <ul className='absolute bottom-0 w-full'>
-          <UserTile
-            name={`${user?.data.firstName} ${user?.data.lastName}`}
-            userName={`@${user?.data.username}`}
-            avatar={
-              user?.data.profile_image ||
-              'https://robohash.org/default-avatar.png'
-            }
-            className='ml-5 mb-5'
-          />
-          <Seperator className='my-4 w-full px-3' />
+      </div>
+      <ul className='w-full mt-auto'>
+        <UserTile
+          name={`${user?.data.firstName} ${user?.data.lastName}`}
+          userName={`@${user?.data.username}`}
+          avatar={
+            user?.data.profile_image ||
+            'https://robohash.org/default-avatar.png'
+          }
+          className='ml-5 mb-5'
+        />
+        <Seperator className='my-4 w-full px-3' />
 
-          <Button
-            onClick={handleLogout}
-            className='flex items-center justify-center gap-x-2 px-5 ms-5'
-          >
-            <PowerOff size={20} />
-            <span>Logout</span>
-          </Button>
-
-          {/* <SideBarItem
-            icon={<PowerOff size={20} />}
-            title='Logout'
-            onClick={handleLogout}
-            className='m-5'
-          /> */}
-        </ul>
-      </nav>
+        <Button
+          onClick={handleLogout}
+          className='flex items-center justify-center gap-x-2  ms-5'
+        >
+          <PowerOff size={20} />
+          <span>Logout</span>
+        </Button>
+      </ul>
     </div>
   )
 }

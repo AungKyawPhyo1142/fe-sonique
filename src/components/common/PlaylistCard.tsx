@@ -20,7 +20,7 @@ const PlaylistCard: React.FC<Props> = ({
   return (
     <div
       className={clsx(
-        'w-[250px] bg-[#181818] p-4 group rounded-[3%] hover:opacity-90 cursor-pointer h-[300px] transition-all duration-150 ease-linear',
+        'w-full bg-[#181818] p-4 group rounded-[3%] hover:opacity-90 cursor-pointer h-[300px] transition-all duration-150 ease-linear',
         className,
       )}
       onMouseEnter={() => setIsHovered(true)}
