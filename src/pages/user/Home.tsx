@@ -1,3 +1,4 @@
+import InfiniteScrollContainer from '@/components/common/InfiniteScrollContainer'
 import PlaylistCard from '@/components/common/PlaylistCard'
 import { apiClient } from '@/services/network/apiClient'
 import { Artist } from '@/services/network/lib/artist'
@@ -60,9 +61,11 @@ const Home = () => {
   const {
     data,
     isLoading,
+    isFetching,
     isError,
     fetchNextPage,
     hasNextPage,
+
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ['getAllSongs'],
@@ -70,11 +73,8 @@ const Home = () => {
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   })
-  console.log('data', data)
-  console.log('data.pages', data?.pages)
-  const songs = data?.pages?.flatMap((page) => page.songs ?? []) ?? []
 
-  console.log('songs', songs)
+  const songs = data?.pages?.flatMap((page) => page.songs ?? []) ?? []
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error</div>
@@ -88,8 +88,13 @@ const Home = () => {
     //   </div>
     // </div>
     <div className='flex flex-col relative fade-in '>
-      <div className=' h-full'>
-        {songs && <CardList songLists={songs} title='All Songs' />}
+      <div className='h-[35%]'>
+        <InfiniteScrollContainer
+          onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
+        >
+          {songs && <CardList songLists={songs} title='All Songs' />}
+          {isFetchingNextPage && <div>Loading...</div>}
+        </InfiniteScrollContainer>
       </div>
     </div>
   )

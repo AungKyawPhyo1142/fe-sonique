@@ -24,19 +24,21 @@ const Player = () => {
     playlist,
     initializeAudio,
     setCurrentSong,
-
+    isShuffledOn,
+    time,
     onChangeCurrentTime,
     togglePlay,
     setVolume,
     playNext,
     playPrevious,
+    shuffleQueue,
   } = usePlayerStore()
 
   useEffect(() => {
     initializeAudio()
   }, [initializeAudio])
   //const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
+  const [currentTime, setCurrentTime] = useState(time)
   const [duration, setDuration] = useState(0)
   const location = useLocation()
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -77,7 +79,7 @@ const Player = () => {
         <audio
           ref={audioRef}
           src={currentSong?.songSrc}
-          onTimeUpdate={updateProgress}
+          onTimeUpdate={() => updateProgress()}
           onLoadedMetadata={handleTimeDuration}
         />
         <img
@@ -91,7 +93,7 @@ const Player = () => {
             min='0'
             max={duration}
             value={currentTime}
-            onChange={(e)=> {
+            onChange={(e) => {
               onChangeCurrentTime(parseFloat(e.target.value))
               handleSeek(e)
             }}
@@ -113,7 +115,7 @@ const Player = () => {
           </div>
           <div className='flex flex-row items-center space-x-4'>
             <button
-              onClick={undefined}
+              onClick={playPrevious}
               className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
             >
               <SkipBack size={20} />
@@ -127,7 +129,7 @@ const Player = () => {
             </button>
 
             <button
-              onClick={undefined}
+              onClick={playNext}
               className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
             >
               <SkipForward size={20} />
@@ -157,7 +159,7 @@ const Player = () => {
       <audio
         ref={audioRef}
         src={currentSong?.songSrc}
-        onTimeUpdate={updateProgress}
+        onTimeUpdate={() => updateProgress()}
         onLoadedMetadata={handleTimeDuration}
       />
 
@@ -165,14 +167,14 @@ const Player = () => {
         {/* song controls */}
         <div className='flex flex-row items-center space-x-4'>
           <button
-            onClick={undefined}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            onClick={shuffleQueue}
+            className={`text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 ${isShuffledOn ? 'text-[#ff89a0]' : 'hover:text-[#ff89a0]'}`}
           >
             <Shuffle size={25} />
           </button>
 
           <button
-            onClick={undefined}
+            onClick={playPrevious}
             className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
           >
             <SkipBack size={25} />
@@ -186,7 +188,7 @@ const Player = () => {
           </button>
 
           <button
-            onClick={undefined}
+            onClick={playNext}
             className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
           >
             <SkipForward size={25} />
@@ -213,7 +215,7 @@ const Player = () => {
             min='0'
             max={duration}
             value={currentTime}
-            onChange={(e)=> {
+            onChange={(e) => {
               onChangeCurrentTime(parseFloat(e.target.value))
               handleSeek(e)
             }}

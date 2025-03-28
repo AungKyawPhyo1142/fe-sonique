@@ -32,7 +32,7 @@ const SongDetail = () => {
     const seconds = Math.round(song?.duration % 60)
     return `${minutes}:${seconds}`
   }
-  const { playThisSong, isPlaying ,queue} = usePlayerStore()
+  const { playThisSong, addToQueue, queue } = usePlayerStore()
 
   const { data: user } = useQuery({
     queryKey: ['getUser', song?.artist?.id], // Use optional chaining
@@ -56,7 +56,7 @@ const SongDetail = () => {
         style={{ backgroundImage: `url(${song?.coverImageURL})` }}
         className={clsx(
           `flex flex-col text-white items-center justify-center ${
-             queue.length!=0 ? 'h-[90vh]' : 'h-[100vh]'
+            queue.length != 0 ? 'h-[90vh]' : 'h-[100vh]'
           } bg-cover bg-center bg-no-repeat `,
         )}
       >
@@ -90,21 +90,33 @@ const SongDetail = () => {
               </div>
               <div className='flex flex-row items-center justify-center space-x-5 py-5'>
                 <button
-                  onClick={() =>
-                    playThisSong({
-                      id: song.id,
-                      title: song.title,
-                      artist: song.artist.name,
-                      image: song.coverImageURL,
-                      songSrc: song.audioURL,
-                    })
-                  }
+                  onClick={() => {
+                    if (song) {
+                      playThisSong({
+                        id: song.id,
+                        title: song.title,
+                        artist: song.artist.name,
+                        image: song.coverImageURL,
+                        songSrc: song.audioURL,
+                      })
+                    }
+                  }}
                   className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
                 >
                   <Play size={40} />
                 </button>
                 <button
-                  onClick={undefined}
+                  onClick={()=>{
+                    if(song){
+                      addToQueue({
+                        id: song.id,
+                        title: song.title,
+                        artist: song.artist.name,
+                        image: song.coverImageURL,
+                        songSrc: song.audioURL,
+                      })
+                    }
+                  }}
                   className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
                 >
                   <ListPlus size={40} />
@@ -116,7 +128,7 @@ const SongDetail = () => {
       </div>
 
       {/* Audio Player (Footer) */}
-      {song && queue.length!=0 ? <Player /> : null}
+      {song && queue.length != 0 ? <Player /> : null}
     </div>
   )
 }
