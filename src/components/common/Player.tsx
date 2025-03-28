@@ -163,32 +163,6 @@ const Player = () => {
                 {formatTime(duration)}
               </span>
             </div>
-            <div className='flex flex-row items-center space-x-4'>
-              <button
-                onClick={playPrevious}
-                className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-              >
-                <SkipBack size={20} />
-              </button>
-
-              <button
-                onClick={() => togglePlay()}
-                className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-              >
-                {isPlaying ? (
-                  <CirclePause size={30} />
-                ) : (
-                  <CirclePlay size={30} />
-                )}
-              </button>
-
-              <button
-                onClick={playNext}
-                className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-              >
-                <SkipForward size={20} />
-              </button>
-            </div>
           </div>
           <div className='flex flex-col '></div>
         </div>
@@ -238,7 +212,11 @@ const Player = () => {
             onClick={toggleShuffle}
             className={`text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 'hover:text-[#ff89a0]'`}
           >
-            {shuffleMode ? <Shuffle className='text-[#ff89a0]' /> : <Shuffle />}
+            {shuffleMode === 'off' ? (
+              <Shuffle />
+            ) : (
+              <Shuffle className='text-[#ff89a0]' />
+            )}
           </button>
 
           <button

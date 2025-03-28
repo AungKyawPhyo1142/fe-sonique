@@ -111,7 +111,7 @@ const Sidebar: React.FC = () => {
 
   const { pathname } = useLocation()
   const { data: user } = useGetUser(+userId)
-  const { queue, shuffledPlaylist } = usePlayerStore()
+  const { audioElement} = usePlayerStore()
 
   const handleLogout = () => {
     cleanupAfterLogout()
@@ -145,9 +145,7 @@ const Sidebar: React.FC = () => {
       </ul>
       {/*Player will be here*/}
       <div className='flex flex-col items-center justify-center '>
-        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) &&
-          Array.isArray(queue) && queue.length > 0 &&
-          Array.isArray(shuffledPlaylist) && shuffledPlaylist.length > 0 && <Player />}
+        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && audioElement && <Player />}
       </div>
       <ul className='w-full mt-auto'>
         <UserTile

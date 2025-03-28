@@ -14,7 +14,7 @@ const SongDetail = () => {
   const { data: songData, isLoading, error, isError } = useGetSongDetail(id!)
 
   const duration = formatDuration(songData?.data.duration ?? 0)
-  const { playThisSong,addToQueue } = usePlayerStore()
+  const { playThisSong, addToQueue, audioElement } = usePlayerStore()
 
   if (isError) {
     console.log('error', error)
@@ -29,7 +29,9 @@ const SongDetail = () => {
         <div
           style={{ backgroundImage: `url(${songData.data.coverImageURL})` }}
           className={clsx(
-            `flex flex-col text-white items-center  justify-center h-[90vh] bg-cover bg-center bg-no-repeat `,
+            `flex flex-col text-white items-center justify-center`,
+            audioElement ? 'h-[90vh]' : 'h-[100vh]',
+            `bg-cover bg-center bg-no-repeat`,
           )}
         >
           <GlassCard className='!rounded-none  flex flex-col items-center justify-center space-y-5 w-full h-full !backdrop-blur-md bg-black/50 text-white'>
@@ -99,7 +101,7 @@ const SongDetail = () => {
       )}
 
       {/* Audio Player (Footer) */}
-      {songData?.data && <Player />}
+      {audioElement && <Player />}
     </div>
   )
 }
