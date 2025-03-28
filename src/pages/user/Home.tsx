@@ -55,7 +55,7 @@ const Home = () => {
     const response = await apiClient.get(
       ApiConstantRoutes.paths.auth.getAllSongs(pageParam),
     )
-
+    console.log("response debug",response.data)
     return response.data
   }
   const {
@@ -65,7 +65,6 @@ const Home = () => {
     isError,
     fetchNextPage,
     hasNextPage,
-
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ['getAllSongs'],
@@ -75,6 +74,7 @@ const Home = () => {
   })
 
   const songs = data?.pages?.flatMap((page) => page.songs ?? []) ?? []
+
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error</div>
