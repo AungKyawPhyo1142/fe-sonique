@@ -2,8 +2,10 @@ import GlassCard from '@/components/common/GlassCard'
 import Player from '@/components/common/Player'
 import { formatDuration } from '@/helpers/helpers'
 import { useGetSongDetail } from '@/services/network/lib/songs'
+import { usePlayerStore } from '@/services/zustand/usePlayerStore'
 
 import clsx from 'clsx'
+import { ListPlus, Play } from 'lucide-react'
 import { useParams } from 'react-router'
 
 const SongDetail = () => {
@@ -12,6 +14,7 @@ const SongDetail = () => {
   const { data: songData, isLoading, error, isError } = useGetSongDetail(id!)
 
   const duration = formatDuration(songData?.data.duration ?? 0)
+  const { playThisSong,addToQueue } = usePlayerStore()
 
   if (isError) {
     console.log('error', error)
@@ -57,6 +60,38 @@ const SongDetail = () => {
                   <div className='rounded-full bg-white w-2 h-2'></div>
                   <span>{duration}</span>
                 </div>
+                <button
+                  onClick={() => {
+                    if (songData.data) {
+                      playThisSong({
+                        id: songData.data.id,
+                        title: songData.data.title,
+                        artist: songData.data.artist.name,
+                        image: songData.data.coverImageURL,
+                        songSrc: songData.data.audioURL,
+                      })
+                    }
+                  }}
+                  className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+                >
+                  <Play size={40} />
+                </button>
+                <button
+                  onClick={() => {
+                    if (songData.data) {
+                      addToQueue({
+                        id: songData.data.id,
+                        title: songData.data.title,
+                        artist: songData.data.artist.name,
+                        image: songData.data.coverImageURL,
+                        songSrc: songData.data.audioURL,
+                      })
+                    }
+                  }}
+                  className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+                >
+                  <ListPlus size={40} />
+                </button>
               </div>
             </div>
           </GlassCard>

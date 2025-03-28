@@ -28,6 +28,7 @@ interface PlayerStore {
   updateProgress: () => void
   addToQueue: (song: Song) => void
   shuffleQueue: () => void
+  setCurrentTime: (time: number) => void  
   isShuffledOn: boolean
 }
 
@@ -49,10 +50,14 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       const audio = new Audio()
       set({ audioElement: audio })
       console.log('Audio element initialized:', audio) // Debugging log
+      console.log('Audio element initialized:', audio) // Debugging log
     }
   },
   setNewQueue: (newQueue: Song[]) => {
     set({ queue: newQueue })
+  },
+  setCurrentTime: (time: number) => {
+    set({ time: time })
   },
 
   playThisSong: (song: Song) => {
@@ -82,23 +87,25 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     }
   },
   shuffleQueue: () => {
-    const { queue, currentSong } = get();
-    const shuffledQueue = [...queue].sort(() => Math.random() - 0.5);
-  
+    const { queue, currentSong } = get()
+    const shuffledQueue = [...queue].sort(() => Math.random() - 0.5)
+
     if (currentSong) {
-      const currentIndex = shuffledQueue.findIndex((song) => song.id === currentSong.id);
-      
+      const currentIndex = shuffledQueue.findIndex(
+        (song) => song.id === currentSong.id,
+      )
+
       // Remove the current song from its position and move it to the start
-      const songToMove = shuffledQueue[currentIndex];
-      shuffledQueue.splice(currentIndex, 1);
-      shuffledQueue.unshift(songToMove);
+      const songToMove = shuffledQueue[currentIndex]
+      shuffledQueue.splice(currentIndex, 1)
+      shuffledQueue.unshift(songToMove)
     }
-  
-    set({ queue: shuffledQueue });
-    set({ isShuffledOn: true });
-    console.log('Shuffled queue:', get().queue);
+
+    set({ queue: shuffledQueue })
+    set({ isShuffledOn: true })
+    console.log('Shuffled queue:', get().queue)
   },
-  
+
   setCurrentSong: (song: Song) => {
     const { audioElement } = get()
     if (!audioElement) {
@@ -140,7 +147,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   },
 
   togglePlay: () => {
-    const { audioElement, isPlaying,currentSong } = get()
+    const { audioElement, isPlaying, currentSong } = get()
     console.log('Toggle Play called, isPlaying:', currentSong) // Debugging step
 
     if (audioElement) {

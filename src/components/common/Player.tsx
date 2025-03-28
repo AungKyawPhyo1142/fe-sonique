@@ -37,22 +37,25 @@ const Player = () => {
 
   useEffect(() => {
     initializeAudio()
-  }, [initializeAudio])
+  }, [])
   //const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(time)
+  const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const location = useLocation()
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)  
 
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       audioRef.current.volume = parseFloat(e.target.value)
       setVolume(parseFloat(e.target.value))
+      console.log('Volume:', audioRef.current.currentTime)
     }
   }
   const handleTimeUpdate = () => {
     if (audioRef.current) {
+      console.log('Current time:', audioRef.current.currentTime)
       setCurrentTime(audioRef.current.currentTime)
+      updateProgress()
     }
   }
 
@@ -77,12 +80,7 @@ const Player = () => {
   if (!location.pathname.includes(AppConstantRoutes.paths.songDetailPage(''))) {
     return (
       <div className='flex flex-col items-center justify-center gap-y-3  w-44'>
-        <audio
-          ref={audioRef}
-          src={currentSong?.songSrc}
-          onTimeUpdate={() => updateProgress()}
-          onLoadedMetadata={handleTimeDuration}
-        />
+        
         <img
           src={currentSong?.image}
           alt={currentSong?.title}
@@ -92,7 +90,9 @@ const Player = () => {
           <h1
             className={clsx(
               'font-bold tracking-wide  ',
-              currentSong && currentSong?.title.length > 0 && 'animate-text-scroll',
+              currentSong &&
+                currentSong?.title.length > 0 &&
+                'animate-text-scroll',
             )}
           >
             {currentSong?.title}
@@ -102,7 +102,7 @@ const Player = () => {
         <div className='w-full flex flex-col gap-y-3 '>
           <div className='flex items-center justify-between'>
             <button
-              onClick={undefined}
+              onClick={playPrevious}
               className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
             >
               <SkipBack size={20} className='stroke-[#838383]/70 stroke-2' />
@@ -126,7 +126,7 @@ const Player = () => {
             </button>
 
             <button
-              onClick={undefined}
+              onClick={playNext}
               className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
             >
               <SkipForward size={20} className='stroke-[#838383]/70 stroke-2' />
@@ -134,12 +134,21 @@ const Player = () => {
           </div>
 
           <div className='flex flex-col items-center gap-y-3'>
+          <audio
+          ref={audioRef}
+          src={currentSong?.songSrc}
+          onTimeUpdate={() => handleTimeUpdate()}
+          onLoadedMetadata={handleTimeDuration}
+        />
             <input
               type='range'
               min='0'
               max={duration}
               value={currentTime}
-              onChange={handleSeek}
+              onChange={(e) => {
+                onChangeCurrentTime(parseFloat(e.target.value))
+                handleSeek(e)
+              }}
               className='w-full   hover:cursor-pointer appearance-none bg-transparent
                               [&::-webkit-slider-runnable-track]:bg-[#686767] 
                               [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full
@@ -202,7 +211,8 @@ const Player = () => {
             <h1
               className={clsx(
                 'font-bold tracking-wide  ',
-               currentSong && currentSong?.title.length > 0 &&
+                currentSong &&
+                  currentSong?.title.length > 0 &&
                   'animate-text-scroll',
               )}
             >
@@ -219,7 +229,7 @@ const Player = () => {
       <audio
         ref={audioRef}
         src={currentSong?.songSrc}
-        onTimeUpdate={() => updateProgress()}
+        onTimeUpdate={() => handleTimeUpdate()}
         onLoadedMetadata={handleTimeDuration}
       />
 
