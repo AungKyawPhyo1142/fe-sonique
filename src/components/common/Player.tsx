@@ -5,6 +5,8 @@ import {
   CirclePause,
   CirclePlay,
   Repeat,
+  Repeat1,
+  Repeat2,
   Shuffle,
   SkipBack,
   SkipForward,
@@ -25,37 +27,33 @@ const Player = () => {
     playlist,
     initializeAudio,
     setCurrentSong,
-    isShuffledOn,
+    repeatMode,
+    shuffleMode,
     time,
     onChangeCurrentTime,
     togglePlay,
     setVolume,
     playNext,
     playPrevious,
-    shuffleQueue,
+    toggleShuffle,
+    setCurrentTime,
+    toggleRepeatMode,
   } = usePlayerStore()
 
   useEffect(() => {
     initializeAudio()
   }, [])
   //const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
+  // const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const location = useLocation()
-  const audioRef = useRef<HTMLAudioElement | null>(null)  
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       audioRef.current.volume = parseFloat(e.target.value)
       setVolume(parseFloat(e.target.value))
       console.log('Volume:', audioRef.current.currentTime)
-    }
-  }
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      console.log('Current time:', audioRef.current.currentTime)
-      setCurrentTime(audioRef.current.currentTime)
-      updateProgress()
     }
   }
 
@@ -80,7 +78,6 @@ const Player = () => {
   if (!location.pathname.includes(AppConstantRoutes.paths.songDetailPage(''))) {
     return (
       <div className='flex flex-col items-center justify-center gap-y-3  w-44'>
-        
         <img
           src={currentSong?.image}
           alt={currentSong?.title}
@@ -134,17 +131,17 @@ const Player = () => {
           </div>
 
           <div className='flex flex-col items-center gap-y-3'>
-          <audio
-          ref={audioRef}
-          src={currentSong?.songSrc}
-          onTimeUpdate={() => handleTimeUpdate()}
-          onLoadedMetadata={handleTimeDuration}
-        />
+            <audio
+              ref={audioRef}
+              src={currentSong?.songSrc}
+              onTimeUpdate={updateProgress}
+              onLoadedMetadata={handleTimeDuration}
+            />
             <input
               type='range'
               min='0'
               max={duration}
-              value={currentTime}
+              value={time}
               onChange={(e) => {
                 onChangeCurrentTime(parseFloat(e.target.value))
                 handleSeek(e)
@@ -159,7 +156,7 @@ const Player = () => {
             />
             <div className='flex flex-row items-center justify-between w-[80%] m-1.5'>
               <span className='text-sm min-w-[40px] text-right'>
-                {formatTime(currentTime)}
+                {formatTime(time)}
               </span>
               <span className='text-sm min-w-[40px] text-left'>
                 {formatTime(duration)}
@@ -229,7 +226,7 @@ const Player = () => {
       <audio
         ref={audioRef}
         src={currentSong?.songSrc}
-        onTimeUpdate={() => handleTimeUpdate()}
+        onTimeUpdate={updateProgress}
         onLoadedMetadata={handleTimeDuration}
       />
 
@@ -237,10 +234,10 @@ const Player = () => {
         {/* song controls */}
         <div className='flex flex-row items-center space-x-4'>
           <button
-            onClick={shuffleQueue}
-            className={`text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 ${isShuffledOn ? 'text-[#ff89a0]' : 'hover:text-[#ff89a0]'}`}
+            onClick={toggleShuffle}
+            className={`text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 'hover:text-[#ff89a0]'`}
           >
-            <Shuffle size={25} />
+            {shuffleMode ? <Shuffle className='text-[#ff89a0]' /> : <Shuffle />}
           </button>
 
           <button
@@ -265,10 +262,16 @@ const Player = () => {
           </button>
 
           <button
-            onClick={undefined}
+            onClick={toggleRepeatMode}
             className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
           >
-            <Repeat size={25} />
+            {repeatMode === 'off' ? (
+              <Repeat />
+            ) : repeatMode === 'song' ? (
+              <Repeat1 className='text-[#ff89a0]' />
+            ) : (
+              <Repeat2 className='text-[#ff89a0]' />
+            )}
           </button>
         </div>
 
@@ -276,7 +279,7 @@ const Player = () => {
         <div className='flex flex-row items-center justify-center w-full space-x-4'>
           {/* Current time */}
           <span className='text-sm min-w-[40px] text-right'>
-            {formatTime(currentTime)}
+            {formatTime(time)}
           </span>
 
           {/* Seek bar */}
@@ -284,7 +287,7 @@ const Player = () => {
             type='range'
             min='0'
             max={duration}
-            value={currentTime}
+            value={time}
             onChange={(e) => {
               onChangeCurrentTime(parseFloat(e.target.value))
               handleSeek(e)

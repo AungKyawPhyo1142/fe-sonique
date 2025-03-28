@@ -7,6 +7,9 @@ export interface Song {
   image: string
   songSrc: string
 }
+type RepeatMode = 'off' | 'song' | 'playlist';
+
+type ShuffleMode = 'on' | 'off';
 
 interface PlayerStore {
   currentSong: Song | null
@@ -27,9 +30,11 @@ interface PlayerStore {
   onChangeCurrentTime: (time: number) => void
   updateProgress: () => void
   addToQueue: (song: Song) => void
-  shuffleQueue: () => void
-  setCurrentTime: (time: number) => void  
-  isShuffledOn: boolean
+  toogleShuffle: () => void
+  setCurrentTime: (time: number) => void
+  shuffleMode: ShuffleMode
+  repeatMode: RepeatMode  
+  toggleRepeatMode: () => void
 }
 
 export const usePlayerStore = create<PlayerStore>((set, get) => ({
@@ -38,8 +43,9 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   isPaused: false,
   volume: 0.5,
   duration: 0,
+  repeatMode: 'off',
   time: 0,
-  isShuffledOn: false,
+  shuffleMode: 'off',
   audioElement: null,
   queue: [],
   initializeAudio: () => {
@@ -49,17 +55,55 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     ) {
       const audio = new Audio()
       set({ audioElement: audio })
+
+      audio.addEventListener('timeupdate', () => {
+        get().updateProgress()
+      })
+
+      audio.addEventListener('ended', () => {
+        const { repeatMode } = get()
+        if (repeatMode === 'song') {
+          const { currentSong } = get()
+          if (currentSong) {
+            get().setCurrentSong(currentSong)
+          }
+        } else if (repeatMode === 'playlist') {
+          const { queue, currentSong } = get()
+          const currentIndex = queue.findIndex(
+            (song) => song.id === currentSong!.id,
+          )
+          if (currentIndex < queue.length - 1) {
+            get().setCurrentSong(queue[0])
+          } else {
+            get().playNext()
+          }
+        } else {
+          get().playNext()
+        }
+      })
       console.log('Audio element initialized:', audio) // Debugging log
-      console.log('Audio element initialized:', audio) // Debugging log
+      // Debugging log
     }
   },
   setNewQueue: (newQueue: Song[]) => {
     set({ queue: newQueue })
   },
-  setCurrentTime: (time: number) => {
-    set({ time: time })
-  },
 
+ toggleRepeatMode: () => {
+  const { repeatMode } = get();
+    const modes: RepeatMode[] = ['off', 'song', 'playlist'];
+    const currentIndex = modes.indexOf(repeatMode);
+    const nextIndex = (currentIndex + 1) % modes.length;
+    set({ repeatMode: modes[nextIndex] });
+ },
+
+  setCurrentTime: (time: number) => {
+    const { audioElement } = get()
+    if (audioElement) {
+      audioElement.currentTime = time
+      set({ time: time })
+    }
+  },
   playThisSong: (song: Song) => {
     const { audioElement, initializeAudio } = get()
     if (!audioElement) {
@@ -86,7 +130,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       get().playThisSong(song)
     }
   },
-  shuffleQueue: () => {
+  toogleShuffle: () => {
     const { queue, currentSong } = get()
     const shuffledQueue = [...queue].sort(() => Math.random() - 0.5)
 
@@ -102,7 +146,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     }
 
     set({ queue: shuffledQueue })
-    set({ isShuffledOn: true })
+    set({ shuffleMode: get().shuffleMode === 'on' ? 'off' : 'on' })
     console.log('Shuffled queue:', get().queue)
   },
 
@@ -137,13 +181,10 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   },
 
   updateProgress: () => {
-    set((state) => {
-      const { audioElement } = state
-      if (audioElement) {
-        return { time: audioElement.currentTime } // Ensure state update
-      }
-      return state
-    })
+    const { audioElement } = get()
+    if (audioElement) {
+      set({ time: audioElement.currentTime })
+    }
   },
 
   togglePlay: () => {
