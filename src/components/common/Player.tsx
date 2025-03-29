@@ -19,14 +19,14 @@ import { useLocation } from 'react-router'
 
 const Player = () => {
   const {
-    queue,
+    // queue,
     currentSong,
     isPlaying,
     volume,
     updateProgress,
-    playlist,
+    // playlist,
     initializeAudio,
-    setCurrentSong,
+    // setCurrentSong,
     toggleShuffle,
     repeatMode,
     isShuffled,
@@ -43,7 +43,7 @@ const Player = () => {
 
   useEffect(() => {
     initializeAudio()
-  }, [])
+  }, [initializeAudio])
   //const [isPlaying, setIsPlaying] = useState(false)
   // const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
