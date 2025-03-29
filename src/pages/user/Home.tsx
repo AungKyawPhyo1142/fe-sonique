@@ -1,3 +1,4 @@
+import FloatingActionButton from '@/components/common/FloatingActionButton'
 import InfiniteScrollContainer from '@/components/common/InfiniteScrollContainer'
 import PlaylistCard from '@/components/common/PlaylistCard'
 import { Song, useGetAllSongs } from '@/services/network/lib/songs'
@@ -60,6 +61,10 @@ const Home = () => {
         )}
         {isFetchingNextPage && <div>Loading more...</div>}
       </div>
+
+      <FloatingActionButton onClick={function (): void {
+        throw new Error('Function not implemented.')
+      } }/>
     </div>
   )
 }
