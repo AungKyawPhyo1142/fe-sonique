@@ -1,5 +1,5 @@
+import toast from 'react-hot-toast'
 import { create } from 'zustand/react'
-
 export interface Song {
   id: string
   title: string
@@ -35,7 +35,7 @@ interface PlayerStore {
   onChangeCurrentTime: (time: number) => void
   updateProgress: () => void
   addToQueue: (song: Song) => void
-  toogleShuffle: () => void
+  toggleShuffle: () => void
   setCurrentTime: (time: number) => void
 
   toggleRepeatMode: () => void
@@ -112,6 +112,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     const currentIndex = modes.indexOf(repeatMode)
     const nextIndex = (currentIndex + 1) % modes.length
     set({ repeatMode: modes[nextIndex] })
+    toast.success(`Repeat mode: ${modes[nextIndex]}`)
   },
 
   setCurrentTime: (time: number) => {
@@ -146,8 +147,9 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     if (queue.length === 0) {
       get().playThisSong(song)
     }
+    toast.success(`Added to queue: ${song.title}`,)
   },
-  toogleShuffle: () => {
+  toggleShuffle: () => {
     const { isShuffled, queue, currentSong } = get()
     if (!isShuffled) {
       // When enabling shuffle, create a new shuffled playlist
@@ -177,6 +179,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       // When disabling shuffle, clear the shuffled playlist
       set({ isShuffled: false, shuffledPlaylist: [] })
     }
+    toast.success(`Shuffle mode: ${isShuffled ? 'off' : 'on'}`)
   },
 
   setCurrentSong: (song: Song) => {
@@ -233,6 +236,8 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     } else {
       console.error('Audio element not found')
     }
+    toast.success(
+      `Audio ${isPlaying ? 'paused' : 'playing'}`,)
   },
   setVolume: (volume: number) => {
     const { audioElement } = get()
@@ -258,6 +263,9 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     if (currentIndex < currentPlaylist.length - 1) {
       get().setCurrentSong(currentPlaylist[currentIndex + 1])
     }
+
+    toast.success(
+      `Playing next song: ${currentPlaylist[currentIndex + 1].title}`,)
   },
 
   playPrevious: () => {
@@ -277,5 +285,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     if (currentIndex > 0) {
       get().setCurrentSong(currentPlaylist[currentIndex - 1])
     }
+    toast.success(
+      `Playing previous song: ${currentPlaylist[currentIndex - 1].title}`,)
   },
 }))

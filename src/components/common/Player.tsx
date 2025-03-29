@@ -29,7 +29,7 @@ const Player = () => {
     setCurrentSong,
     toggleShuffle,
     repeatMode,
-    shuffleMode,
+    isShuffled,
     time,
     onChangeCurrentTime,
     togglePlay,
@@ -212,11 +212,7 @@ const Player = () => {
             onClick={toggleShuffle}
             className={`text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 'hover:text-[#ff89a0]'`}
           >
-            {shuffleMode === 'off' ? (
-              <Shuffle />
-            ) : (
-              <Shuffle className='text-[#ff89a0]' />
-            )}
+            {isShuffled ? <Shuffle className='text-[#ff89a0]' /> : <Shuffle />}
           </button>
 
           <button

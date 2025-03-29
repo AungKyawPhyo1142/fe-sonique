@@ -62,6 +62,7 @@ const SongDetail = () => {
                   <div className='rounded-full bg-white w-2 h-2'></div>
                   <span>{duration}</span>
                 </div>
+                <div className='flex flex-row items-center justify-start space-x-5 mt-5'> 
                 <button
                   onClick={() => {
                     if (songData.data) {
@@ -94,6 +95,7 @@ const SongDetail = () => {
                 >
                   <ListPlus size={40} />
                 </button>
+                </div>
               </div>
             </div>
           </GlassCard>
