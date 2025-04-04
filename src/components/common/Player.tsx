@@ -82,7 +82,7 @@ const Player = () => {
         <img
           src={currentSong?.image}
           alt={currentSong?.title}
-          className='w-fit h-40 rounded-md m-5 object-cover'
+          className='w-fit h-32 rounded-md object-cover'
         />
         <div className=' overflow-hidden whitespace-nowrap text-ellipsis  w-full'>
           <h1
@@ -101,33 +101,39 @@ const Player = () => {
           <div className='flex items-center justify-between'>
             <button
               onClick={playPrevious}
-              className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+              className=' w-auto text-white hover:cursor-pointer'
             >
-              <SkipBack size={20} className='stroke-[#838383]/70 stroke-2' />
+              <SkipBack
+                size={20}
+                className=' stroke-1 transition-all duration-1 ease-linear hover:stroke-[#838383]'
+              />
             </button>
 
             <button
               onClick={togglePlay}
-              className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+              className=' w-auto text-white hover:cursor-pointer'
             >
               {isPlaying ? (
                 <CirclePause
                   size={25}
-                  className='stroke-[#838383]/70 stroke-2'
+                  className='stroke-1 transition-all duration-100 ease-linear hover:stroke-[#838383]'
                 />
               ) : (
                 <CirclePlay
                   size={25}
-                  className='stroke-[#838383]/70 stroke-2'
+                  className='stroke-1 transition-all duration-100 ease-linear hover:stroke-[#838383]'
                 />
               )}
             </button>
 
             <button
               onClick={playNext}
-              className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+              className=' w-auto text-white hover:cursor-pointer '
             >
-              <SkipForward size={20} className='stroke-[#838383]/70 stroke-2' />
+              <SkipForward
+                size={20}
+                className=' stroke-1 transition-all duration-100 ease-linear hover:stroke-[#838383]'
+              />
             </button>
           </div>
 
@@ -155,13 +161,9 @@ const Player = () => {
                               [&::-webkit-slider-thumb]:bg-[#ffffff] [&::-webkit-slider-thumb]:rounded-full 
                               [&::-webkit-slider-thumb]:mt-[-6px]'
             />
-            <div className='flex flex-row items-center justify-between w-[80%] m-1.5'>
-              <span className='text-sm min-w-[40px] text-right'>
-                {formatTime(time)}
-              </span>
-              <span className='text-sm min-w-[40px] text-left'>
-                {formatTime(duration)}
-              </span>
+            <div className='flex flex-row items-center justify-between w-full'>
+              <span className='text-sm '>{formatTime(time)}</span>
+              <span className='text-sm '>{formatTime(duration)}</span>
             </div>
           </div>
           <div className='flex flex-col '></div>
@@ -170,7 +172,7 @@ const Player = () => {
     )
   }
   return (
-    <div className='h-[10vh] flex items-center justify-between bg-[#282828] w-full text-white p-5'>
+    <div className='h-[10vh] flex items-center justify-between bg-zinc-900/80 backdrop-blur-md w-full text-white p-5'>
       {/* Song detail */}
       <div className='flex flex-row items-center space-x-2 flex-[1]'>
         <img
@@ -208,44 +210,61 @@ const Player = () => {
       <div className='flex flex-col items-center w-full px-4 flex-[3]'>
         {/* song controls */}
         <div className='flex flex-row items-center space-x-4'>
-          <button
-            onClick={toggleShuffle}
-            className={`text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 'hover:text-[#ff89a0]'`}
-          >
-            {isShuffled ? <Shuffle className='text-[#ff89a0]' /> : <Shuffle />}
+          <button onClick={toggleShuffle} className={` hover:cursor-pointer `}>
+            {isShuffled ? (
+              <Shuffle className='stroke-1 stroke-white' />
+            ) : (
+              <Shuffle className='stroke-1 stroke-[#838383] hover:stroke-white transition-colors duration-75 ease-linear' />
+            )}
           </button>
 
           <button
             onClick={playPrevious}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            className='text-white hover:cursor-pointer  '
           >
-            <SkipBack size={25} />
+            <SkipBack
+              size={25}
+              className='stroke-1 transition-all duration-150 ease-linear hover:text-zinc-300'
+            />
           </button>
 
           <button
             onClick={togglePlay}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            className='text-white hover:cursor-pointer '
           >
-            {isPlaying ? <CirclePause size={40} /> : <CirclePlay size={40} />}
+            {isPlaying ? (
+              <CirclePause
+                size={40}
+                className='stroke-1 transition-all duration-150 ease-linear hover:text-zinc-300'
+              />
+            ) : (
+              <CirclePlay
+                size={40}
+                className='stroke-1 transition-all duration-150 ease-linear hover:text-zinc-300'
+              />
+            )}
           </button>
 
           <button
             onClick={playNext}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            className='text-white hover:cursor-pointer '
           >
-            <SkipForward size={25} />
+            <SkipForward
+              size={25}
+              className='stroke-1 transition-all duration-150 ease-linear hover:text-zinc-300'
+            />
           </button>
 
           <button
             onClick={toggleRepeatMode}
-            className='text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
+            className='text-white hover:cursor-pointer '
           >
             {repeatMode === 'off' ? (
-              <Repeat />
+              <Repeat className='stroke-1 stroke-[#838383] hover:stroke-white transition-all duration-150 ease-linear ' />
             ) : repeatMode === 'song' ? (
-              <Repeat1 className='text-[#ff89a0]' />
+              <Repeat1 className='transition-all duration-150 ease-linear stroke-white hover:stroke-[#838383] stroke-1' />
             ) : (
-              <Repeat2 className='text-[#ff89a0]' />
+              <Repeat2 className='transition-all duration-150 ease-linear stroke-white hover:stroke-[#838383] stroke-1' />
             )}
           </button>
         </div>

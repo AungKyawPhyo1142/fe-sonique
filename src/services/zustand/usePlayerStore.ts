@@ -147,7 +147,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     if (queue.length === 0) {
       get().playThisSong(song)
     }
-    toast.success(`Added to queue: ${song.title}`,)
+    toast.success(`Added to queue: ${song.title}`)
   },
   toggleShuffle: () => {
     const { isShuffled, queue, currentSong } = get()
@@ -236,8 +236,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     } else {
       console.error('Audio element not found')
     }
-    toast.success(
-      `Audio ${isPlaying ? 'paused' : 'playing'}`,)
+    toast.success(`Audio ${isPlaying ? 'paused' : 'playing'}`)
   },
   setVolume: (volume: number) => {
     const { audioElement } = get()
@@ -265,7 +264,8 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
     }
 
     toast.success(
-      `Playing next song: ${currentPlaylist[currentIndex + 1].title}`,)
+      `Playing next song: ${currentPlaylist[currentIndex + 1].title}`,
+    )
   },
 
   playPrevious: () => {
@@ -286,6 +286,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       get().setCurrentSong(currentPlaylist[currentIndex - 1])
     }
     toast.success(
-      `Playing previous song: ${currentPlaylist[currentIndex - 1].title}`,)
+      `Playing previous song: ${currentPlaylist[currentIndex - 1].title}`,
+    )
   },
 }))

@@ -2,8 +2,9 @@ import { Outlet, useLocation } from 'react-router'
 
 import { AppConstantRoutes } from '@/services/routes/path'
 import clsx from 'clsx'
-import { Toaster } from 'react-hot-toast'
+
 import Sidebar from '../navbar/Sidebar'
+import Toaster from '../common/Toaster'
 
 const LayoutWithAuth = () => {
   const location = useLocation()
@@ -12,7 +13,6 @@ const LayoutWithAuth = () => {
     <div>
       {location.pathname !== AppConstantRoutes.paths.profile && <Sidebar />}
       <main
-      
         className={clsx(
           'bg-zinc-400/20 min-h-screen',
           location.pathname !== AppConstantRoutes.paths.profile && 'ml-[240px]',
@@ -22,7 +22,7 @@ const LayoutWithAuth = () => {
         )}
       >
         <Outlet />
-        <Toaster/>
+        <Toaster />
       </main>
     </div>
   )

@@ -29,7 +29,7 @@ const SongDetail = () => {
         <div
           style={{ backgroundImage: `url(${songData.data.coverImageURL})` }}
           className={clsx(
-            `flex flex-col text-white items-center justify-center`,
+            `flex flex-col text-white items-center justify-center min-h-screen`,
             audioElement ? 'h-[90vh]' : 'h-[100vh]',
             `bg-cover bg-center bg-no-repeat`,
           )}
@@ -62,48 +62,53 @@ const SongDetail = () => {
                   <div className='rounded-full bg-white w-2 h-2'></div>
                   <span>{duration}</span>
                 </div>
-                <div className='flex flex-row items-center justify-start space-x-5 mt-5'> 
-                <button
-                  onClick={() => {
-                    if (songData.data) {
-                      playThisSong({
-                        id: songData.data.id,
-                        title: songData.data.title,
-                        artist: songData.data.artist.name,
-                        image: songData.data.coverImageURL,
-                        songSrc: songData.data.audioURL,
-                      })
-                    }
-                  }}
-                  className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-                >
-                  <Play size={40} />
-                </button>
-                <button
-                  onClick={() => {
-                    if (songData.data) {
-                      addToQueue({
-                        id: songData.data.id,
-                        title: songData.data.title,
-                        artist: songData.data.artist.name,
-                        image: songData.data.coverImageURL,
-                        songSrc: songData.data.audioURL,
-                      })
-                    }
-                  }}
-                  className=' w-auto text-white hover:cursor-pointer transition-all duration-150 ease-linear hover:scale-105 hover:text-[#ff89a0]'
-                >
-                  <ListPlus size={40} />
-                </button>
+                <div className='flex flex-row items-center justify-start space-x-5 mt-5'>
+                  <button
+                    onClick={() => {
+                      if (songData.data) {
+                        playThisSong({
+                          id: songData.data.id,
+                          title: songData.data.title,
+                          artist: songData.data.artist.name,
+                          image: songData.data.coverImageURL,
+                          songSrc: songData.data.audioURL,
+                        })
+                      }
+                    }}
+                    className=' w-auto text-white hover:cursor-pointer '
+                  >
+                    <Play
+                      size={30}
+                      className='transition-all duration-150 ease-linear stroke-1 stroke-[#fff] hover:stroke-[#fff]/60'
+                    />
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (songData.data) {
+                        addToQueue({
+                          id: songData.data.id,
+                          title: songData.data.title,
+                          artist: songData.data.artist.name,
+                          image: songData.data.coverImageURL,
+                          songSrc: songData.data.audioURL,
+                        })
+                      }
+                    }}
+                    className=' w-auto text-white hover:cursor-pointer'
+                  >
+                    <ListPlus
+                      size={35}
+                      className='transition-all duration-150 ease-linear stroke-1 stroke-[#fff] hover:stroke-[#fff]/60'
+                    />
+                  </button>
                 </div>
               </div>
             </div>
           </GlassCard>
+          {/* Audio Player (Footer) */}
+          {audioElement && <Player />}
         </div>
       )}
-
-      {/* Audio Player (Footer) */}
-      {audioElement && <Player />}
     </div>
   )
 }

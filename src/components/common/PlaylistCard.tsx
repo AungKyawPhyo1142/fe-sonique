@@ -42,10 +42,10 @@ const PlaylistCard: React.FC<Props> = ({
         </div>
         {isHovered && (
           <button
-            className=' absolute bottom-2 right-2 bg-green-500 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105 hover:bg-green-400'
+            className=' absolute bottom-2 right-2 bg-zinc-800/50 border-zinc-300/50 border backdrop-blur-2xl rounded-lg p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-zinc-800/30'
             aria-label={`Play ${title}`}
           >
-            <Play className='h-5 w-5 text-black fill-black' />
+            <Play className='h-5 w-5 text-white fill-white' />
           </button>
         )}
       </div>
