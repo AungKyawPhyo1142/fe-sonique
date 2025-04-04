@@ -1,6 +1,9 @@
 import FloatingActionButton from '@/components/common/FloatingActionButton'
 import InfiniteScrollContainer from '@/components/common/InfiniteScrollContainer'
-import PlaylistCard from '@/components/common/PlaylistCard'
+import PlaylistCard, {
+  PlaylistCardSkeleton,
+} from '@/components/common/PlaylistCard'
+import SkeletonList from '@/components/common/SkeletonList'
 import { Song, useGetAllSongs } from '@/services/network/lib/songs'
 
 import { AppConstantRoutes } from '@/services/routes/path'
@@ -21,7 +24,7 @@ const CardList: React.FC<CardListProps> = ({ songLists, title }) => {
         <span className='text-md text-gray-300 hover:underline'>Show all</span>
       </div>
 
-      <div className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 bg-greem '>
+      <div className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
         {songLists.map((songList, index) => (
           <div key={index} className='w-full'>
             {/* Wrap in a div to maintain spacing */}
@@ -48,8 +51,16 @@ const Home = () => {
   console.log('data.pages', data?.pages)
   const songs = data?.pages?.flatMap((page) => page.data.songs ?? []) ?? []
 
-
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) {
+    return (
+      <SkeletonList
+        count={15}
+        className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+      >
+        <PlaylistCardSkeleton />
+      </SkeletonList>
+    )
+  }
   if (isError) return <div>Error</div>
   return (
     <div className='flex flex-col relative fade-in '>
@@ -62,9 +73,7 @@ const Home = () => {
         {isFetchingNextPage && <div>Loading more...</div>}
       </div>
 
-      <FloatingActionButton onClick={function (): void {
-        throw new Error('Function not implemented.')
-      } }/>
+      <FloatingActionButton onClick={() => undefined} />
     </div>
   )
 }

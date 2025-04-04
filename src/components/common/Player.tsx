@@ -15,7 +15,7 @@ import {
   Volume2,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 
 const Player = () => {
   const {
@@ -47,6 +47,7 @@ const Player = () => {
   //const [isPlaying, setIsPlaying] = useState(false)
   // const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+  const navigate = useNavigate()
   const location = useLocation()
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
@@ -78,13 +79,20 @@ const Player = () => {
 
   if (!location.pathname.includes(AppConstantRoutes.paths.songDetailPage(''))) {
     return (
-      <div className='flex flex-col items-center justify-center gap-y-3  w-44'>
+      <div
+        className='flex flex-col items-center justify-center gap-y-3 w-44 cursor-pointer'
+        onClick={() =>
+          navigate(
+            AppConstantRoutes.paths.songDetailPage(currentSong?.id ?? ''),
+          )
+        }
+      >
         <img
           src={currentSong?.image}
           alt={currentSong?.title}
           className='w-fit h-32 rounded-md object-cover'
         />
-        <div className=' overflow-hidden whitespace-nowrap text-ellipsis  w-full'>
+        <div className=' overflow-hidden whitespace-nowrap text-ellipsis w-full'>
           <h1
             className={clsx(
               'font-bold tracking-wide  ',
@@ -153,7 +161,7 @@ const Player = () => {
                 onChangeCurrentTime(parseFloat(e.target.value))
                 handleSeek(e)
               }}
-              className='w-full   hover:cursor-pointer appearance-none bg-transparent
+              className='w-full hover:cursor-pointer appearance-none bg-transparent
                               [&::-webkit-slider-runnable-track]:bg-[#686767] 
                               [&::-webkit-slider-runnable-track]:rounded-s-full [&::-webkit-slider-runnable-track]:rounded-e-full
                               [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-thumb]:appearance-none 

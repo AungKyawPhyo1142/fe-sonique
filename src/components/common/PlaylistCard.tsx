@@ -57,4 +57,18 @@ const PlaylistCard: React.FC<Props> = ({
   )
 }
 
+export const PlaylistCardSkeleton: React.FC = () => {
+  return (
+    <div className='w-full bg-[#181818] p-4 rounded-[3%] h-[300px] animate-pulse'>
+      <div className='relative'>
+        <div className='overflow-hidden rounded-md shadow-lg mb-4'>
+          <div className='w-full h-40 bg-gray-500 animate-pulse rounded-[3%]' />
+        </div>
+      </div>
+      <div className='w-full bg-gray-500 animate-pulse h-5 rounded-md' />
+      <div className='w-full bg-gray-500 animate-pulse h-3 rounded-md mt-2' />
+    </div>
+  )
+}
+
 export default PlaylistCard
