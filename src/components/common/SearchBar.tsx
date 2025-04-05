@@ -1,73 +1,62 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Input from './Input'
-// import { useLocation } from 'react-router'
-// import { AppConstantRoutes } from '@/services/routes/path'
-
-//import Button from './Button'
-//import { ChevronLeft, ChevronRight } from 'lucide-react'
-//import { useNavigate } from 'react-router'
+import useDebounce from '@/helpers/useDebounce/useDebounce'
+import { useGetAllSongs } from '@/services/network/lib/songs'
 
 const SearchBar: React.FC = () => {
-  // const navigate = useNavigate()
-  // const { pathname } = useLocation()
-  // const isSearchPage = pathname === AppConstantRoutes.paths.searchPage
   const [searchQuery, setSearchQuery] = useState('')
+  const debounceSearchInput = useDebounce(searchQuery, 500)
+
+  const [isTyping, setIsTyping] = useState(false)
+
+  useEffect(() => {
+    if (searchQuery) {
+      setIsTyping(true)
+      const timeout = setTimeout(() => {
+        setIsTyping(false)
+      }, 500)
+
+      return () => clearTimeout(timeout)
+    } else {
+      setIsTyping(false)
+    }
+  }, [searchQuery])
+
+  const { data, isFetching } = useGetAllSongs(debounceSearchInput)
+  const songs = data?.pages?.flatMap((page) => page.data.songs) || []
+  const songResult = debounceSearchInput && songs.length > 0
 
   return (
-    <>
+    <div className='relative w-[400px]'>
       <Input
         type='text'
         placeholder='What do you want to listen to?'
-        secondary
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className='px-13 py-2 placeholder:text-[14px] !w-[400px]'
         showSearchIcon={true}
       />
-    </>
-    // <div className='flex items-center justify-end bg-[#121212] py-10 sticky top-0 z-50 h-[64px] px-8'>
-    //   <div className='flex items-center gap-3 '>
-
-    //     <Button className='bg-[#000000] p-2 rounded-s-full rounded-e-full'>
-    //       <ChevronLeft size={18} className='text-[#FFFFFF]' />
-    //     </Button>
-    //     <Button className='bg-[#000000] p-2 rounded-s-full rounded-e-full'>
-    //       <ChevronRight size={18} className='text-[#FFFFFF]' />
-    //     </Button>
-
-    //     <div className='relative flex items-center h-[40px] w-[364px]'>
-    //       {isSearchPage && (
-    //         <Input
-    //           type='text'
-    //           placeholder='What do you want to listen to?'
-    //           secondary
-    //           value={searchQuery}
-    //           onChange={(e) => setSearchQuery(e.target.value)}
-    //           className='px-13 py-2 placeholder:text-[14px]'
-    //           showSearchIcon={true}
-    //         />
-    //       )}
-    //     </div>
-    //   </div>
-
-    //   <div className='flex items-center gap-4 '>
-    //     <Button
-    //       onClick={() => navigate(AppConstantRoutes.paths.auth.register)}
-    //       outline
-    //       className='px-4 py-2 rounded-s-full rounded-e-full h-[48px] w-[110px] text-[15px]'
-    //     >
-    //       Sign up
-    //     </Button>
-    //     <Button
-    //       onClick={() => navigate(AppConstantRoutes.paths.auth.login)}
-    //       primary
-    //       className='px-4 py-2 rounded-s-full rounded-e-full h-[48px] w-[110px] text-[15px]'
-    //     >
-    //       Log in
-    //     </Button>
-    //   </div>
-
-    // </div>
+      {searchQuery && (
+        <div className='absolute w-full text-zinc-400 border-1 border-zinc-200/300 bg-zinc-700/10 overflow-auto backdrop-blur-2xl rounded-md shadow-md mt-2 z-10'>
+          {isTyping || isFetching ? (
+            <div className='p-2'>Loading...</div>
+          ) : songResult ? (
+            <ul>
+              {songs.map((song) => (
+                <li
+                  key={song.id}
+                  className='p-2 cursor-pointer select-none transition-colors duration-150 ease-in-out border-b border-zinc-200/300 hover:text-white'
+                >
+                  {song.title}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className='p-2'>No data</div>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 

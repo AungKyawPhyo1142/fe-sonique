@@ -68,7 +68,7 @@ const Input: React.FC<Props> = (props) => {
       <Search
         className='absolute left-4 cursor-pointer'
         size={20}
-        color={'black'}
+        color={'gray'}
       />
     ) : null
   }

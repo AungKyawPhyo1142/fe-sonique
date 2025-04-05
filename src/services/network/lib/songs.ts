@@ -117,9 +117,9 @@ export const useGetAllGenres = () => {
 
 // ** NOTE: This is a mock flag to switch between mock and real API calls
 const useMock = false
-export const useGetAllSongs = () => {
+export const useGetAllSongs = (searchQuery?: string) => {
   return useInfiniteQuery<GetAllSongsResponse>({
-    queryKey: ['get-all-songs'],
+    queryKey: ['get-all-songs', searchQuery],
     queryFn: ({ pageParam = '' }) => {
       if (useMock) {
         return fetchMockSongs({ pageParam })
@@ -129,9 +129,11 @@ export const useGetAllSongs = () => {
         params: {
           limit: 10,
           cursor: pageParam,
+          search: searchQuery,
         },
       })
     },
+    enabled: !!searchQuery,
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.data.nextCursor,
   })
