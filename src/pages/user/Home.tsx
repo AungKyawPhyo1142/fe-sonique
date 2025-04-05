@@ -1,4 +1,4 @@
-import FloatingActionButton from '@/components/common/FloatingActionButton'
+import { FloatingMenu } from '@/components/common/FloatingActionButton'
 import InfiniteScrollContainer from '@/components/common/InfiniteScrollContainer'
 import PlaylistCard, {
   PlaylistCardSkeleton,
@@ -73,7 +73,7 @@ const Home = () => {
         {isFetchingNextPage && <div>Loading more...</div>}
       </div>
 
-      <FloatingActionButton onClick={() => undefined} />
+      <FloatingMenu />
     </div>
   )
 }
