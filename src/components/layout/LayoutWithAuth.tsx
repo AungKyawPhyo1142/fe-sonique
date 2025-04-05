@@ -2,7 +2,9 @@ import { Outlet, useLocation } from 'react-router'
 
 import { AppConstantRoutes } from '@/services/routes/path'
 import clsx from 'clsx'
+
 import Sidebar from '../navbar/Sidebar'
+import Toaster from '../common/Toaster'
 
 const LayoutWithAuth = () => {
   const location = useLocation()
@@ -20,6 +22,7 @@ const LayoutWithAuth = () => {
         )}
       >
         <Outlet />
+        <Toaster />
       </main>
     </div>
   )

@@ -1,5 +1,7 @@
+import { useGetUser } from '@/services/network/lib/user'
 import { AppConstantRoutes } from '@/services/routes/path'
 import { cleanupAfterLogout, useAuthStore } from '@/services/zustand/authStore'
+import { usePlayerStore } from '@/services/zustand/usePlayerStore'
 import { useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { Heart, House, Library, ListPlus, PowerOff, Search } from 'lucide-react'
@@ -8,7 +10,6 @@ import { useLocation, useNavigate } from 'react-router'
 import Button from '../common/Button'
 import Player from '../common/Player'
 import Seperator from '../common/Seperator'
-import { useGetUser } from '@/services/network/lib/user'
 
 interface SidebarItemProps {
   icon?: React.ReactNode
@@ -37,6 +38,7 @@ export const UserTile: React.FC<UserTileProps> = ({
   const handleProfileClick = () => {
     navigate(AppConstantRoutes.paths.profile)
   }
+
   return (
     <div className={clsx('flex items-center space-x-2', className)}>
       <img
@@ -109,6 +111,7 @@ const Sidebar: React.FC = () => {
 
   const { pathname } = useLocation()
   const { data: user } = useGetUser(+userId)
+  const { audioElement } = usePlayerStore()
 
   const handleLogout = () => {
     cleanupAfterLogout()
@@ -142,9 +145,8 @@ const Sidebar: React.FC = () => {
       </ul>
       {/*Player will be here*/}
       <div className='flex flex-col items-center justify-center '>
-        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) && (
-          <Player />
-        )}
+        {!pathname.includes(AppConstantRoutes.paths.songDetailPage('')) &&
+          audioElement && <Player />}
       </div>
       <ul className='w-full mt-auto'>
         <UserTile
