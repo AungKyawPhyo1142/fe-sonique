@@ -42,10 +42,10 @@ const PlaylistCard: React.FC<Props> = ({
         </div>
         {isHovered && (
           <button
-            className=' absolute bottom-2 right-2 bg-green-500 rounded-full p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105 hover:bg-green-400'
+            className=' absolute bottom-2 right-2 bg-zinc-800/50 border-zinc-300/50 border backdrop-blur-2xl rounded-lg p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-zinc-800/30'
             aria-label={`Play ${title}`}
           >
-            <Play className='h-5 w-5 text-black fill-black' />
+            <Play className='h-5 w-5 text-white fill-white' />
           </button>
         )}
       </div>
@@ -53,6 +53,20 @@ const PlaylistCard: React.FC<Props> = ({
       <p className='text-[#A7A7A7] line-clamp-2 text-[14px] mt-1 mb-1'>
         {description}
       </p>
+    </div>
+  )
+}
+
+export const PlaylistCardSkeleton: React.FC = () => {
+  return (
+    <div className='w-full bg-[#181818] p-4 rounded-[3%] h-[300px] animate-pulse'>
+      <div className='relative'>
+        <div className='overflow-hidden rounded-md shadow-lg mb-4'>
+          <div className='w-full h-40 bg-gray-500 animate-pulse rounded-[3%]' />
+        </div>
+      </div>
+      <div className='w-full bg-gray-500 animate-pulse h-5 rounded-md' />
+      <div className='w-full bg-gray-500 animate-pulse h-3 rounded-md mt-2' />
     </div>
   )
 }
