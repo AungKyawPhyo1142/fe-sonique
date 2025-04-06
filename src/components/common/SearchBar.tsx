@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import Input from './Input'
 import useDebounce from '@/helpers/useDebounce/useDebounce'
 import { useGetAllSongs } from '@/services/network/lib/songs'
+import { useNavigate } from 'react-router'
+import { AppConstantRoutes } from '@/services/routes/path'
 
 const SearchBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const debounceSearchInput = useDebounce(searchQuery, 500)
 
   const [isTyping, setIsTyping] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (searchQuery) {
@@ -37,17 +40,42 @@ const SearchBar: React.FC = () => {
         showSearchIcon={true}
       />
       {searchQuery && (
-        <div className='absolute w-full text-zinc-400 border-1 border-zinc-200/300 bg-zinc-700/10 overflow-auto backdrop-blur-2xl rounded-md shadow-md mt-2 z-10'>
+        <div className='absolute w-full text-zinc-400 border-1 border-zinc-200/300 bg-zinc-700/10 overflow-auto  rounded-md shadow-md mt-2 z-10'>
           {isTyping || isFetching ? (
             <div className='p-2'>Loading...</div>
           ) : songResult ? (
             <ul>
               {songs.map((song) => (
+                // <li
+                //   key={song.id}
+                //   className='p-2 cursor-pointer select-none transition-colors duration-150 ease-in-out border-b last:border-b-0 border-zinc-200/300 hover:text-white'
+                // >
+                //   {song.title}
+                // </li>
                 <li
                   key={song.id}
-                  className='p-2 cursor-pointer select-none transition-colors duration-150 ease-in-out border-b border-zinc-200/300 hover:text-white'
+                  className='p-2 cursor-pointer select-none transition-colors duration-150 ease-in-out border-b last:border-b-0 border-zinc-200/300 hover:text-white backdrop-blur-3xl'
+                  onClick={() =>
+                    navigate(AppConstantRoutes.paths.songDetailPage(song.id))
+                  }
                 >
-                  {song.title}
+                  <div className='flex flex-row items-center justify-start space-x-1'>
+                    <img
+                      src={song.coverImageUrl}
+                      alt={song.title}
+                      className='w-[40px] h-[40px] rounded-sm'
+                    />
+                    <div className='flex flex-col items-start justify-center'>
+                      <h1 className='text-[18px] font-bold leading-none'>
+                        {song.title}
+                      </h1>
+                      <div className='text-[15px] flex flex-row items-center justify-start space-x-1'>
+                        <span>by {song.artist.name}</span>
+                        <div className='rounded-full bg-zinc-400 hover:bg-white w-1 h-1'></div>
+                        <span>@{song.artist.username}</span>
+                      </div>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
