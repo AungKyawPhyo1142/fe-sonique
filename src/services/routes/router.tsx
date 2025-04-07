@@ -10,6 +10,7 @@ import SearchPage from '@/pages/user/SearchPage'
 import SongDetail from '@/pages/user/SongDetail'
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppConstantRoutes } from './path'
+import Library from '@/pages/user/Library'
 
 /*
   This file is where you define the routes
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
       {
         path: AppConstantRoutes.paths.songDetailPage(':id'), // <-- Dynamic Path
         element: <SongDetail />,
+      },
+      {
+        path: AppConstantRoutes.paths.librabryPage,
+        element: <Library />,
       },
     ],
   },

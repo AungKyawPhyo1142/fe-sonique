@@ -100,7 +100,7 @@ const SidebarItems = [
   {
     icon: <Library />,
     title: 'Your Library',
-    path: '/',
+    path: AppConstantRoutes.paths.librabryPage,
   },
 ]
 
