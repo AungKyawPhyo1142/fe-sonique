@@ -54,7 +54,7 @@ const SearchBar: React.FC = () => {
                 // </li>
                 <li
                   key={song.id}
-                  className='p-2 cursor-pointer select-none transition-colors duration-150 ease-in-out border-b last:border-b-0 border-zinc-200/300 hover:text-white backdrop-blur-3xl'
+                  className='p-4 cursor-pointer select-none bg-zinc-900/80 transition-colors duration-150 ease-in-out border-b last:border-b-0 border-zinc-200/300 hover:text-white backdrop-blur-3xl'
                   onClick={() =>
                     navigate(AppConstantRoutes.paths.songDetailPage(song.id))
                   }
