@@ -55,5 +55,27 @@ export const ApiConstantRoutes = {
         },
       }
     },
+    get playlist() {
+      return {
+        get default() {
+          return '/playlist'
+        },
+        get create() {
+          return `${this.default}/create`
+        },
+        addsongstoplaylist() {
+          return `${this.default}/add-song`
+        },
+        getUserPlaylist(id: string) {
+          return `${this.default}/${id}`
+        },
+        getPlaylistDetail(id: number) {
+          return `${this.default}/details/${id}`
+        },
+        removeSong() {
+          return `${this.default}/remove-song`
+        },
+      }
+    },
   },
 }

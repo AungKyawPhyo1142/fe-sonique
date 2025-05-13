@@ -27,15 +27,7 @@ const CreateGenreModalContent: React.FC<Props> = ({
   })
 
   const onSubmit = async (val: CreateGenreFormValues) => {
-    /**
-    const res = await songRequests.createNewGenre(val.name).catch((error) => {
-      // TODO: handle error with modal or something
-      formik.setErrors({
-        name: 'An error occurred while creating the genre',
-      })
-      console.log(error)
-    })
-       */
+
     try {
       const res = await songRequests.createNewGenre(val)
       console.log('API resopnse for create gen: ', res)

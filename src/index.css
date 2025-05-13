@@ -87,3 +87,20 @@
     background-size: 80px 60px;
   }
 }
+
+/* Sortable and Shaking Cards for PlaylistCreate */
+@layer utilities {
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-1deg);
+    }
+    50% {
+      transform: rotate(1deg);
+    }
+  }
+
+  .animate-wiggle {
+    animation: wiggle 0.3s infinite ease-in-out;
+  }
+}

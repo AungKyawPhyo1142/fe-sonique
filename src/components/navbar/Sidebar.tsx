@@ -102,6 +102,11 @@ const SidebarItems = [
     title: 'Your Library',
     path: AppConstantRoutes.paths.librabryPage,
   },
+  {
+    icon: <ListPlus />,
+    title: 'Create Playlists',
+    path: AppConstantRoutes.paths.playlistPage,
+  },
 ]
 
 const Sidebar: React.FC = () => {
@@ -135,11 +140,6 @@ const Sidebar: React.FC = () => {
             onClick={() => navigate(sidebar_item.path)}
           />
         ))}
-        <SideBarItem
-          icon={<ListPlus />}
-          title='Create Playlist'
-          onClick={undefined}
-        />
         <SideBarItem icon={<Heart />} title='Liked Songs' onClick={undefined} />
         <Seperator className='  ' />
       </ul>

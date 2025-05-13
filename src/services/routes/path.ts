@@ -40,5 +40,11 @@ export const AppConstantRoutes = {
     get librabryPage() {
       return '/library'
     },
+    get playlistPage() {
+      return '/createplaylist'
+    },
+    get playlistDetailPage() {
+      return (id: string) => `/playlistDetailPage/${id}`
+    },
   },
 }

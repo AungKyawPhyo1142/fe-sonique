@@ -11,6 +11,8 @@ import SongDetail from '@/pages/user/SongDetail'
 import { createBrowserRouter, Navigate } from 'react-router'
 import { AppConstantRoutes } from './path'
 import Library from '@/pages/user/Library'
+import PlaylistPage from '@/pages/user/PlaylistPage'
+import PlaylistDetail from '@/pages/user/PlaylistDetail'
 
 /*
   This file is where you define the routes
@@ -81,6 +83,14 @@ export const router = createBrowserRouter([
       {
         path: AppConstantRoutes.paths.librabryPage,
         element: <Library />,
+      },
+      {
+        path: AppConstantRoutes.paths.playlistPage,
+        element: <PlaylistPage />,
+      },
+      {
+        path: AppConstantRoutes.paths.playlistDetailPage(':id'),
+        element: <PlaylistDetail />,
       },
     ],
   },
