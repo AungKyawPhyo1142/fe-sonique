@@ -37,7 +37,7 @@ const RemoveSongFromPlaylist: React.FC<RemoveSongFromPlaylistProps> = ({
         playlistId,
         songIds: [songId],
       })
-      console.log('res:', res)
+      console.log('resRemove::', res)
 
       if (res && res.status === 'SUCCESS') {
         console.log('Song Rmoved:', res.data)

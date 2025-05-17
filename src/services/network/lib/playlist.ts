@@ -22,7 +22,7 @@ export interface CreatePlaylistResponse {
 
 //add songs to playlist
 export interface AddSongsToPlaylistValue {
-  user_id?: string
+  user_id?: number
   playlistId: number
   songIds: string[]
 }
@@ -129,8 +129,15 @@ export const playlistRequests = {
   async RemoveSong(
     v: RemoveSongFromPlaylistValue,
   ): Promise<RemoveSongFromPlaylistResponse> {
+    const data = {
+      userId: v.userId,
+      playlistId: v.playlistId,
+      songIds: v.songIds,
+    }
+    console.log('reqV: ', data)
+
     return apiClient.delete(ApiConstantRoutes.paths.playlist.removeSong(), {
-      data: v,
+      data,
     })
   },
 }

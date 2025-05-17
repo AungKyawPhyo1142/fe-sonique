@@ -59,11 +59,13 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
     })
 
   const onSubmit = async (value: PlaylistCreateFormValue) => {
+    console.log('Value:: ', value)
     try {
       const createRes = await playlistRequests.createEmptyPlaylist({
         user_id: userId,
         name: value.name,
       })
+      console.log('statusCreateRes:', createRes)
       if (!createRes || !createRes.status) {
         formik.setErrors({ name: 'No response from server. Try again later.' })
         return
@@ -71,12 +73,13 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
 
       if (createRes && createRes.status === 'SUCCESS' && createRes.data?.id) {
         const playlistId = createRes.data.id
-
+        console.log('PlaylistId: ', playlistId)
         const addSongsRes = await playlistRequests.addSongsToPlaylist({
-          user_id: userId,
+          user_id: parseInt(userId),
           playlistId: playlistId,
           songIds: value.songIds,
         })
+        console.log('addSongRes: ', addSongsRes)
 
         if (addSongsRes?.status === 'SUCCESS') {
           console.log('Playlist created and songs added successfully')

@@ -104,7 +104,7 @@ const PlaylistDetail = () => {
             <RemoveSongFromPlaylist
               isOpen={isRemoveModalOpen}
               setIsOpen={setRemoveModalOpen}
-              userId={userId}
+              userId={userId!}
               playlistId={playlistId!}
               songId={selectedSongId}
               refetch={SongRefetch}

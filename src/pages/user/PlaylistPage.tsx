@@ -58,8 +58,7 @@ const PlaylistPage = () => {
         )}
       </div>
       {/* Playlist Cards */}
-      <div className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-        {isLoading && <p className='text-white'>Loading playlists...</p>}
+      {isLoading && <p className='text-white'>Loading playlists...</p>}
         {isError && <p className='text-red-500'>Failed to load playlists.</p>}
         {user?.length === 0 ? (
           <EmptyState
@@ -67,7 +66,7 @@ const PlaylistPage = () => {
             subheading="You haven't created any playlists yet!"
           />
         ) : (
-          <div>
+          <div className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
             {user?.map((playlist: UserPlaylists) => (
               <div key={playlist.id} className='w-full'>
                 <PlaylistCard
@@ -84,7 +83,6 @@ const PlaylistPage = () => {
             ))}
           </div>
         )}
-      </div>
     </div>
   )
 }
