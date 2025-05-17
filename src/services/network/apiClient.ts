@@ -17,7 +17,7 @@ apiClient.interceptors.response.use(
   },
   function (error) {
     const res = error.response
-    console.log('API call failed:', res.status)
+    console.log('API call failed:', res)
     return Promise.reject(res)
   },
 )

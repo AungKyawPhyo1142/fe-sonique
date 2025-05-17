@@ -63,7 +63,7 @@ export const ApiConstantRoutes = {
         get create() {
           return `${this.default}/create`
         },
-        addsongstoplaylist() {
+        get addsongstoplaylist() {
           return `${this.default}/add-song`
         },
         getUserPlaylist(id: string) {
@@ -72,7 +72,7 @@ export const ApiConstantRoutes = {
         getPlaylistDetail(id: number) {
           return `${this.default}/details/${id}`
         },
-        removeSong() {
+        get removeSong() {
           return `${this.default}/remove-song`
         },
       }

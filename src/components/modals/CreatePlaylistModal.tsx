@@ -62,10 +62,10 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
     console.log('Value:: ', value)
     try {
       const createRes = await playlistRequests.createEmptyPlaylist({
-        user_id: userId,
+        user_id: +userId,
         name: value.name,
       })
-      console.log('statusCreateRes:', createRes)
+      console.log('Create Playlist Response:', createRes)
       if (!createRes || !createRes.status) {
         formik.setErrors({ name: 'No response from server. Try again later.' })
         return
@@ -75,9 +75,9 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
         const playlistId = createRes.data.id
         console.log('PlaylistId: ', playlistId)
         const addSongsRes = await playlistRequests.addSongsToPlaylist({
-          user_id: parseInt(userId),
           playlistId: playlistId,
           songIds: value.songIds,
+          userId: +userId,
         })
         console.log('addSongRes: ', addSongsRes)
 
