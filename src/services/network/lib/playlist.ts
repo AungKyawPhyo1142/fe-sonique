@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 
 //create empty playlist
 export interface CreatePlaylistValue {
-  user_id: string
+  user_id: number
   name?: string
 }
 export interface CreatePlaylistResponse {
@@ -22,9 +22,9 @@ export interface CreatePlaylistResponse {
 
 //add songs to playlist
 export interface AddSongsToPlaylistValue {
-  user_id?: string
   playlistId: number
   songIds: string[]
+  userId: number
 }
 export interface AddSongsToPlaylistResponse {
   data: {
@@ -121,15 +121,16 @@ export const playlistRequests = {
   async addSongsToPlaylist(
     v: AddSongsToPlaylistValue,
   ): Promise<AddSongsToPlaylistResponse> {
+    console.log('addsong: ', v)
     return apiClient.patch(
-      ApiConstantRoutes.paths.playlist.addsongstoplaylist(),
+      ApiConstantRoutes.paths.playlist.addsongstoplaylist,
       v,
     )
   },
   async RemoveSong(
     v: RemoveSongFromPlaylistValue,
   ): Promise<RemoveSongFromPlaylistResponse> {
-    return apiClient.delete(ApiConstantRoutes.paths.playlist.removeSong(), {
+    return apiClient.delete(ApiConstantRoutes.paths.playlist.removeSong, {
       data: v,
     })
   },
