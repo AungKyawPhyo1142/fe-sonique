@@ -24,6 +24,7 @@ const PlaylistPage = () => {
     data: user,
     isLoading,
     isError,
+    refetch: PlaylistRefetch,
   } = useQuery({
     queryKey: ['getUserPlaylists', userId],
     retry: 1,
@@ -54,35 +55,36 @@ const PlaylistPage = () => {
           <CreatePlaylistModal
             isOpen={isCreatePlaylist}
             setIsOpen={setIsCreatePlaylist}
+            refetch={PlaylistRefetch}
           />
         )}
       </div>
       {/* Playlist Cards */}
       {isLoading && <p className='text-white'>Loading playlists...</p>}
-        {isError && <p className='text-red-500'>Failed to load playlists.</p>}
-        {user?.length === 0 ? (
-          <EmptyState
-            heading='Empty Playlist'
-            subheading="You haven't created any playlists yet!"
-          />
-        ) : (
-          <div className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-            {user?.map((playlist: UserPlaylists) => (
-              <div key={playlist.id} className='w-full'>
-                <PlaylistCard
-                  image='/images/playlist.png'
-                  title={playlist.name}
-                  description={`total songs: ${playlist.total_songs}`}
-                  onClick={() =>
-                    navigate(
-                      AppConstantRoutes.paths.playlistDetailPage(playlist.id),
-                    )
-                  }
-                />
-              </div>
-            ))}
-          </div>
-        )}
+      {isError && <p className='text-red-500'>Failed to load playlists.</p>}
+      {user?.length === 0 ? (
+        <EmptyState
+          heading='Empty Playlist'
+          subheading="You haven't created any playlists yet!"
+        />
+      ) : (
+        <div className='w-full grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+          {user?.map((playlist: UserPlaylists) => (
+            <div key={playlist.id} className='w-full'>
+              <PlaylistCard
+                image='/images/playlist.png'
+                title={playlist.name}
+                description={`total songs: ${playlist.total_songs}`}
+                onClick={() =>
+                  navigate(
+                    AppConstantRoutes.paths.playlistDetailPage(playlist.id),
+                  )
+                }
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

@@ -64,7 +64,7 @@ const SearchBar: React.FC = () => {
                       src={song.coverImageUrl}
                       alt={song.title}
                       className='w-[40px] h-[40px] rounded-sm'
-                    /> 
+                    />
                     <div className='flex flex-col items-start justify-center'>
                       <h1 className='text-[18px] font-bold leading-none'>
                         {song.title}

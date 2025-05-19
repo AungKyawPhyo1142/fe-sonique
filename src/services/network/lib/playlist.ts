@@ -82,8 +82,8 @@ export interface PlaylistDetailResponse {
 }
 //Remove Song from playlist
 export interface RemoveSongFromPlaylistValue {
-  userId: string
-  playlistId: string
+  userId: number
+  playlistId: number
   songIds: string[]
 }
 export interface RemoveSongFromPlaylistResponse {
@@ -130,6 +130,7 @@ export const playlistRequests = {
   async RemoveSong(
     v: RemoveSongFromPlaylistValue,
   ): Promise<RemoveSongFromPlaylistResponse> {
+    console.log('remove song vale:: ', v)
     return apiClient.delete(ApiConstantRoutes.paths.playlist.removeSong, {
       data: v,
     })

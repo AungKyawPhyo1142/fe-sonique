@@ -12,18 +12,18 @@ import { ApiConstantRoutes } from '@/services/network/path'
 import { useQuery } from '@tanstack/react-query'
 import { array, object, ObjectSchema, string } from 'yup'
 import { PlaylistCreateFormValue } from '@/services/network/lib/playlist'
-
+import toast from 'react-hot-toast'
 //create playlist modal
 interface CreatePlaylistModalProps {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  //refetchPlaylist: () => void
+  refetch: () => void
 }
 
 const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
   isOpen,
   setIsOpen,
-  //refetchPlaylist,
+  refetch,
 }) => {
   // get user
   const userId = useAuthStore((state) => state.auth.userId)
@@ -71,6 +71,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
         return
       }
 
+      // create playlist if empty playlist is successed
       if (createRes && createRes.status === 'SUCCESS' && createRes.data?.id) {
         const playlistId = createRes.data.id
         console.log('PlaylistId: ', playlistId)
@@ -83,18 +84,23 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
 
         if (addSongsRes?.status === 'SUCCESS') {
           console.log('Playlist created and songs added successfully')
+          refetch()
           setIsOpen(false)
+          toast.success('Your playlist has been saved successfully.')
         } else {
           formik.setErrors({ songIds: 'Failed to add songs to playlist' })
+          toast.error('Failed to add songs to playlist.')
         }
       } else {
         formik.setErrors({
           name: 'Failed to create playlist. Please try again.',
         })
+        toast.error('Failed to add songs to playlist.')
       }
     } catch (error) {
       console.error('Error:', error)
       formik.setErrors({ name: 'Something went wrong. Try again later.' })
+      toast.error('Failed to add songs to playlist.')
     }
   }
   const formik = useFormik<PlaylistCreateFormValue>({

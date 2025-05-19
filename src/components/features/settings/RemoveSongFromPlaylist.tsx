@@ -8,7 +8,7 @@ interface RemoveSongFromPlaylistProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   userId: string
   playlistId: string
-  songId: string
+  songId: string[]
   refetch: () => void
   setAlertMessage: React.Dispatch<
     React.SetStateAction<{
@@ -33,9 +33,9 @@ const RemoveSongFromPlaylist: React.FC<RemoveSongFromPlaylistProps> = ({
     setIsRemoving(true)
     try {
       const res = await playlistRequests.RemoveSong({
-        userId,
-        playlistId,
-        songIds: [songId],
+        userId: +userId,
+        playlistId: +playlistId,
+        songIds: songId,
       })
       console.log('resRemove::', res)
 
@@ -54,11 +54,14 @@ const RemoveSongFromPlaylist: React.FC<RemoveSongFromPlaylistProps> = ({
     } catch (error: any) {
       refetch()
       setIsOpen(false)
-      console.error(
-        'Error removing song:',
-        error.response?.data || error.message,
-      )
-      setAlertMessage({ message: 'Error removing song.', type: 'error' })
+
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Unknown error occurred'
+
+      console.error('Error removing song in catch:', error)
+      setAlertMessage({ message: errorMsg, type: 'error' })
     }
     setIsRemoving(false)
   }

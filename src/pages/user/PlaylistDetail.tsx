@@ -1,6 +1,6 @@
 import GlassCard from '@/components/common/GlassCard'
 import Button from '@/components/common/Button'
-import { Clock3, Trash2, GripVertical, Undo2 } from 'lucide-react'
+import { Clock3, Trash2, GripVertical, ChevronLeft } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router'
 import { useGetPlaylistDetail } from '@/services/network/lib/playlist'
 import { formatDuration } from '@/helpers/helpers'
@@ -8,13 +8,17 @@ import { useState } from 'react'
 import RemoveSongFromPlaylist from '@/components/features/settings/RemoveSongFromPlaylist'
 import { useAuthStore } from '@/services/zustand/authStore'
 import Alert from '@/components/common/Alert'
+import MoreMenu from '@/components/common/MoreMenu'
 
 const PlaylistDetail = () => {
   const navigate = useNavigate()
   const { id } = useParams()
+  console.log('Id:: ', id)
   const numericId = Number(id)
   //get user Id
   const userId = useAuthStore((state) => state.auth.userId)
+  console.log('userId: ', userId)
+
   const [isRemoveModalOpen, setRemoveModalOpen] = useState(false)
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
   const [alertMessage, setAlertMessage] = useState<{
@@ -35,7 +39,7 @@ const PlaylistDetail = () => {
   if (isError) {
     return <p className='text-white text-[50px]'>No data found.</p>
   }
-  const { playlistId } = useParams()
+  console.log('selected song Id: ', selectedSongId)
   return (
     <div className='flex flex-col bg-[#202022] p-10 w-full min-h-screen'>
       {alertMessage && (
@@ -46,15 +50,21 @@ const PlaylistDetail = () => {
         />
       )}
       <div className='flex justify-between mb-[50px]'>
-        <h1 className='text-3xl font-bold text-white'>{data?.data.name}</h1>
-        <Button
-          className='w-fit px-5 h-[50px]'
-          secondary
-          type='button'
-          onClick={() => navigate('/createplaylist')}
-        >
-          <Undo2 size={30} />
-        </Button>
+        <span className='flex text-3xl font-bold text-white space-x-2'>
+          <Button
+            className='w-fit px-5 text-white'
+            type='button'
+            onClick={() => navigate('/createplaylist')}
+          >
+            <ChevronLeft size={30} />
+          </Button>
+
+          <h1>{data?.data.name}</h1>
+        </span>
+        {/* <Button className='w-fit px-5 text-white' type='button'>
+          <MoreVertical size={30} />
+        </Button> */}
+        <MoreMenu />
       </div>
       <GlassCard className='flex flex-col items-center !p-2 justify-center min-w-[900px] '>
         <table className='text-left w-full ml-2 mb-[50px]'>
@@ -87,15 +97,14 @@ const PlaylistDetail = () => {
                   <p>{formatDuration(song.duration)}</p>
                 </td>
                 <td className='py-4 px-4 '>
-                  <span
+                  <Trash2
+                    size={20}
                     className='hover:cursor-pointer '
                     onClick={() => {
                       setSelectedSongId(song.id!)
                       setRemoveModalOpen(true)
                     }}
-                  >
-                    <Trash2 size={20} />
-                  </span>
+                  />
                 </td>
               </tr>
             ))}
@@ -105,8 +114,8 @@ const PlaylistDetail = () => {
               isOpen={isRemoveModalOpen}
               setIsOpen={setRemoveModalOpen}
               userId={userId!}
-              playlistId={playlistId!}
-              songId={selectedSongId}
+              playlistId={id!}
+              songId={[selectedSongId]}
               refetch={SongRefetch}
               setAlertMessage={setAlertMessage}
             />

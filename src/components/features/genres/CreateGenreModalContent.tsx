@@ -27,7 +27,6 @@ const CreateGenreModalContent: React.FC<Props> = ({
   })
 
   const onSubmit = async (val: CreateGenreFormValues) => {
-
     try {
       const res = await songRequests.createNewGenre(val)
       console.log('API resopnse for create gen: ', res)
